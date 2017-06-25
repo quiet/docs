@@ -1,0 +1,46 @@
+\documentclass[convert]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+\begin{document}
+
+\tikzstyle{quiet_block} = [draw, fill=blue!20, rectangle,
+    minimum height=3em, minimum width=8em, align=center]
+\tikzstyle{liquid_block} = [draw, fill=green!10, rectangle,
+    minimum height=3em, minimum width=8em, align=center]
+\tikzstyle{quiet_legend_block} = [draw, fill=blue!20, rounded rectangle,
+    minimum height=1em, minimum width=4em, align=center]
+\tikzstyle{liquid_legend_block} = [draw, fill=green!20, rounded rectangle,
+    minimum height=1em, minimum width=4em, align=center]
+\tikzstyle{output} = [coordinate]
+
+\begin{tikzpicture}[auto, node distance=4cm,>=latex']
+
+\node[quiet_block] (block_buffer) {Block \\ Buffer};
+\node[quiet_block, right of=block_buffer] (downconversion) {Downconversion};
+\node[quiet_block, right of=downconversion] (decimation) {Decimation};
+\node[liquid_block, right of=decimation] (frame_detection) {Frame Detection};
+\node[liquid_block, right of=frame_detection] (sync_equal) {Synchronization \\ \& Equalization};
+\node[liquid_block, right of=sync_equal] (header_demod) {Header \\ Demodulator};
+
+\node[output, right of=header_demod] (header) {};
+
+\node[coordinate, below=1.75cm of sync_equal] (payload_joint) {};
+\node[output, right of=payload_joint] (payload) {};
+
+\node[quiet_legend_block] (quiet_legend) at(4.5, -2) {Quiet};
+\node[liquid_legend_block] (liquid_legend) at(6.5, -2) {Liquid DSP};
+\node[draw, rectangle, minimum height=3em, minimum width=12em] (legend) at (5.65, -2) {};
+
+\draw [->] (block_buffer) -- (downconversion);
+\draw [->] (downconversion) -- (decimation);
+\draw [->] (decimation) -- (frame_detection);
+\draw [->] (frame_detection) -- (sync_equal);,
+\draw [->] (sync_equal) -- (header_demod);
+\draw [->] (header_demod) -- node[align=center, near end] {header} (header);
+
+\draw [-] (sync_equal) -- (payload_joint);
+\draw [->] (payload_joint) -- node[align=center, near end] {modulated payload} (payload);
+
+\end{tikzpicture}
+\end{document}

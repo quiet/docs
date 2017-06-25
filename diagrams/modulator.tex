@@ -1,0 +1,39 @@
+\documentclass[convert]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\begin{document}
+
+\tikzstyle{quiet_block} = [draw, fill=blue!20, rectangle,
+    minimum height=3em, minimum width=6em, align=center]
+\tikzstyle{liquid_block} = [draw, fill=green!10, rectangle,
+    minimum height=3em, minimum width=6em, align=center]
+\tikzstyle{quiet_legend_block} = [draw, fill=blue!20, rounded rectangle,
+    minimum height=1em, minimum width=4em, align=center]
+\tikzstyle{liquid_legend_block} = [draw, fill=green!20, rounded rectangle,
+    minimum height=1em, minimum width=4em, align=center]
+\tikzstyle{output} = [coordinate]
+
+\begin{tikzpicture}[auto, node distance=3cm,>=latex']
+\node[quiet_block] (frame) {Frame};
+\node[liquid_block, right of=frame] (error_correction) {Error \\ Correction};
+\node[liquid_block, right of=error_correction] (payload_modulator) {Payload \\ Modulator};
+\node[output, right of=payload_modulator] (output) {};
+
+\node[liquid_block, below of=frame] (checksum) {Checksum};
+\node[output, right of=checksum] (checksum_output) {};
+
+\draw [->] (frame) -- (error_correction);
+\draw [->] (error_correction) -- (payload_modulator);
+\draw [->] (payload_modulator) -- node[align=center, near end] {modulated \\ payload} (output);
+
+\node[quiet_legend_block] (quiet_legend) at(7, -1.9) {Quiet};
+\node[liquid_legend_block] (liquid_legend) at(7, -2.65) {Liquid DSP};
+\node[draw, rectangle, minimum height=5em, minimum width=8em] (legend) at (7, -2.25) {};
+
+\draw [->] (frame) -- (checksum);
+\draw [->] (checksum) -- node [near end] {checksum} (checksum_output);
+
+
+\end{tikzpicture}
+\end{document}

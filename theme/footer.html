@@ -1,0 +1,42 @@
+{% if (page.next_page or page.previous_page) %}
+  <nav class="pagination" aria-label="Footer">
+    <div class="previous">
+      {% if page.previous_page %}
+        <a href="{{ page.previous_page.url }}" title="{{ page.previous_page.title }}">
+          <span class="direction">
+            {{ config.extra.get("i18n", {}).prev | default("Previous") }}
+          </span>
+          <div class="page">
+            <div class="button button-previous" role="button" aria-label="Previous">
+              <i class="icon icon-back"></i>
+            </div>
+            <div class="stretch">
+              <div class="title">
+                {{ page.previous_page.title }}
+              </div>
+            </div>
+          </div>
+        </a>
+      {% endif %}
+    </div>
+    <div class="next">
+      {% if page.next_page %}
+        <a href="{{ page.next_page.url }}" title="{{ page.next_page.title }}">
+          <span class="direction">
+            {{ config.extra.get("i18n", {}).next | default("Next") }}
+          </span>
+          <div class="page">
+            <div class="stretch">
+              <div class="title">
+                {{ page.next_page.title }}
+              </div>
+            </div>
+            <div class="button button-next" role="button" aria-label="Next">
+              <i class="icon icon-forward"></i>
+            </div>
+          </div>
+        </a>
+      {% endif %}
+    </div>
+  </nav>
+{% endif %}

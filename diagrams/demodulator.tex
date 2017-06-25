@@ -1,0 +1,30 @@
+\documentclass[convert]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+\begin{document}
+
+\tikzstyle{quiet_block} = [draw, fill=blue!20, rectangle,
+    minimum height=3em, minimum width=8em, align=center]
+\tikzstyle{liquid_block} = [draw, fill=green!10, rectangle,
+    minimum height=3em, minimum width=8em, align=center]
+\tikzstyle{quiet_legend_block} = [draw, fill=blue!20, rounded rectangle,
+    minimum height=1em, minimum width=4em, align=center]
+\tikzstyle{liquid_legend_block} = [draw, fill=green!20, rounded rectangle,
+    minimum height=1em, minimum width=4em, align=center]
+\tikzstyle{output} = [coordinate]
+
+\begin{tikzpicture}[auto, node distance=4cm,>=latex']
+
+\node[liquid_block] (payload_demod) {Payload \\ Demodulator};
+\node[liquid_block, right of=payload_demod] (error_correction) {Error \\ Correction};
+\node[liquid_block, right of=error_correction] (checksum) {Verify \\ Checksum};
+
+\node[output, right of=checksum] (payload) {};
+
+\draw [->] (payload_demod) -- (error_correction);
+\draw [->] (error_correction) -- (checksum);
+\draw [->] (checksum) -- node[align=center, near end] {received frame} (payload);
+
+\end{tikzpicture}
+\end{document}

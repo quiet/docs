@@ -1,0 +1,34 @@
+site_name: Quiet Modem Project
+site_url: http://localhost:8080/quiet-doc/QuietModemKit/
+theme_dir: ../theme
+docs_dir: ../docs
+site_dir: ../site/QuietModemKit
+pages:
+    - 'Quiet Modem': index.md
+    - 'Getting Started': setup.md
+    - 'Example': example.md
+    - 'How It Works': how.md
+    - 'Profiles': profiles.md
+    - 'Transmitting Data': transmitting.md
+    - 'Receiving Data': receiving.md
+repo_url:
+    https://github.com/quiet/QuietModemKit
+extra:
+    logo:
+        "https://avatars2.githubusercontent.com/u/17815378?v=3&s=200"
+    base_url:
+        http://localhost:8080/quiet-doc/
+    projects:
+        C:
+            project_url: quiet/
+        Javascript:
+            project_url: quiet-js/
+        Android:
+            project_url: org.QuietModem.Quiet/
+        iOS:
+            active: True
+            project_url: QuietModemKit/
+markdown_extensions:
+    - content_embedder:
+        docs_dir: ../docs/QuietModemKit
+    - admonition

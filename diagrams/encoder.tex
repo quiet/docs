@@ -1,0 +1,50 @@
+\documentclass[convert]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\begin{document}
+
+\tikzstyle{quiet_block} = [draw, fill=blue!20, rectangle,
+    minimum height=3em, minimum width=6em, align=center]
+\tikzstyle{liquid_block} = [draw, fill=green!10, rectangle,
+    minimum height=3em, minimum width=6em, align=center]
+\tikzstyle{quiet_legend_block} = [draw, fill=blue!20, rounded rectangle,
+    minimum height=1em, minimum width=4em, align=center]
+\tikzstyle{liquid_legend_block} = [draw, fill=green!20, rounded rectangle,
+    minimum height=1em, minimum width=4em, align=center]
+\tikzstyle{output} = [coordinate]
+
+\begin{tikzpicture}[auto, node distance=3cm,>=latex']
+
+\node[liquid_block] (header) {Header};
+\node[liquid_block, right of=header] (header_modulator) {Header \\ Modulator};
+
+\node[liquid_block, right of=header_modulator] (encoder) {Assemble \\ Frame};
+
+\node[liquid_block, above of=header_modulator] (preamble) {Preamble};
+
+\node[liquid_block, below of=header_modulator] (payload) {Modulated \\ Payload};
+
+\node[quiet_block, right of=encoder] (interpolator) {Interpolator};
+\node[quiet_block, right of=interpolator] (upconverter) {Upconverter};
+\node[quiet_block, right of=upconverter] (gain_reducer) {Gain \\ Reducer};
+\node[quiet_block, right of=gain_reducer] (sample_blocks) {Block \\ Buffer};
+
+\node[output, right of=sample_blocks] (output) {};
+
+\node[liquid_legend_block] (liquid_legend) at(12.5, 3) {Liquid DSP};
+\node[quiet_legend_block, right of=liquid_legend] (quiet_legend) {Quiet};
+\node[draw, rectangle, minimum height=3em, minimum width=16em] (legend) at (13.75, 3) {};
+
+\draw [->] (header) -- (header_modulator);
+\draw [->] (header_modulator) -- (encoder);
+\draw [->] (preamble) -- (encoder);
+\draw [->] (payload) -- (encoder);
+\draw [->] (encoder) -- (interpolator);
+\draw [->] (interpolator) -- (upconverter);
+\draw [->] (upconverter) -- (gain_reducer);
+\draw [->] (gain_reducer) -- (sample_blocks);
+\draw [->] (sample_blocks) -- node[align=center, near end] {blocks of \\ samples} (output);
+
+\end{tikzpicture}
+\end{document}
