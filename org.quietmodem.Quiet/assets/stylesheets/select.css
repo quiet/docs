@@ -1,0 +1,14 @@
+select {
+    width: 100%;
+    appearance: listitem;
+    -moz-appearance: listitem;
+    height: 35px;
+    line-height: 35px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+.project-select {
+    padding: 20px;
+    display: block;
+}
