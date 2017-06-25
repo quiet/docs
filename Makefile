@@ -1,4 +1,7 @@
-all : quiet quiet-js org.quietmodem.Quiet QuietModemKit
+all : index quiet quiet-js org.quietmodem.Quiet QuietModemKit
+
+index:
+	cp index.html site
 
 quiet:
 	cd site_configs && mkdocs build -f quiet.yml
@@ -12,4 +15,4 @@ org.quietmodem.Quiet:
 QuietModemKit:
 	cd site_configs && mkdocs build -f QuietModemKit.yml
 
-.PHONY : all quiet quiet-js org.quietmodem.Quiet QuietModemKit
+.PHONY : all quiet quiet-js org.quietmodem.Quiet QuietModemKit index
