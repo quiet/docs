@@ -21,15 +21,15 @@
       </div>
     </div>
   </a>
-  <div class="project-select">
-    <select>
-      {% set current_page_url = page.canonical_url.replace(config.site_url, '') %}
-      {% for project, conf in config.extra.projects.iteritems() %}
-      <option {% if conf.active == True %}selected{% endif %} data-url="{{ config.extra.base_url }}{{ conf.project_url }}{{ current_page_url }}">{{ project }}</option>
-      {% endfor %}
-    </select>
-  </div>
   <div class="scrollable">
+    <div class="project-select">
+      <select>
+        {% set current_page_url = page.canonical_url.replace(config.site_url, '') %}
+        {% for project, conf in config.extra.projects.iteritems() %}
+        <option {% if conf.active == True %}selected{% endif %} data-url="{{ config.extra.base_url }}{{ conf.project_url }}{{ current_page_url }}">{{ project }}</option>
+        {% endfor %}
+      </select>
+    </div>
     <div class="wrapper">
       {% if config.repo_name == "GitHub" and config.repo_url %}
         <ul class="repo">
