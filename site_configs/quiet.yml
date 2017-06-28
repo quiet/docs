@@ -17,7 +17,7 @@ extra:
     logo:
         "https://avatars2.githubusercontent.com/u/17815378?v=3&s=200"
     base_url:
-        http://localhost:8080/quiet-doc/
+        https://quiet.github.io/docs/
     projects:
         C:
             active: True
