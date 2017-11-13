@@ -295,9 +295,7 @@
       <article class="article">
         <div class="wrapper">
           
-          <p>
-<div>
-<h1 id="getting-started">Getting Started</h1>
+          <h1 id="getting-started">Getting Started</h1>
 <h2 id="installing-tools">Installing tools</h2>
 <p>libquiet requires <a href="https://cmake.org/">Cmake</a> for its builds.</p>
 <h2 id="installing-dependencies">Installing Dependencies</h2>
@@ -320,22 +318,32 @@
 </ul>
 <h2 id="installing-libquiet">Installing libquiet</h2>
 <p>After installing all dependencies, clone <a href="https://github.com/quiet/quiet">libquiet</a>, cd to directory where it is cloned, then run</p>
-<pre><code>mkdir build
+<div class="codehilite"><pre><span></span>mkdir build
+
 cd build
+
 cmake ..
+
 make
+
 make install
-</code></pre>
+</pre></div>
+
+
 <h2 id="headers">Headers</h2>
 <p>To access libquiet's API,</p>
-<pre><code>#include &lt;quiet.h&gt;
-</code></pre>
+<div class="codehilite"><pre><span></span>#include &amp;lt;quiet.h&amp;gt;
+</pre></div>
+
+
 <p>If you have installed PortAudio and have installed libquiet's PortAudio wrapper, you can access the PortAudio-backed transmitter and receiver with</p>
-<pre><code>#include &lt;quiet-portaudio.h&gt;
-</code></pre>
+<div class="codehilite"><pre><span></span>#include &amp;lt;quiet-portaudio.h&amp;gt;
+</pre></div>
+
+
 <h2 id="linking">Linking</h2>
-</div>
-</p>
+<p>Make sure that <code>libquiet.so</code> or <code>libquiet.dylib</code> is in your <code>LDPATH</code>.</p>
+<p>For static linking, you'll want to link against <code>libquiet</code>, <code>libjansson</code>, <code>libliquid</code> and <code>libfec</code>.</p>
           <aside class="copyright" role="note">
             
             Documentation built with

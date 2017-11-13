@@ -205,6 +205,22 @@
       
       
       
+        <ul>
+          
+            <li class="anchor">
+              <a title="Transmitting" href="#transmitting">
+                Transmitting
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="Receiving" href="#receiving">
+                Receiving
+              </a>
+            </li>
+          
+        </ul>
+      
     
   </li>
 
@@ -261,7 +277,219 @@
           
             <h1>Example</h1>
           
-          <p></p>
+          <p>This is a brief example to demonstrate how Quiet works. Full examples can be found for interfacing with your soundcard and with .WAV files in the <a href="https://github.com/quiet/quiet/tree/master/programs">repo on Github</a>.</p>
+<h2 id="transmitting">Transmitting</h2>
+<p>We'll start by writing the message "Hello, World!" into soundwaves. We'll choose an audible frequency so that it will be easy to confirm that something is being transmitted.</p>
+<div class="codehilite"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+
+
+<span class="cp">#include</span> <span class="cpf">&quot;quiet-portaudio.h&quot;</span><span class="cp"></span>
+
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+
+<span class="p">{</span>
+
+    <span class="cm">/* start up PortAudio, which will interface quiet to the soundcard */</span>
+
+    <span class="n">Pa_Initialize</span><span class="p">();</span>
+
+
+
+    <span class="cm">/* get a profile and set up encoder options, which controls Quiet&#39;s modem */</span>
+
+    <span class="n">quiet_encoder_options</span> <span class="o">*</span><span class="n">encodeOpt</span> <span class="o">=</span>
+
+        <span class="n">quiet_encoder_profile_filename</span><span class="p">(</span><span class="s">&quot;/usr/local/share/quiet/quiet-profiles.json&quot;</span><span class="p">,</span> <span class="s">&quot;audible&quot;</span><span class="p">);</span>
+
+
+
+    <span class="cm">/* get some default options about device and soundcard setup from PortAudio */</span>
+
+    <span class="n">PaDeviceIndex</span> <span class="n">device</span> <span class="o">=</span> <span class="n">Pa_GetDefaultOutputDevice</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">PaDeviceInfo</span> <span class="o">*</span><span class="n">deviceInfo</span> <span class="o">=</span> <span class="n">Pa_GetDeviceInfo</span><span class="p">(</span><span class="n">device</span><span class="p">);</span>
+
+    <span class="kt">double</span> <span class="n">sampleRate</span> <span class="o">=</span> <span class="n">deviceInfo</span><span class="o">-&gt;</span><span class="n">defaultSampleRate</span><span class="p">;</span>
+
+    <span class="n">PaTime</span> <span class="n">latency</span> <span class="o">=</span> <span class="n">deviceInfo</span><span class="o">-&gt;</span><span class="n">defaultLowOutputLatency</span><span class="p">;</span>
+
+
+
+    <span class="cm">/* select a power of 2 sample buffer size to interface soundcard with</span>
+
+<span class="cm">     * this should be between 128 and 16384 */</span>
+
+    <span class="k">const</span> <span class="kt">size_t</span> <span class="n">sampleBufferSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">);</span>
+
+
+
+    <span class="cm">/* start the quiet/PortAudio interface */</span>
+
+    <span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">encoder</span> <span class="o">=</span>
+
+        <span class="n">quiet_portaudio_encoder_create</span><span class="p">(</span><span class="n">encodeOpt</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">latency</span><span class="p">,</span> <span class="n">sampleRate</span><span class="p">,</span> <span class="n">sampleBufferSize</span><span class="p">);</span>
+
+
+
+    <span class="cm">/* create our message in a uint8_t array */</span>
+
+    <span class="k">const</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>
+
+
+
+    <span class="cm">/* send the message. this just writes to a send queue</span>
+
+<span class="cm">     * behind the scenes, quiet will encode and send as sound samples */</span>
+
+    <span class="n">quiet_portaudio_encoder_send</span><span class="p">(</span><span class="n">encoder</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
+
+
+
+    <span class="cm">/* stop the quiet/PortAudio interface */</span>
+
+    <span class="n">quiet_portaudio_encoder_close</span><span class="p">(</span><span class="n">encoder</span><span class="p">);</span>
+
+
+
+    <span class="cm">/* free encoder options we created earlier */</span>
+
+    <span class="n">free</span><span class="p">(</span><span class="n">encodeOpt</span><span class="p">);</span>
+
+
+
+    <span class="cm">/* shut down PortAudio */</span>
+
+    <span class="n">Pa_Terminate</span><span class="p">();</span>
+
+
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Now compile and run the resulting programa. If this example is saved as <code>encoder.c</code> then compile as <code>clang encoder.c -o encoder -lquiet -ljansson -lportaudio -lliquid -lfec</code>. The resulting program will be compiled as <code>encoder</code>. Running with <code>./encoder</code> should emit a short audible tone and then quit.</p>
+<h2 id="receiving">Receiving</h2>
+<div class="codehilite"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+
+
+<span class="cp">#include</span> <span class="cpf">&quot;quiet-portaudio.h&quot;</span><span class="cp"></span>
+
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+
+<span class="p">{</span>
+
+    <span class="cm">/* start up PortAudio, which will interface quiet to the soundcard */</span>
+
+    <span class="n">Pa_Initialize</span><span class="p">();</span>
+
+
+
+    <span class="cm">/* get a profile and set up decoder options, which controls Quiet&#39;s modem */</span>
+
+    <span class="n">quiet_decoder_options</span> <span class="o">*</span><span class="n">decodeOpt</span> <span class="o">=</span>
+
+        <span class="n">quiet_decoder_profile_filename</span><span class="p">(</span><span class="s">&quot;/usr/local/share/quiet/quiet-profiles.json&quot;</span><span class="p">,</span> <span class="s">&quot;audible&quot;</span><span class="p">);</span>
+
+
+
+    <span class="cm">/* get some default options about device and soundcard setup from PortAudio */</span>
+
+    <span class="n">PaDeviceIndex</span> <span class="n">device</span> <span class="o">=</span> <span class="n">Pa_GetDefaultInputDevice</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">PaDeviceInfo</span> <span class="o">*</span><span class="n">deviceInfo</span> <span class="o">=</span> <span class="n">Pa_GetDeviceInfo</span><span class="p">(</span><span class="n">device</span><span class="p">);</span>
+
+    <span class="kt">double</span> <span class="n">sampleRate</span> <span class="o">=</span> <span class="n">deviceInfo</span><span class="o">-&gt;</span><span class="n">defaultSampleRate</span><span class="p">;</span>
+
+    <span class="n">PaTime</span> <span class="n">latency</span> <span class="o">=</span> <span class="n">deviceInfo</span><span class="o">-&gt;</span><span class="n">defaultLowInputLatency</span><span class="p">;</span>
+
+
+
+    <span class="cm">/* select a power of 2 sample buffer size to interface soundcard with</span>
+
+<span class="cm">     * this should be between 128 and 16384 */</span>
+
+    <span class="k">const</span> <span class="kt">size_t</span> <span class="n">sampleBufferSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">);</span>
+
+
+
+    <span class="cm">/* start the quiet/PortAudio interface */</span>
+
+    <span class="n">quiet_portaudio_decoder</span> <span class="o">*</span><span class="n">decoder</span> <span class="o">=</span>
+
+        <span class="n">quiet_portaudio_decoder_create</span><span class="p">(</span><span class="n">encodeOpt</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">latency</span><span class="p">,</span> <span class="n">sampleRate</span><span class="p">,</span> <span class="n">sampleBufferSize</span><span class="p">);</span>
+
+
+
+    <span class="cm">/* recover message of up to 1024 bytes */</span>
+
+    <span class="k">const</span> <span class="kt">size_t</span> <span class="n">writeBufferSize</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span>
+
+    <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">writeBuffer</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="n">writeBufferSize</span><span class="p">);</span>
+
+
+
+    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="cm">/* pump some samples from soundcard into quiet */</span>
+
+        <span class="n">quiet_portaudio_decoder_consume</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+
+
+
+        <span class="cm">/* check quiet&#39;s receive buffer */</span>
+
+        <span class="kt">ssize_t</span> <span class="n">read</span> <span class="o">=</span> <span class="n">quiet_portaudio_decoder_recv</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">writeBuffer</span><span class="p">,</span> <span class="n">writeBufferSize</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">read</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="p">}</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%.*s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">read</span><span class="p">,</span> <span class="n">writeBuffer</span><span class="p">);</span>
+
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="p">}</span>
+
+
+
+    <span class="cm">/* free message buffer and quiet/PortAudio interface */</span>
+
+    <span class="n">free</span><span class="p">(</span><span class="n">writeBuffer</span><span class="p">);</span>
+
+    <span class="n">quiet_portaudio_decoder_destroy</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+
+
+
+    <span class="cm">/* free encoder options we created earlier */</span>
+
+    <span class="n">free</span><span class="p">(</span><span class="n">encodeOpt</span><span class="p">);</span>
+
+
+
+    <span class="cm">/* shut down PortAudio */</span>
+
+    <span class="n">Pa_Terminate</span><span class="p">();</span>
+
+
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</pre></div>
           <aside class="copyright" role="note">
             
             Documentation built with

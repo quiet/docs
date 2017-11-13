@@ -332,6 +332,12 @@
             </li>
           
             <li class="anchor">
+              <a title="interpolation.shape" href="#interpolationshape">
+                interpolation.shape
+              </a>
+            </li>
+          
+            <li class="anchor">
               <a title="interpolation.samples_per_symbol" href="#interpolationsamples_per_symbol">
                 interpolation.samples_per_symbol
               </a>
@@ -437,13 +443,22 @@
 <h2 id="mod_scheme">mod_scheme</h2>
 <p>This sets the payload modulation mode for Quiet. Most methods come in a variety of bit depths.</p>
 <h3 id="gaussian-minimum-shift-keying-wikipedia">Gaussian Minimum Shift Keying <sub><a href="https://en.wikipedia.org/wiki/Minimum-shift_keying#Gaussian_minimum-shift_keying">wikipedia</a></sub></h3>
+<p>This mode is selected with <code>mod_scheme</code> set to <code>gmsk</code>. This mode is not compatible with OFDM operation.</p>
 <h3 id="phase-shift-keying-wikipedia">Phase Shift Keying <sub><a href="https://en.wikipedia.org/wiki/Phase-shift_keying">wikipedia</a></h3>
 <p>This method can be pictured as a unit circle in the complex plane. Each bit representation contains the same magnitude and varies only in phase on this unit circle.</p>
 <p>Comes in <code>psk2</code>, <code>psk4</code>, <code>psk8</code>, <code>psk16</code>, <code>psk32</code>, <code>psk64</code>, <code>psk128</code>, <code>psk256</code> variants.</p>
 <h3 id="differential-phase-shift-keying-wikipedia">Differential Phase Shift Keying <sub><a href="https://en.wikipedia.org/wiki/Phase-shift_keying#Differential_phase-shift_keying_.28DPSK.29">wikipedia</a></h3>
+<p>This modulation method has the same constellation as PSK, but modulates changes in subsequent bits rather than the bits themselves.</p>
+<p>Comes in <code>dpsk2</code>, <code>dpsk4</code>, <code>dpsk8</code>, <code>dpsk16</code>, <code>dpsk32</code>, <code>dpsk64</code>, <code>dpsk128</code>, <code>dpsk256</code> variants.</p>
 <h3 id="amplitude-shift-keying-wikipedia">Amplitude Shift Keying <sub><a href="https://en.wikipedia.org/wiki/Amplitude-shift_keying">wikipedia</a></h3>
+<p>This modulation scheme uses only the real axis of the complex plane. Bits are encoded as various amplitude levels on the carrier signal.</p>
+<p>Comes in <code>ask2</code>, <code>ask4</code>, <code>ask8</code>, <code>ask16</code>, <code>ask32</code>, <code>ask64</code>, <code>ask128</code>, <code>ask256</code> variants.</p>
 <h3 id="amplitude-phase-shift-keying-wikipedia">Amplitude Phase Shift Keying <sub><a href="https://en.wikipedia.org/wiki/Amplitude_and_phase-shift_keying">wikipedia</a></h3>
+<p>This scheme can be pictured as concentric circles on the complex plane. Greater amplitude values move modulation out to a larger circle, while changes in phase move to different points along the circle.</p>
+<p>Comes in <code>apsk2</code>, <code>apsk4</code>, <code>apsk8</code>, <code>apsk16</code>, <code>apsk32</code>, <code>apsk64</code>, <code>apsk128</code>, <code>apsk256</code> variants.</p>
 <h3 id="quadrature-amplitude-shift-keying-wikipedia">Quadrature Amplitude Shift Keying <sub><a href="https://en.wikipedia.org/wiki/Quadrature_amplitude_modulation">wikipedia</a></h3>
+<p>This modulation scheme uses a grid of points in the complex plane. Each symbol corresponds to a point along the grid.</p>
+<p>Comes in <code>qam2</code>, <code>qam4</code>, <code>qam8</code>, <code>qam16</code>, <code>qam32</code>, <code>qam64</code>, <code>qam128</code>, <code>qam256</code>, <code>qam512</code>, <code>qam1024</code>, <code>qam2048</code>, <code>qam4096</code> variants.</p>
 <h3 id="optimal-qask">Optimal QASK</h3>
 <h3 id="miscellaneous">Miscellaneous</h3>
 <h2 id="ofdm">ofdm</h2>
@@ -453,15 +468,24 @@
 <h2 id="ofdmleft_band">ofdm.left_band</h2>
 <h2 id="ofdmright_band">ofdm.right_band</h2>
 <h2 id="checksum_scheme">checksum_scheme</h2>
+<h3 id="checksum-wikipedia">Checksum <sub><a href="https://en.wikipedia.org/wiki/Checksum">wikipedia</a></h3>
+<h3 id="cyclic-redundancy-check-wikipedia">Cyclic redundancy check <sub><a href="https://en.wikipedia.org/wiki/Cyclic_redundancy_check">wikipedia</a></h3>
 <h2 id="inner_fec_scheme">inner_fec_scheme</h2>
+<h3 id="repetition-code-wikipedia">Repetition Code <sub><a href="https://en.wikipedia.org/wiki/Repetition_code">wikipedia</a></h3>
+<h3 id="hamming-wikipedia">Hamming <sub><a href="https://en.wikipedia.org/wiki/Hamming_code">wikipedia</a></h3>
+<h3 id="golay-wikipedia">Golay <sub><a href="https://en.wikipedia.org/wiki/Binary_Golay_code">wikipedia</a></h3>
+<h3 id="secded-wikipedia">SECDED <sub><a href="https://en.wikipedia.org/wiki/Hamming_code#SECDED">wikipedia</a></h3>
+<h3 id="convolutional-codes-wikipedia">Convolutional Codes <sub><a href="https://en.wikipedia.org/wiki/Convolutional_code">wikipedia</a></h3>
+<h3 id="reed-solomon-wikipedia">Reed-Solomon <sub><a href="https://en.wikipedia.org/wiki/Reed%E2%80%93Solomon_error_correction">wikipedia</a></h3>
 <h2 id="outer_fec_scheme">outer_fec_scheme</h2>
+<p>This accepts the same values as <code>inner_fec_scheme</code>.</p>
 <h2 id="frame_length">frame_length</h2>
 <h2 id="modulation">modulation</h2>
 <h2 id="modulationcenter_frequency">modulation.center_frequency</h2>
 <h2 id="modulationgain">modulation.gain</h2>
 <h2 id="interpolation">interpolation</h2>
-<h3 id="interpolationshape">interpolation.shape</h3>
-<h4 id="rrcos">rrcos</h4>
+<h2 id="interpolationshape">interpolation.shape</h2>
+<h3 id="rrcos">rrcos</h3>
 <h2 id="interpolationsamples_per_symbol">interpolation.samples_per_symbol</h2>
 <h2 id="interpolationsymbol_delay">interpolation.symbol_delay</h2>
 <h2 id="interpolationexcess_bandwidth">interpolation.excess_bandwidth</h2>

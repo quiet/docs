@@ -313,8 +313,7 @@
 <h2 id="soundcard">Soundcard</h2>
 <hr />
 <p>In order to understand what it means to play sound, it helps to first demonstrate how your sounds work within your computer. When we want to represent a sound, we sample it at periodic intervals in time. Each sample is rounded to one of thousands of discrete intensity levels in a process known as <a href="https://en.wikipedia.org/wiki/Pulse-code_modulation">Pulse-Code Modulation</a>. We refer to the number of samples represented in a single second as the sample rate. The most common sample rate for digital audio is 44,100 Hz (samples per second). The sample rate applies both to sounds that we want to play and sounds that we are recording. The computer has a sound card or chip which is responsible for converting analog sounds to digital samples and vice versa.</p>
-<p>Quiet Modem operates internally at the sample rate of 44,100 Hz. Each sample is generated as a 32-bit floating-point value between -1 and 1. In fact, Quiet can operate across any channel that can transmit these floating point numbers, though the degree of success will depend on how much the samples are distorted after they are transmitted.
-</p>
+<p>Quiet Modem operates internally at the sample rate of 44,100 Hz. Each sample is generated as a 32-bit floating-point value between -1 and 1. In fact, Quiet can operate across any channel that can transmit these floating point numbers, though the degree of success will depend on how much the samples are distorted after they are transmitted.</p>
 <h2 id="modulation">Modulation</h2>
 <hr />
 <p><img src="../img/modulator-block-diagram.png" alt="Modulator Block Diagram" style="max-width: 600px;"/></p>
@@ -389,14 +388,10 @@
 <h3 id="ring-buffer">Ring Buffer</h3>
 <h3 id="send-queue">Send Queue</h3>
 <h3 id="receive-queue">Receive Queue</h3>
-<p>
-<div>
 <h2 id="quietjs">Quiet.js</h2>
 <hr />
 <h3 id="emscripten">Emscripten</h3>
 <h3 id="javascript-wrapper">Javascript Wrapper</h3>
-</div>
-</p>
           <aside class="copyright" role="note">
             
             Documentation built with
