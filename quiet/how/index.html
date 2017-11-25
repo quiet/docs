@@ -264,16 +264,6 @@
             <div></div>
             
   <li>
-    <a class="" title="Profiles" href="../profiles/">
-      Profiles
-    </a>
-    
-  </li>
-
-          
-            <div></div>
-            
-  <li>
     <a class="" title="Transmitting Data" href="../transmitting/">
       Transmitting Data
     </a>
@@ -286,6 +276,36 @@
   <li>
     <a class="" title="Receiving Data" href="../receiving/">
       Receiving Data
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Encoding Raw Samples" href="../encoding/">
+      Encoding Raw Samples
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Decoding Raw Samples" href="../decoding/">
+      Decoding Raw Samples
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Profiles" href="../profiles/">
+      Profiles
     </a>
     
   </li>
@@ -343,6 +363,7 @@
 <p>The header is a short block of data sent before the payload. The header contains information on which type of modulation and error correction are used in the payload. It also contains the actual checksum generated for the payload. A short checksum is sent for the contents of the header itself.</p>
 <h3 id="header-modulator">Header Modulator</h3>
 <p>Just as our message was modulated to floating-point samples, we will apply error correction and modulation to the data in the header. The kinds used here can be different from the one used for the payload. We want the header to be especially reliable since an error in the header can make it impossible to receive the payload correctly.</p>
+<p>We do not send the type of modulation or error correction used for the header itself. These values are pre-shared and are part of the modem configuration.</p>
 <h3 id="assembling-the-frame">Assembling the Frame</h3>
 <p>We now have all of the samples needed to send our frame. We start by sending the preamble samples, followed by the header samples, and finally the payload samples.</p>
 <h3 id="interpolation">Interpolation</h3>
@@ -372,18 +393,32 @@
 <h3 id="frame-detection">Frame Detection</h3>
 <p>The resulting stream of samples should now resemble what we transmitted. When we sent our frame, we started it with a preamble. Now we will search for the preamble in the incoming samples. This is an ongoing process and will continue to run as long as no preamble is found.</p>
 <h3 id="synchronization-and-equalization">Synchronization and Equalization</h3>
+<p>The preamble is made up of a few different parts. The first part of the preamble is easily detectable so that we know where the frame begins. The next part of the preamble helps us synchronize our timing to the transmitter's timing in a precise way.</p>
+<p>From the section on Payload Modulation, we described how we convert binary data into floating-point amplitudes. One of the challenges we face in decoding is deciding at which point it will be appropriate to read these floating-point samples. The preamble helps us accomplish this by giving us a predictable sequence to look for. Even if noise is present on top of the preamble, we can still achieve a pretty good synchronization by looking for successive samples.</p>
+<p>We will also use the preamble to compensate for the uneven frequency response of the transmit and receive channel. It is typical that our transmission channel will emphasize certain frequencies and attenuate others. We use the preamble to invert this bias introduced by the channel so that the signal we receive looks nearly flat again.</p>
 <h3 id="demodulate-header">Demodulate Header</h3>
+<p>With our clock aligned to the transmitter's, we are ready to begin decoding data. We start by decoding the modulated header samples. This data includes checksums of the payload and the header itself, as well as the type of modulation and error correection used in the payload. If the checksum of the decoded header data matches the checksum sent with the header, then we proceed to decoding the payload.</p>
 <h2 id="demodulation">Demodulation</h2>
 <hr />
 <p><img alt="Demodulator Block Diagram" src="../img/demodulator-block-diagram.png" /></p>
 <h3 id="demodulation_1">Demodulation</h3>
+<p>Using the demodulation method specified by the header, we now demodulate all of the frame's payload samples. We perform <a href="https://en.wikipedia.org/wiki/Soft-decision_decoder">soft demodulation</a> so that the samples are demodulated into 8-bit "soft" bits. That is, for each bit of data transmitted, we now have an 8-bit value that reflects our belief about what might have been transmitted. A soft bit of 0 means that we are highly confident that a 0 was transmitted, 255 means that we are highly confident that a 1 was transmitted, and intermediate values mean we have some level of uncertainty. A value of 128 means that we believe either bit was equally likely. Preserving this level of uncertainty will help us during the error correction phase, as bits with lower confidence will accumulate less error.</p>
+<p>To use our BPSK example from the modulation section, where we transmitted -1.0 for '0' and 1.0 for '1', imagine that we receive the sequence [0.9, -0.95, 0.1, 0.9]. If we were to decode these back to single bits, then we would decode this sequence as [1, 0, 1, 1]. However, if we use soft bits, we get [242, 6, 140, 242]. This better captures our uncertainty about the '0.1' sample we received, which is nearly as likely to be '0' as it is '1'.</p>
 <h3 id="error-correction_1">Error Correction</h3>
+<p>Now that we have the soft bits demodulated, our next step will be to apply the error correction techniques for the redundancy we added during modulation. The error correction will need to be good enough to decode the samples in spite of other noise occuring. Even the signal itself becomes noise, as echoes of the signal are picked up by the microphone.</p>
 <h3 id="data-integrity">Data Integrity</h3>
+<p>Finally, we take the checksum value stored in the header and compare to a checksum of the data recovered after error correction. If these checksums match, we can be relatively confident that we have received the transmitted message. The bits can now be passed to the user.</p>
+<p>The checksum stage is optional. Some applications may be well suited to receive messages with some errors. It is up to the user of Quiet Modem to decide whether to checksums should be used.</p>
 <h2 id="thread-safety">Thread Safety</h2>
 <hr />
+<p>The Quiet Modem library has some features that help it work well in a <a href="https://en.wikipedia.org/wiki/Thread_(computing)">multithreaded</a> environment. In particular, Quiet assumes that the interface to the soundcard will run on a different thread than the user application. Quiet attempts to decouple its functionality so that it can be used in a threadsafe way.</p>
 <h3 id="ring-buffer">Ring Buffer</h3>
+<p>One of the key components of Quiet's threadsafety is a <a href="https://en.wikipedia.org/wiki/Circular_buffer">ring buffer</a> that allows safe communication between threads. Quiet's ring buffer allows any number of readers and any number of writers. If the buffer is empty or full, it has mechanisms to allow readers and writers to block until data or space in the buffer is available.</p>
+<p>In general, we try to keep frames of data in buffers, rather than modulated samples. This is because a modulated frame uses much more memory than the demodulated payload data.</p>
 <h3 id="send-queue">Send Queue</h3>
+<p>On the transmit side of Quiet, we use a ringbuffer to build a send queue. This allows senders to queue up packets for transmission as capacity allows. When the soundcard is ready for more samples, Quiet can read from the send queue and modulate one or more frames to fill up the soundcard buffer as necessary.</p>
 <h3 id="receive-queue">Receive Queue</h3>
+<p>On the receive side of Quiet, we have a receive queue. Samples are continuously read from the microphone into Quiet's decoder. When it has successfully decoded a packet, the packet's payload is written as a complete frame into the receive queue. Users of Quiet can perform a blocking read of this queue which will wait until a frame is ready.</p>
           <aside class="copyright" role="note">
             
             Documentation built with
@@ -419,14 +454,14 @@
     </div>
     <div class="next">
       
-        <a href="../profiles/" title="Profiles">
+        <a href="../transmitting/" title="Transmitting Data">
           <span class="direction">
             Next
           </span>
           <div class="page">
             <div class="stretch">
               <div class="title">
-                Profiles
+                Transmitting Data
               </div>
             </div>
             <div class="button button-next" role="button" aria-label="Next">

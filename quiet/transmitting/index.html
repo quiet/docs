@@ -218,16 +218,6 @@
             <div></div>
             
   <li>
-    <a class="" title="Profiles" href="../profiles/">
-      Profiles
-    </a>
-    
-  </li>
-
-          
-            <div></div>
-            
-  <li>
     <a class="current" title="Transmitting Data" href="./">
       Transmitting Data
     </a>
@@ -240,32 +230,38 @@
         <ul>
           
             <li class="anchor">
-              <a title="Creating Transmitter" href="#creating-transmitter">
-                Creating Transmitter
+              <a title="quiet_portaudio_encoder_create" href="#quiet_portaudio_encoder_create">
+                quiet_portaudio_encoder_create
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Sending Data" href="#sending-data">
-                Sending Data
+              <a title="quiet_portaudio_encoder_send" href="#quiet_portaudio_encoder_send">
+                quiet_portaudio_encoder_send
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Frame Clamping" href="#frame-clamping">
-                Frame Clamping
+              <a title="quiet_portaudio_encoder_set_blocking" href="#quiet_portaudio_encoder_set_blocking">
+                quiet_portaudio_encoder_set_blocking
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Shutting Down" href="#shutting-down">
-                Shutting Down
+              <a title="quiet_portaudio_encoder_set_nonblocking" href="#quiet_portaudio_encoder_set_nonblocking">
+                quiet_portaudio_encoder_set_nonblocking
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Raw Sample Encoder" href="#raw-sample-encoder">
-                Raw Sample Encoder
+              <a title="quiet_portaudio_encoder_clamp_frame_len" href="#quiet_portaudio_encoder_clamp_frame_len">
+                quiet_portaudio_encoder_clamp_frame_len
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_portaudio_encoder_get_frame_len" href="#quiet_portaudio_encoder_get_frame_len">
+                quiet_portaudio_encoder_get_frame_len
               </a>
             </li>
           
@@ -285,6 +281,36 @@
   </li>
 
           
+            <div></div>
+            
+  <li>
+    <a class="" title="Encoding Raw Samples" href="../encoding/">
+      Encoding Raw Samples
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Decoding Raw Samples" href="../decoding/">
+      Decoding Raw Samples
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Profiles" href="../profiles/">
+      Profiles
+    </a>
+    
+  </li>
+
+          
         </ul>
         
       </div>
@@ -296,11 +322,65 @@
         <div class="wrapper">
           
           <h1 id="transmitting-data">Transmitting Data</h1>
-<h2 id="creating-transmitter">Creating Transmitter</h2>
-<h2 id="sending-data">Sending Data</h2>
-<h2 id="frame-clamping">Frame Clamping</h2>
-<h2 id="shutting-down">Shutting Down</h2>
-<h2 id="raw-sample-encoder">Raw Sample Encoder</h2>
+<p>The <code>quiet_portaudio_encoder</code> type controls the transmission of data via soundcard. It accepts frames of data and enqueues the frames into a buffer for transmission. <code>quiet_portaudio_encoder</code> then uses its modem configuration to encode the frame into samples of PCM audio and feed these samples to the soundcard to be played out.</p>
+<h2 id="quiet_portaudio_encoder_create">quiet_portaudio_encoder_create</h2>
+<div class="codehilite"><pre><span></span><span class="n">quiet_portaudio_encoder</span><span class="o">*</span>
+
+<span class="nf">quiet_portaudio_encoder_create</span><span class="p">(</span><span class="k">const</span> <span class="n">quiet_encoder_options</span> <span class="o">*</span><span class="n">opt</span><span class="p">,</span>
+
+                               <span class="n">PaDeviceIndex</span> <span class="n">device</span><span class="p">,</span>
+
+                               <span class="n">PaTime</span> <span class="n">latency</span><span class="p">,</span>
+
+                               <span class="kt">double</span> <span class="n">sample_rate</span><span class="p">,</span>
+
+                               <span class="kt">size_t</span> <span class="n">sample_buffer_size</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_encoder_send">quiet_portaudio_encoder_send</h2>
+<div class="codehilite"><pre><span></span><span class="kt">ssize_t</span>
+
+<span class="nf">quiet_portaudio_encoder_send</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span>
+
+                             <span class="k">const</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span>
+
+                             <span class="kt">size_t</span> <span class="n">len</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_encoder_set_blocking">quiet_portaudio_encoder_set_blocking</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_portaudio_encoder_set_blocking</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">enc</span><span class="p">,</span>
+
+                                     <span class="kt">time_t</span> <span class="n">sec</span><span class="p">,</span>
+
+                                     <span class="kt">long</span> <span class="n">nano</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_encoder_set_nonblocking">quiet_portaudio_encoder_set_nonblocking</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_portaudio_encoder_set_nonblocking</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">enc</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_encoder_clamp_frame_len">quiet_portaudio_encoder_clamp_frame_len</h2>
+<div class="codehilite"><pre><span></span><span class="kt">size_t</span>
+
+<span class="nf">quiet_portaudio_encoder_clamp_frame_len</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">enc</span><span class="p">,</span>
+
+                                        <span class="kt">size_t</span> <span class="n">sample_len</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_encoder_get_frame_len">quiet_portaudio_encoder_get_frame_len</h2>
+<div class="codehilite"><pre><span></span><span class="kt">size_t</span>
+
+<span class="nf">quiet_portaudio_encoder_get_frame_len</span><span class="p">(</span><span class="k">const</span> <span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">);</span>
+</pre></div>
           <aside class="copyright" role="note">
             
             Documentation built with
@@ -317,7 +397,7 @@
   <nav class="pagination" aria-label="Footer">
     <div class="previous">
       
-        <a href="../profiles/" title="Profiles">
+        <a href="../how/" title="How It Works">
           <span class="direction">
             Previous
           </span>
@@ -327,7 +407,7 @@
             </div>
             <div class="stretch">
               <div class="title">
-                Profiles
+                How It Works
               </div>
             </div>
           </div>

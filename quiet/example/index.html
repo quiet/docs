@@ -219,6 +219,12 @@
               </a>
             </li>
           
+            <li class="anchor">
+              <a title="End-to-end" href="#end-to-end">
+                End-to-end
+              </a>
+            </li>
+          
         </ul>
       
     
@@ -230,16 +236,6 @@
   <li>
     <a class="" title="How It Works" href="../how/">
       How It Works
-    </a>
-    
-  </li>
-
-          
-            <div></div>
-            
-  <li>
-    <a class="" title="Profiles" href="../profiles/">
-      Profiles
     </a>
     
   </li>
@@ -260,6 +256,36 @@
   <li>
     <a class="" title="Receiving Data" href="../receiving/">
       Receiving Data
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Encoding Raw Samples" href="../encoding/">
+      Encoding Raw Samples
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Decoding Raw Samples" href="../decoding/">
+      Decoding Raw Samples
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Profiles" href="../profiles/">
+      Profiles
     </a>
     
   </li>
@@ -324,7 +350,7 @@
 
 <span class="cm">     * this should be between 128 and 16384 */</span>
 
-    <span class="k">const</span> <span class="kt">size_t</span> <span class="n">sampleBufferSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">);</span>
+    <span class="k">const</span> <span class="kt">size_t</span> <span class="n">sampleBufferSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">14</span><span class="p">);</span>
 
 
 
@@ -338,7 +364,7 @@
 
     <span class="cm">/* create our message in a uint8_t array */</span>
 
-    <span class="k">const</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">uint8_t</span> <span class="n">msg</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>
 
 
 
@@ -353,6 +379,8 @@
     <span class="cm">/* stop the quiet/PortAudio interface */</span>
 
     <span class="n">quiet_portaudio_encoder_close</span><span class="p">(</span><span class="n">encoder</span><span class="p">);</span>
+
+    <span class="n">quiet_portaudio_encoder_destroy</span><span class="p">(</span><span class="n">encoder</span><span class="p">);</span>
 
 
 
@@ -374,7 +402,12 @@
 </pre></div>
 
 
-<p>Now compile and run the resulting programa. If this example is saved as <code>encoder.c</code> then compile as <code>clang encoder.c -o encoder -lquiet -ljansson -lportaudio -lliquid -lfec</code>. The resulting program will be compiled as <code>encoder</code>. Running with <code>./encoder</code> should emit a short audible tone and then quit.</p>
+<p>Now compile and run the resulting program. If this example is saved as <code>encoder.c</code> then</p>
+<div class="codehilite"><pre><span></span>clang encoder.c -o encoder -lquiet -ljansson -lportaudio -lliquid -lfec
+</pre></div>
+
+
+<p>The resulting program will be compiled as <code>encoder</code>. Running with <code>./encoder</code> should emit a short audible tone and then quit.</p>
 <h2 id="receiving">Receiving</h2>
 <div class="codehilite"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
 
@@ -420,7 +453,7 @@
 
 <span class="cm">     * this should be between 128 and 16384 */</span>
 
-    <span class="k">const</span> <span class="kt">size_t</span> <span class="n">sampleBufferSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">);</span>
+    <span class="k">const</span> <span class="kt">size_t</span> <span class="n">sampleBufferSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">14</span><span class="p">);</span>
 
 
 
@@ -428,7 +461,7 @@
 
     <span class="n">quiet_portaudio_decoder</span> <span class="o">*</span><span class="n">decoder</span> <span class="o">=</span>
 
-        <span class="n">quiet_portaudio_decoder_create</span><span class="p">(</span><span class="n">encodeOpt</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">latency</span><span class="p">,</span> <span class="n">sampleRate</span><span class="p">,</span> <span class="n">sampleBufferSize</span><span class="p">);</span>
+        <span class="n">quiet_portaudio_decoder_create</span><span class="p">(</span><span class="n">decodeOpt</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">latency</span><span class="p">,</span> <span class="n">sampleRate</span><span class="p">,</span> <span class="n">sampleBufferSize</span><span class="p">);</span>
 
 
 
@@ -444,13 +477,13 @@
 
         <span class="cm">/* pump some samples from soundcard into quiet */</span>
 
-        <span class="n">quiet_portaudio_decoder_consume</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+        <span class="n">quiet_portaudio_decoder_consume</span><span class="p">(</span><span class="n">decoder</span><span class="p">);</span>
 
 
 
         <span class="cm">/* check quiet&#39;s receive buffer */</span>
 
-        <span class="kt">ssize_t</span> <span class="n">read</span> <span class="o">=</span> <span class="n">quiet_portaudio_decoder_recv</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">writeBuffer</span><span class="p">,</span> <span class="n">writeBufferSize</span><span class="p">);</span>
+        <span class="kt">ssize_t</span> <span class="n">read</span> <span class="o">=</span> <span class="n">quiet_portaudio_decoder_recv</span><span class="p">(</span><span class="n">decoder</span><span class="p">,</span> <span class="n">writeBuffer</span><span class="p">,</span> <span class="n">writeBufferSize</span><span class="p">);</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">read</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 
@@ -458,7 +491,15 @@
 
         <span class="p">}</span>
 
+
+
+        <span class="cm">/* read succeeded, so we have a message. print it out. */</span>
+
         <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%.*s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">read</span><span class="p">,</span> <span class="n">writeBuffer</span><span class="p">);</span>
+
+
+
+        <span class="cm">/* we are done */</span>
 
         <span class="k">break</span><span class="p">;</span>
 
@@ -470,13 +511,13 @@
 
     <span class="n">free</span><span class="p">(</span><span class="n">writeBuffer</span><span class="p">);</span>
 
-    <span class="n">quiet_portaudio_decoder_destroy</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+    <span class="n">quiet_portaudio_decoder_destroy</span><span class="p">(</span><span class="n">decoder</span><span class="p">);</span>
 
 
 
-    <span class="cm">/* free encoder options we created earlier */</span>
+    <span class="cm">/* free decoder options we created earlier */</span>
 
-    <span class="n">free</span><span class="p">(</span><span class="n">encodeOpt</span><span class="p">);</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">decodeOpt</span><span class="p">);</span>
 
 
 
@@ -490,6 +531,26 @@
 
 <span class="p">}</span>
 </pre></div>
+
+
+<p>Now compile and run. If this example is saved as <code>decoder.c</code> then</p>
+<div class="codehilite"><pre><span></span>clang decoder.c -o decoder -lquiet -ljansson -lportaudio -lliquid -lfec
+</pre></div>
+
+
+<p>should do the trick.</p>
+<h2 id="end-to-end">End-to-end</h2>
+<p>Now that both are compiled, start the decoder in the background first</p>
+<div class="codehilite"><pre><span></span>./decoder &amp;
+</pre></div>
+
+
+<p>and then the encoder</p>
+<div class="codehilite"><pre><span></span>./encoder
+</pre></div>
+
+
+<p>You should hear an audible tone and see the message "Hello, World!" printed on your console. Both programs will then exit.</p>
           <aside class="copyright" role="note">
             
             Documentation built with

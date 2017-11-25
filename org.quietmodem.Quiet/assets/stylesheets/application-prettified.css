@@ -941,7 +941,7 @@ h1 .article .headerlink {
 .article pre {
     padding: 16px;
     margin: 1.5em -16px 0;
-    line-height: 1.5em;
+    line-height: 0.9em;
     overflow: auto;
     -webkit-overflow-scrolling: touch
 }
