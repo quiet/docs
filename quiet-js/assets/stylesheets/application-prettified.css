@@ -1302,7 +1302,7 @@ h1 .article .headerlink {
         display: none
     }
     .drawer {
-        background: #fff
+        background: #f2f2f2;
     }
     .project {
         box-shadow: 0 1.5px 3px rgba(0, 0, 0, .24), 0 3px 8px rgba(0, 0, 0, .05);
@@ -1317,6 +1317,9 @@ h1 .article .headerlink {
     .drawer,
     .toggle-search .results {
         height: 100%
+    }
+    .drawer .scrollable .wrapper {
+        margin-bottom: 45px;
     }
 }
 @media only screen and (min-width: 720px) {

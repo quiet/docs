@@ -311,6 +311,16 @@
             "title": "Raw Sample Decoder"
         }, 
         {
+            "location": "/configuration/", 
+            "text": "Modem Configuration", 
+            "title": "Modem Configuration"
+        }, 
+        {
+            "location": "/configuration/#modem-configuration", 
+            "text": "", 
+            "title": "Modem Configuration"
+        }, 
+        {
             "location": "/encoding/", 
             "text": "Encoding Raw Samples", 
             "title": "Encoding Raw Samples"
