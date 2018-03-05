@@ -247,6 +247,22 @@
         
       
       
+        <ul>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_options" href="#quiet_encoder_options">
+                quiet_encoder_options
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_options" href="#quiet_decoder_options">
+                quiet_decoder_options
+              </a>
+            </li>
+          
+        </ul>
+      
     
   </li>
 
@@ -281,6 +297,26 @@
   </li>
 
           
+            <div></div>
+            
+  <li>
+    <a class="" title="Errors" href="../errors/">
+      Errors
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Frame Stats" href="../frame-stats/">
+      Frame Stats
+    </a>
+    
+  </li>
+
+          
         </ul>
         
       </div>
@@ -292,6 +328,108 @@
         <div class="wrapper">
           
           <h1 id="modem-configuration">Modem Configuration</h1>
+<p>The primary configuration structures for libquiet are <code>quiet_encoder_options</code> and <code>quiet_decoder_options</code>. Although it is possible to modify values in these structures, it is generally recommended to use the JSON-based configuration system instead, as that system works consistently across all platforms. This page documents how to configure from the JSON profiles as well as the raw configuration structures themselves.</p>
+<h2 id="quiet_encoder_options">quiet_encoder_options</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+
+    <span class="n">quiet_ofdm_options</span> <span class="n">ofdmopt</span><span class="p">;</span>
+
+    <span class="n">quiet_modulator_options</span> <span class="n">modopt</span><span class="p">;</span>
+
+    <span class="n">quiet_resampler_options</span> <span class="n">resampler</span><span class="p">;</span>
+
+    <span class="n">quiet_encoding_t</span> <span class="n">encoding</span><span class="p">;</span>
+
+    <span class="n">quiet_checksum_scheme_t</span> <span class="n">checksum_scheme</span><span class="p">;</span>
+
+    <span class="n">quiet_error_correction_scheme_t</span> <span class="n">inner_fec_scheme</span><span class="p">;</span>
+
+    <span class="n">quiet_error_correction_scheme_t</span> <span class="n">outer_fec_scheme</span><span class="p">;</span>
+
+    <span class="n">quiet_modulation_scheme_t</span> <span class="n">mod_scheme</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">header_override_defaults</span><span class="p">;</span>
+
+    <span class="n">quiet_checksum_scheme_t</span> <span class="n">header_checksum_scheme</span><span class="p">;</span>
+
+    <span class="n">quiet_error_correction_scheme_t</span> <span class="n">header_inner_fec_scheme</span><span class="p">;</span>
+
+    <span class="n">quiet_error_correction_scheme_t</span> <span class="n">header_outer_fec_scheme</span><span class="p">;</span>
+
+    <span class="n">quiet_modulation_scheme_t</span> <span class="n">header_mod_scheme</span><span class="p">;</span>
+
+    <span class="kt">size_t</span> <span class="n">frame_len</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="n">quiet_encoder_options</span><span class="p">;</span>
+</pre></div>
+
+
+<p>This specifies a complete set of options for the encoder in libquiet.</p>
+<h3 id="ofdmopt">ofdmopt</h3>
+<p>OFDM options, used only by OFDM mode.</p>
+<h3 id="modopt">modopt</h3>
+<p>Interpolation filter and carrier frequency options.</p>
+<h3 id="resampler">resampler</h3>
+<p>Resampler configuration (if specified frequency is not 44.1kHz)</p>
+<h3 id="encoding">encoding</h3>
+<p>Encoder mode, one of {ofdm_encoding, modem_encoding, gmsk_encoding}.</p>
+<h3 id="checksum_scheme">checksum_scheme</h3>
+<h3 id="inner_fec_scheme">inner_fec_scheme</h3>
+<h3 id="outer_fec_scheme">outer_fec_scheme</h3>
+<h3 id="mod_scheme">mod_scheme</h3>
+<h3 id="header_override_defaults">header_override_defaults</h3>
+<p>Header schemes These control the frame header properties Only used if header_override_defaults = true.</p>
+<h3 id="header_checksum_scheme">header_checksum_scheme</h3>
+<h3 id="header_inner_fec_scheme">header_inner_fec_scheme</h3>
+<h3 id="header_outer_fec_scheme">header_outer_fec_scheme</h3>
+<h3 id="header_mod_scheme">header_mod_scheme</h3>
+<h3 id="frame_len">frame_len</h3>
+<p>Maximum frame length.</p>
+<h2 id="quiet_decoder_options">quiet_decoder_options</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+
+    <span class="n">quiet_ofdm_options</span> <span class="n">ofdmopt</span><span class="p">;</span>
+
+    <span class="n">quiet_demodulator_options</span> <span class="n">demodopt</span><span class="p">;</span>
+
+    <span class="n">quiet_resampler_options</span> <span class="n">resampler</span><span class="p">;</span>
+
+    <span class="n">quiet_encoding_t</span> <span class="n">encoding</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">header_override_defaults</span><span class="p">;</span>
+
+    <span class="n">quiet_checksum_scheme_t</span> <span class="n">header_checksum_scheme</span><span class="p">;</span>
+
+    <span class="n">quiet_error_correction_scheme_t</span> <span class="n">header_inner_fec_scheme</span><span class="p">;</span>
+
+    <span class="n">quiet_error_correction_scheme_t</span> <span class="n">header_outer_fec_scheme</span><span class="p">;</span>
+
+    <span class="n">quiet_modulation_scheme_t</span> <span class="n">header_mod_scheme</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">is_debug</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="n">quiet_decoder_options</span><span class="p">;</span>
+</pre></div>
+
+
+<p>This specifies a complete set of options for the decoder in libquiet.</p>
+<p>In order for a decoder to decode the signals from an encoder, certain options must match between both. In particular, the encoding mode and modopt/demodopt must match. Additionally, if ofdm_encoding is used, then the ofdmopt must also match. If the header options are overriden in the encoder, then they must also be overriden in the decoder.</p>
+<h3 id="ofdmopt_1">ofdmopt</h3>
+<p>OFDM options, used only by OFDM mode.</p>
+<h3 id="demodopt">demodopt</h3>
+<p>Decimation filter and carrier frequency options.</p>
+<h3 id="resampler_1">resampler</h3>
+<p>Resampler configuration (if specified frequency is not 44.1kHz)</p>
+<h3 id="encoding_1">encoding</h3>
+<p>Encoder mode, one of {ofdm_encoding, modem_encoding, gmsk_encoding}.</p>
+<h3 id="header_override_defaults_1">header_override_defaults</h3>
+<p>Header schemes These control the frame header properties Only used if header_override_defaults = true.</p>
+<h3 id="header_checksum_scheme_1">header_checksum_scheme</h3>
+<h3 id="header_inner_fec_scheme_1">header_inner_fec_scheme</h3>
+<h3 id="header_outer_fec_scheme_1">header_outer_fec_scheme</h3>
+<h3 id="header_mod_scheme_1">header_mod_scheme</h3>
+<h3 id="is_debug">is_debug</h3>
+<p>Enable debug mode on receiver.</p>
           <aside class="copyright" role="note">
             
             Documentation built with

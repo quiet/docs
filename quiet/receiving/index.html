@@ -240,38 +240,74 @@
         <ul>
           
             <li class="anchor">
-              <a title="Creating Receiver" href="#creating-receiver">
-                Creating Receiver
+              <a title="quiet_portaudio_decoder" href="#quiet_portaudio_decoder">
+                quiet_portaudio_decoder
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Receiving Data" href="#receiving-data_1">
-                Receiving Data
+              <a title="quiet_portaudio_decoder_create" href="#quiet_portaudio_decoder_create">
+                quiet_portaudio_decoder_create
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Callbacks" href="#callbacks">
-                Callbacks
+              <a title="quiet_portaudio_decoder_recv" href="#quiet_portaudio_decoder_recv">
+                quiet_portaudio_decoder_recv
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Receiver Stats" href="#receiver-stats">
-                Receiver Stats
+              <a title="quiet_portaudio_decoder_set_blocking" href="#quiet_portaudio_decoder_set_blocking">
+                quiet_portaudio_decoder_set_blocking
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Shutting Down" href="#shutting-down">
-                Shutting Down
+              <a title="quiet_portaudio_decoder_set_nonblocking" href="#quiet_portaudio_decoder_set_nonblocking">
+                quiet_portaudio_decoder_set_nonblocking
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Raw Sample Decoder" href="#raw-sample-decoder">
-                Raw Sample Decoder
+              <a title="quiet_portaudio_decoder_frame_in_progress" href="#quiet_portaudio_decoder_frame_in_progress">
+                quiet_portaudio_decoder_frame_in_progress
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_portaudio_decoder_checksum_fails" href="#quiet_portaudio_decoder_checksum_fails">
+                quiet_portaudio_decoder_checksum_fails
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_portaudio_decoder_consume_stats" href="#quiet_portaudio_decoder_consume_stats">
+                quiet_portaudio_decoder_consume_stats
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_portaudio_decoder_enable_stats" href="#quiet_portaudio_decoder_enable_stats">
+                quiet_portaudio_decoder_enable_stats
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_portaudio_decoder_disable_stats" href="#quiet_portaudio_decoder_disable_stats">
+                quiet_portaudio_decoder_disable_stats
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_portaudio_decoder_close" href="#quiet_portaudio_decoder_close">
+                quiet_portaudio_decoder_close
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_portaudio_decoder_destroy" href="#quiet_portaudio_decoder_destroy">
+                quiet_portaudio_decoder_destroy
               </a>
             </li>
           
@@ -321,6 +357,26 @@
   </li>
 
           
+            <div></div>
+            
+  <li>
+    <a class="" title="Errors" href="../errors/">
+      Errors
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Frame Stats" href="../frame-stats/">
+      Frame Stats
+    </a>
+    
+  </li>
+
+          
         </ul>
         
       </div>
@@ -332,12 +388,104 @@
         <div class="wrapper">
           
           <h1 id="receiving-data">Receiving Data</h1>
-<h2 id="creating-receiver">Creating Receiver</h2>
-<h2 id="receiving-data_1">Receiving Data</h2>
-<h2 id="callbacks">Callbacks</h2>
-<h2 id="receiver-stats">Receiver Stats</h2>
-<h2 id="shutting-down">Shutting Down</h2>
-<h2 id="raw-sample-decoder">Raw Sample Decoder</h2>
+<h2 id="quiet_portaudio_decoder">quiet_portaudio_decoder</h2>
+<div class="codehilite"><pre><span></span><span class="k">struct</span> <span class="n">quiet_portaudio_decoder</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">quiet_portaudio_decoder</span> <span class="n">quiet_portaudio_decoder</span><span class="p">;</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_decoder_create">quiet_portaudio_decoder_create</h2>
+<div class="codehilite"><pre><span></span><span class="n">quiet_portaudio_decoder</span> <span class="o">*</span>
+
+<span class="nf">quiet_portaudio_decoder_create</span><span class="p">(</span><span class="k">const</span> <span class="n">quiet_decoder_options</span> <span class="o">*</span><span class="n">opt</span><span class="p">,</span>
+
+                               <span class="n">PaDeviceIndex</span> <span class="n">device</span><span class="p">,</span>
+
+                               <span class="n">PaTime</span> <span class="n">latency</span><span class="p">,</span>
+
+                               <span class="kt">double</span> <span class="n">sample_rate</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_decoder_recv">quiet_portaudio_decoder_recv</h2>
+<div class="codehilite"><pre><span></span><span class="kt">ssize_t</span>
+
+<span class="nf">quiet_portaudio_decoder_recv</span><span class="p">(</span><span class="n">quiet_portaudio_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">,</span>
+
+                             <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span>
+
+                             <span class="kt">size_t</span> <span class="n">len</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_decoder_set_blocking">quiet_portaudio_decoder_set_blocking</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_portaudio_decoder_set_blocking</span><span class="p">(</span><span class="n">quiet_portaudio_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">,</span>
+
+                                     <span class="kt">time_t</span> <span class="n">sec</span><span class="p">,</span>
+
+                                     <span class="kt">long</span> <span class="n">nano</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_decoder_set_nonblocking">quiet_portaudio_decoder_set_nonblocking</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_portaudio_decoder_set_nonblocking</span><span class="p">(</span><span class="n">quiet_portaudio_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_decoder_frame_in_progress">quiet_portaudio_decoder_frame_in_progress</h2>
+<div class="codehilite"><pre><span></span><span class="kt">bool</span>
+
+<span class="nf">quiet_portaudio_decoder_frame_in_progress</span><span class="p">(</span><span class="n">quiet_portaudio_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_decoder_checksum_fails">quiet_portaudio_decoder_checksum_fails</h2>
+<div class="codehilite"><pre><span></span><span class="kt">unsigned</span> <span class="kt">int</span>
+
+<span class="nf">quiet_portaudio_decoder_checksum_fails</span><span class="p">(</span><span class="k">const</span> <span class="n">quiet_portaudio_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_decoder_consume_stats">quiet_portaudio_decoder_consume_stats</h2>
+<div class="codehilite"><pre><span></span><span class="k">const</span> <span class="n">quiet_decoder_frame_stats</span> <span class="o">*</span>
+
+<span class="nf">quiet_portaudio_decoder_consume_stats</span><span class="p">(</span><span class="n">quiet_portaudio_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">,</span>
+
+                                      <span class="kt">size_t</span> <span class="o">*</span><span class="n">num_frames</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_decoder_enable_stats">quiet_portaudio_decoder_enable_stats</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_portaudio_decoder_enable_stats</span><span class="p">(</span><span class="n">quiet_portaudio_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_decoder_disable_stats">quiet_portaudio_decoder_disable_stats</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_portaudio_decoder_disable_stats</span><span class="p">(</span><span class="n">quiet_portaudio_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_decoder_close">quiet_portaudio_decoder_close</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_portaudio_decoder_close</span><span class="p">(</span><span class="n">quiet_portaudio_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_decoder_destroy">quiet_portaudio_decoder_destroy</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_portaudio_decoder_destroy</span><span class="p">(</span><span class="n">quiet_portaudio_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
           <aside class="copyright" role="note">
             
             Documentation built with

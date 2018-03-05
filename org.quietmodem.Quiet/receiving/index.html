@@ -208,6 +208,16 @@
             <div></div>
             
   <li>
+    <a class="" title="How It Works" href="../how/">
+      How It Works
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
     <a class="" title="Transmitting Data" href="../transmitting/">
       Transmitting Data
     </a>
@@ -230,38 +240,92 @@
         <ul>
           
             <li class="anchor">
-              <a title="Creating Receiver" href="#creating-receiver">
-                Creating Receiver
+              <a title="FrameReceiver" href="#framereceiver">
+                FrameReceiver
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Receiving Data" href="#receiving-data_1">
-                Receiving Data
+              <a title="FrameReceiver" href="#framereceiver_1">
+                FrameReceiver
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Callbacks" href="#callbacks">
-                Callbacks
+              <a title="receive" href="#receive">
+                receive
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Receiver Stats" href="#receiver-stats">
-                Receiver Stats
+              <a title="receive" href="#receive_1">
+                receive
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Shutting Down" href="#shutting-down">
-                Shutting Down
+              <a title="receive" href="#receive_2">
+                receive
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Raw Sample Decoder" href="#raw-sample-decoder">
-                Raw Sample Decoder
+              <a title="setBlocking" href="#setblocking">
+                setBlocking
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="setNonBlocking" href="#setnonblocking">
+                setNonBlocking
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="close" href="#close">
+                close
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="terminate" href="#terminate">
+                terminate
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="enableStats" href="#enablestats">
+                enableStats
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="disableStats" href="#disablestats">
+                disableStats
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="statsSetBlocking" href="#statssetblocking">
+                statsSetBlocking
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="statsSetNonblocking" href="#statssetnonblocking">
+                statsSetNonblocking
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="receiveStats" href="#receivestats">
+                receiveStats
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="finalize" href="#finalize">
+                finalize
               </a>
             </li>
           
@@ -274,8 +338,28 @@
             <div></div>
             
   <li>
-    <a class="" title="How It Works" href="../how/">
-      How It Works
+    <a class="" title="Modem Configuration" href="../configuration/">
+      Modem Configuration
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Encoding Raw Samples" href="../encoding/">
+      Encoding Raw Samples
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Decoding Raw Samples" href="../decoding/">
+      Decoding Raw Samples
     </a>
     
   </li>
@@ -286,6 +370,26 @@
   <li>
     <a class="" title="Profiles" href="../profiles/">
       Profiles
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Errors" href="../errors/">
+      Errors
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Frame Stats" href="../frame-stats/">
+      Frame Stats
     </a>
     
   </li>
@@ -302,12 +406,158 @@
         <div class="wrapper">
           
           <h1 id="receiving-data">Receiving Data</h1>
-<h2 id="creating-receiver">Creating Receiver</h2>
-<h2 id="receiving-data_1">Receiving Data</h2>
-<h2 id="callbacks">Callbacks</h2>
-<h2 id="receiver-stats">Receiver Stats</h2>
-<h2 id="shutting-down">Shutting Down</h2>
-<h2 id="raw-sample-decoder">Raw Sample Decoder</h2>
+<h2 id="framereceiver">FrameReceiver</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FrameReceiver</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nf">FrameReceiver</span><span class="o">(</span><span class="n">FrameReceiverConfig</span> <span class="n">conf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ModemException</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">receive</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">frame</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">receive</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">frame</span><span class="o">,</span> <span class="kt">long</span> <span class="n">length</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">receive</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">frame</span><span class="o">,</span> <span class="kt">long</span> <span class="n">offset</span><span class="o">,</span> <span class="kt">long</span> <span class="n">length</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBlocking</span><span class="o">(</span><span class="kt">long</span> <span class="n">seconds</span><span class="o">,</span> <span class="kt">long</span> <span class="n">nano</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setNonBlocking</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">terminate</span><span class="o">(</span><span class="kt">int</span> <span class="n">urgency</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">enableStats</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">disableStats</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">statsSetBlocking</span><span class="o">(</span><span class="kt">long</span> <span class="n">seconds</span><span class="o">,</span> <span class="kt">long</span> <span class="n">nano</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">statsSetNonblocking</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="n">FrameStats</span> <span class="nf">receiveStats</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">finalize</span><span class="o">();</span>
+
+<span class="o">}</span>
+</pre></div>
+
+
+<h2 id="framereceiver_1">FrameReceiver</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> 
+
+<span class="nf">FrameReceiver</span><span class="o">(</span><span class="n">FrameReceiverConfig</span> <span class="n">conf</span><span class="o">)</span>
+
+<span class="kd">throws</span> <span class="n">ModemException</span>
+</pre></div>
+
+
+<h2 id="receive">receive</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">long</span>
+
+<span class="nf">receive</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">frame</span><span class="o">)</span>
+
+<span class="kd">throws</span> <span class="n">IOException</span>
+</pre></div>
+
+
+<p>Receive a single frame of data and write it into <code>frame</code>. This function does not block by default.</p>
+<h2 id="receive_1">receive</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">long</span>
+
+<span class="nf">receive</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">frame</span><span class="o">,</span>
+
+        <span class="kt">long</span> <span class="n">length</span><span class="o">)</span>
+
+<span class="kd">throws</span> <span class="n">IOException</span>
+</pre></div>
+
+
+<h2 id="receive_2">receive</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">long</span>
+
+<span class="nf">receive</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">frame</span><span class="o">,</span>
+
+        <span class="kt">long</span> <span class="n">offset</span><span class="o">,</span>
+
+        <span class="kt">long</span> <span class="n">length</span><span class="o">)</span>
+
+<span class="kd">throws</span> <span class="n">IOException</span>
+</pre></div>
+
+
+<h2 id="setblocking">setBlocking</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span>
+
+<span class="nf">setBlocking</span><span class="o">(</span><span class="kt">long</span> <span class="n">seconds</span><span class="o">,</span>
+
+            <span class="kt">long</span> <span class="n">nano</span><span class="o">)</span>
+</pre></div>
+
+
+<h2 id="setnonblocking">setNonBlocking</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span>
+
+<span class="nf">setNonBlocking</span><span class="o">()</span>
+</pre></div>
+
+
+<h2 id="close">close</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span>
+
+<span class="nf">close</span><span class="o">()</span>
+</pre></div>
+
+
+<h2 id="terminate">terminate</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span>
+
+<span class="nf">terminate</span><span class="o">(</span><span class="kt">int</span> <span class="n">urgency</span><span class="o">)</span>
+</pre></div>
+
+
+<h2 id="enablestats">enableStats</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span>
+
+<span class="nf">enableStats</span><span class="o">()</span>
+</pre></div>
+
+
+<h2 id="disablestats">disableStats</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span>
+
+<span class="nf">disableStats</span><span class="o">()</span>
+</pre></div>
+
+
+<h2 id="statssetblocking">statsSetBlocking</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span>
+
+<span class="nf">statsSetBlocking</span><span class="o">(</span><span class="kt">long</span> <span class="n">seconds</span><span class="o">,</span>
+
+                 <span class="kt">long</span> <span class="n">nano</span><span class="o">)</span>
+</pre></div>
+
+
+<h2 id="statssetnonblocking">statsSetNonblocking</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span>
+
+<span class="nf">statsSetNonblocking</span><span class="o">()</span>
+</pre></div>
+
+
+<h2 id="receivestats">receiveStats</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kd">synchronized</span> <span class="n">FrameStats</span>
+
+<span class="nf">receiveStats</span><span class="o">()</span>
+
+<span class="kd">throws</span> <span class="n">IOException</span>
+</pre></div>
+
+
+<h2 id="finalize">finalize</h2>
+<div class="codehilite"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span>
+
+<span class="nf">finalize</span><span class="o">()</span>
+</pre></div>
           <aside class="copyright" role="note">
             
             Documentation built with
@@ -343,14 +593,14 @@
     </div>
     <div class="next">
       
-        <a href="../how/" title="How It Works">
+        <a href="../configuration/" title="Modem Configuration">
           <span class="direction">
             Next
           </span>
           <div class="page">
             <div class="stretch">
               <div class="title">
-                How It Works
+                Modem Configuration
               </div>
             </div>
             <div class="button button-next" role="button" aria-label="Next">

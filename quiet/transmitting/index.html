@@ -230,14 +230,14 @@
         <ul>
           
             <li class="anchor">
-              <a title="quiet_portaudio_encoder_create" href="#quiet_portaudio_encoder_create">
-                quiet_portaudio_encoder_create
+              <a title="quiet_portaudio_encoder" href="#quiet_portaudio_encoder">
+                quiet_portaudio_encoder
               </a>
             </li>
           
             <li class="anchor">
-              <a title="quiet_portaudio_encoder_send" href="#quiet_portaudio_encoder_send">
-                quiet_portaudio_encoder_send
+              <a title="quiet_portaudio_encoder_create" href="#quiet_portaudio_encoder_create">
+                quiet_portaudio_encoder_create
               </a>
             </li>
           
@@ -254,14 +254,44 @@
             </li>
           
             <li class="anchor">
+              <a title="quiet_portaudio_encoder_get_frame_len" href="#quiet_portaudio_encoder_get_frame_len">
+                quiet_portaudio_encoder_get_frame_len
+              </a>
+            </li>
+          
+            <li class="anchor">
               <a title="quiet_portaudio_encoder_clamp_frame_len" href="#quiet_portaudio_encoder_clamp_frame_len">
                 quiet_portaudio_encoder_clamp_frame_len
               </a>
             </li>
           
             <li class="anchor">
-              <a title="quiet_portaudio_encoder_get_frame_len" href="#quiet_portaudio_encoder_get_frame_len">
-                quiet_portaudio_encoder_get_frame_len
+              <a title="quiet_portaudio_encoder_send" href="#quiet_portaudio_encoder_send">
+                quiet_portaudio_encoder_send
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_portaudio_encoder_emit" href="#quiet_portaudio_encoder_emit">
+                quiet_portaudio_encoder_emit
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_portaudio_encoder_emit_empty" href="#quiet_portaudio_encoder_emit_empty">
+                quiet_portaudio_encoder_emit_empty
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_portaudio_encoder_close" href="#quiet_portaudio_encoder_close">
+                quiet_portaudio_encoder_close
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_portaudio_encoder_destroy" href="#quiet_portaudio_encoder_destroy">
+                quiet_portaudio_encoder_destroy
               </a>
             </li>
           
@@ -321,6 +351,26 @@
   </li>
 
           
+            <div></div>
+            
+  <li>
+    <a class="" title="Errors" href="../errors/">
+      Errors
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Frame Stats" href="../frame-stats/">
+      Frame Stats
+    </a>
+    
+  </li>
+
+          
         </ul>
         
       </div>
@@ -332,9 +382,15 @@
         <div class="wrapper">
           
           <h1 id="transmitting-data">Transmitting Data</h1>
-<p>The <code>quiet_portaudio_encoder</code> type controls the transmission of data via soundcard. It accepts frames of data and enqueues the frames into a buffer for transmission. <code>quiet_portaudio_encoder</code> then uses its modem configuration to encode the frame into samples of PCM audio and feed these samples to the soundcard to be played out.</p>
+<h2 id="quiet_portaudio_encoder">quiet_portaudio_encoder</h2>
+<div class="codehilite"><pre><span></span><span class="k">struct</span> <span class="n">quiet_portaudio_encoder</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">quiet_portaudio_encoder</span> <span class="n">quiet_portaudio_encoder</span><span class="p">;</span>
+</pre></div>
+
+
 <h2 id="quiet_portaudio_encoder_create">quiet_portaudio_encoder_create</h2>
-<div class="codehilite"><pre><span></span><span class="n">quiet_portaudio_encoder</span><span class="o">*</span>
+<div class="codehilite"><pre><span></span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span>
 
 <span class="nf">quiet_portaudio_encoder_create</span><span class="p">(</span><span class="k">const</span> <span class="n">quiet_encoder_options</span> <span class="o">*</span><span class="n">opt</span><span class="p">,</span>
 
@@ -348,21 +404,10 @@
 </pre></div>
 
 
-<h2 id="quiet_portaudio_encoder_send">quiet_portaudio_encoder_send</h2>
-<div class="codehilite"><pre><span></span><span class="kt">ssize_t</span>
-
-<span class="nf">quiet_portaudio_encoder_send</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span>
-
-                             <span class="k">const</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span>
-
-                             <span class="kt">size_t</span> <span class="n">len</span><span class="p">);</span>
-</pre></div>
-
-
 <h2 id="quiet_portaudio_encoder_set_blocking">quiet_portaudio_encoder_set_blocking</h2>
 <div class="codehilite"><pre><span></span><span class="kt">void</span>
 
-<span class="nf">quiet_portaudio_encoder_set_blocking</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">enc</span><span class="p">,</span>
+<span class="nf">quiet_portaudio_encoder_set_blocking</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span>
 
                                      <span class="kt">time_t</span> <span class="n">sec</span><span class="p">,</span>
 
@@ -373,16 +418,7 @@
 <h2 id="quiet_portaudio_encoder_set_nonblocking">quiet_portaudio_encoder_set_nonblocking</h2>
 <div class="codehilite"><pre><span></span><span class="kt">void</span>
 
-<span class="nf">quiet_portaudio_encoder_set_nonblocking</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">enc</span><span class="p">);</span>
-</pre></div>
-
-
-<h2 id="quiet_portaudio_encoder_clamp_frame_len">quiet_portaudio_encoder_clamp_frame_len</h2>
-<div class="codehilite"><pre><span></span><span class="kt">size_t</span>
-
-<span class="nf">quiet_portaudio_encoder_clamp_frame_len</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">enc</span><span class="p">,</span>
-
-                                        <span class="kt">size_t</span> <span class="n">sample_len</span><span class="p">);</span>
+<span class="nf">quiet_portaudio_encoder_set_nonblocking</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">);</span>
 </pre></div>
 
 
@@ -390,6 +426,54 @@
 <div class="codehilite"><pre><span></span><span class="kt">size_t</span>
 
 <span class="nf">quiet_portaudio_encoder_get_frame_len</span><span class="p">(</span><span class="k">const</span> <span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_encoder_clamp_frame_len">quiet_portaudio_encoder_clamp_frame_len</h2>
+<div class="codehilite"><pre><span></span><span class="kt">size_t</span>
+
+<span class="nf">quiet_portaudio_encoder_clamp_frame_len</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span>
+
+                                        <span class="kt">size_t</span> <span class="n">sample_len</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_encoder_send">quiet_portaudio_encoder_send</h2>
+<div class="codehilite"><pre><span></span><span class="kt">ssize_t</span>
+
+<span class="nf">quiet_portaudio_encoder_send</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">enc</span><span class="p">,</span>
+
+                             <span class="k">const</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span>
+
+                             <span class="kt">size_t</span> <span class="n">len</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_encoder_emit">quiet_portaudio_encoder_emit</h2>
+<div class="codehilite"><pre><span></span><span class="kt">ssize_t</span>
+
+<span class="nf">quiet_portaudio_encoder_emit</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">enc</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_encoder_emit_empty">quiet_portaudio_encoder_emit_empty</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_portaudio_encoder_emit_empty</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">enc</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_encoder_close">quiet_portaudio_encoder_close</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_portaudio_encoder_close</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">enc</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_portaudio_encoder_destroy">quiet_portaudio_encoder_destroy</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_portaudio_encoder_destroy</span><span class="p">(</span><span class="n">quiet_portaudio_encoder</span> <span class="o">*</span><span class="n">enc</span><span class="p">);</span>
 </pre></div>
           <aside class="copyright" role="note">
             

@@ -595,7 +595,7 @@ pre {
 .project .name {
     display: table-cell;
     padding-left: 4px;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.25em;
     vertical-align: middle
 }
@@ -679,9 +679,6 @@ pre span {
 .article h1,
 .article h2 {
     color: #228888
-}
-.article code {
-    background: #eee
 }
 .article kbd {
     color: #555;
@@ -837,8 +834,8 @@ html .admonition-title + * {
     margin-top: 0 !important;
 }
 .article {
-    font-size: 14px;
-    line-height: 1.7em
+    font-size: 16px;
+    line-height: 1.4em
 }
 .article:after {
     content: " ";
@@ -864,12 +861,12 @@ html .admonition-title + * {
     margin-bottom: 2px
 }
 .article h1 {
-    font-size: 24px;
+    font-size: 32px;
     line-height: 1.333334em;
     padding: 20px 0 42px
 }
 .article h2 {
-    font-size: 20px;
+    font-size: 24px;
     line-height: 1.4em;
     padding-top: 92px;
     margin-top: -56px
@@ -880,7 +877,7 @@ html .admonition-title + * {
 }
 .article h3,
 .article h4 {
-    font-size: 14px;
+    font-size: 16px;
     padding-top: 76px;
     margin-top: -56px
 }
@@ -892,15 +889,17 @@ html .admonition-title + * {
 .article .headerlink {
     float: right;
     margin-left: 20px;
-    font-size: 14px
+    font-size: 16px
 }
 h1 .article .headerlink {
     display: none
 }
 .article ol,
-.article p,
 .article ul {
     margin-top: 1.5em
+}
+.article p {
+    margin-top: 0.6em
 }
 .article li,
 .article li ol,
@@ -925,7 +924,6 @@ h1 .article .headerlink {
 }
 .article p>code {
     white-space: nowrap;
-    padding: 2px 4px
 }
 .article kbd {
     display: inline-block;
@@ -941,7 +939,7 @@ h1 .article .headerlink {
 .article pre {
     padding: 16px;
     margin: 1.5em -16px 0;
-    line-height: 0.9em;
+    line-height: 0.7em;
     overflow: auto;
     -webkit-overflow-scrolling: touch
 }
@@ -1040,8 +1038,8 @@ h1 .article .headerlink {
     font-size: 18px;
     padding: 11px 0 13px
 }
-.article h3 {
-    font-weight: 700
+.article h1, h2, h3 {
+    font-weight: 600
 }
 .article h4 {
     font-weight: 400;

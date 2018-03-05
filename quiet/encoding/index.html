@@ -257,6 +257,82 @@
         
       
       
+        <ul>
+          
+            <li class="anchor">
+              <a title="quiet_encoder" href="#quiet_encoder">
+                quiet_encoder
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_create" href="#quiet_encoder_create">
+                quiet_encoder_create
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_send" href="#quiet_encoder_send">
+                quiet_encoder_send
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_set_blocking" href="#quiet_encoder_set_blocking">
+                quiet_encoder_set_blocking
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_set_nonblocking" href="#quiet_encoder_set_nonblocking">
+                quiet_encoder_set_nonblocking
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_set_emit_blocking" href="#quiet_encoder_set_emit_blocking">
+                quiet_encoder_set_emit_blocking
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_set_emit_nonblocking" href="#quiet_encoder_set_emit_nonblocking">
+                quiet_encoder_set_emit_nonblocking
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_clamp_frame_len" href="#quiet_encoder_clamp_frame_len">
+                quiet_encoder_clamp_frame_len
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_get_frame_len" href="#quiet_encoder_get_frame_len">
+                quiet_encoder_get_frame_len
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_emit" href="#quiet_encoder_emit">
+                quiet_encoder_emit
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_close" href="#quiet_encoder_close">
+                quiet_encoder_close
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_destroy" href="#quiet_encoder_destroy">
+                quiet_encoder_destroy
+              </a>
+            </li>
+          
+        </ul>
+      
     
   </li>
 
@@ -281,6 +357,26 @@
   </li>
 
           
+            <div></div>
+            
+  <li>
+    <a class="" title="Errors" href="../errors/">
+      Errors
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Frame Stats" href="../frame-stats/">
+      Frame Stats
+    </a>
+    
+  </li>
+
+          
         </ul>
         
       </div>
@@ -292,6 +388,180 @@
         <div class="wrapper">
           
           <h1 id="encoding-raw-samples">Encoding Raw Samples</h1>
+<h2 id="quiet_encoder">quiet_encoder</h2>
+<div class="codehilite"><pre><span></span><span class="k">struct</span> <span class="n">quiet_encoder</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">quiet_encoder</span> <span class="n">quiet_encoder</span><span class="p">;</span>
+</pre></div>
+
+
+<h2 id="quiet_encoder_create">quiet_encoder_create</h2>
+<div class="codehilite"><pre><span></span><span class="n">quiet_encoder</span> <span class="o">*</span>
+
+<span class="nf">quiet_encoder_create</span><span class="p">(</span><span class="k">const</span> <span class="n">quiet_encoder_options</span> <span class="o">*</span><span class="n">opt</span><span class="p">,</span>
+
+                     <span class="kt">float</span> <span class="n">sample_rate</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_create creates and initializes a new libquiet encoder for a given set of options and sample rate. As libquiet makes use of its own resampler, it is suggested to use the default sample rate of your device, so as to not invoke any implicit resamplers.</p>
+<h3 id="parameters">Parameters</h3>
+<p><code>opt</code> - <a href="../configuration/#quiet_encoder_options"><code>quiet_encoder_options</code></a> containing encoder configuration</p>
+<p><code>sample_rate</code> - Sample rate that encoder will generate at</p>
+<h3 id="returns">Returns</h3>
+<p>pointer to a new encoder object, or NULL if creation failed</p>
+<h2 id="quiet_encoder_send">quiet_encoder_send</h2>
+<div class="codehilite"><pre><span></span><span class="kt">ssize_t</span>
+
+<span class="nf">quiet_encoder_send</span><span class="p">(</span><span class="n">quiet_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span>
+
+                   <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span>
+
+                   <span class="kt">size_t</span> <span class="n">len</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_send copies the frame provided by the user to an internal transmit queue. By default, this is a nonblocking call and will fail if the queue is full. However, if quiet_encoder_set_blocking has been called first, then it will wait for as much as the timeout length specified there if the frame cannot be immediately written.</p>
+<p>The frame provided must be no longer than the maximum frame length of the encoder. If the frame is longer, it will be rejected entirely, and no data will be transmitted.</p>
+<p>If libquiet was built and linked with pthread, then this function may be called from any thread, and by multiple threads concurrently.</p>
+<p>quiet_encoder_send will return 0 if the queue is closed to signal EOF.</p>
+<p>quiet_encoder_send will return a negative value and set the last error to quiet_timedout if the send queue is full and no space was made before the timeout</p>
+<p>quiet_encoder_send will return a negative value and set the last error to quiet_would_block if the send queue is full and the encoder is in nonblocking mode</p>
+<h3 id="parameters_1">Parameters</h3>
+<p><code>e</code> - encoder object</p>
+<p><code>buf</code> - user buffer containing the frame payload</p>
+<p><code>len</code> - the number of bytes in buf</p>
+<h3 id="returns_1">Returns</h3>
+<p>the number of bytes copied from the buffer, 0 if the queue is closed, or -1 if sending failed</p>
+<h2 id="quiet_encoder_set_blocking">quiet_encoder_set_blocking</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_encoder_set_blocking</span><span class="p">(</span><span class="n">quiet_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span>
+
+                           <span class="kt">time_t</span> <span class="n">sec</span><span class="p">,</span>
+
+                           <span class="kt">long</span> <span class="n">nano</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_set_blocking changes the behavior of quiet_encoder_send so that it will block until a frame can be written. It will block for approximately (nano + 1000000000*sec) nanoseconds.</p>
+<p>If <code>sec</code> and <code>nano</code> are both 0, then quiet_encoder_send will block indefinitely until a frame is sent.</p>
+<p>This function is only supported on systems with pthread. Calling quiet_encoder_set_blocking on a host without pthread will assert false.</p>
+<h3 id="parameters_2">Parameters</h3>
+<p><code>e</code> - encoder object</p>
+<p><code>sec</code> - time_t number of seconds to block for</p>
+<p><code>nano</code> - long number of nanoseconds to block for</p>
+<h2 id="quiet_encoder_set_nonblocking">quiet_encoder_set_nonblocking</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_encoder_set_nonblocking</span><span class="p">(</span><span class="n">quiet_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_set_nonblocking changes the behavior of quiet_encoder_send so that it will not block if it cannot write a frame. This function restores the default behavior after quiet_encoder_set_blocking has been called.</p>
+<h3 id="parameters_3">Parameters</h3>
+<p><code>e</code> - encoder object</p>
+<h2 id="quiet_encoder_set_emit_blocking">quiet_encoder_set_emit_blocking</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_encoder_set_emit_blocking</span><span class="p">(</span><span class="n">quiet_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span>
+
+                                <span class="kt">time_t</span> <span class="n">sec</span><span class="p">,</span>
+
+                                <span class="kt">long</span> <span class="n">nano</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_set_emit_blocking changes quiet_encoder_emit so that it will block until a frame is read. It will block for approximately (nano + 1000000000*sec) nanoseconds.</p>
+<p>quiet_encoder_emit may emit some empty (silence) samples if one frame is available but more frames are needed for the full length of the block given to quiet_encoder_emit. That is, quiet_encoder_emit will not block the tail of one frame while waiting for the next.</p>
+<p>If <code>sec</code> and <code>nano</code> are both 0, then quiet_encoder_emit will block indefinitely until a frame is read.</p>
+<p>This function is only supported on systems with pthread. Calling quiet_encoder_set_blocking on a host without pthread will assert false.</p>
+<h3 id="parameters_4">Parameters</h3>
+<p><code>e</code> - encoder object</p>
+<p><code>sec</code> - time_t number of seconds to block for</p>
+<p><code>nano</code> - long number of nanoseconds to block for</p>
+<h2 id="quiet_encoder_set_emit_nonblocking">quiet_encoder_set_emit_nonblocking</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_encoder_set_emit_nonblocking</span><span class="p">(</span><span class="n">quiet_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_set_emit_nonblocking changes the behavior of quiet_encoder_emit so that it will not block if it cannot read a frame. This function restores the default behavior after quiet_encoder_set_emit_blocking has been called.</p>
+<h3 id="parameters_5">Parameters</h3>
+<p><code>e</code> - encoder object</p>
+<h2 id="quiet_encoder_clamp_frame_len">quiet_encoder_clamp_frame_len</h2>
+<div class="codehilite"><pre><span></span><span class="kt">size_t</span>
+
+<span class="nf">quiet_encoder_clamp_frame_len</span><span class="p">(</span><span class="n">quiet_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span>
+
+                              <span class="kt">size_t</span> <span class="n">sample_len</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_clamp_frame_len enables a mode in the encoder which prevents data frames from overlapping multiple blocks of samples, e.g. multiple calls to quiet_encoder_emit. This can be very convenient if your environment cannot keep up in realtime due to e.g. GC pauses. The transmission of data will succeed as long as the blocks of samples are played out smoothly (gaps between blocks are ok, gaps within blocks are not ok).</p>
+<p>Calling this with the size of your sample block will clamp the frame length of this encoder and toggle the <code>is_close_frame</code> flag which will ensure that sample blocks will always end in silence. This will never result in a frame length longer than the one provided in the creation of the encoder, but it may result in a shorter frame length.</p>
+<h3 id="parameters_6">Parameters</h3>
+<p><code>e</code> - encoder object</p>
+<p><code>sample_len</code> - size of sample block</p>
+<h3 id="returns_2">Returns</h3>
+<p>the new frame length</p>
+<h2 id="quiet_encoder_get_frame_len">quiet_encoder_get_frame_len</h2>
+<div class="codehilite"><pre><span></span><span class="kt">size_t</span>
+
+<span class="nf">quiet_encoder_get_frame_len</span><span class="p">(</span><span class="k">const</span> <span class="n">quiet_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">);</span>
+</pre></div>
+
+
+<h3 id="parameters_7">Parameters</h3>
+<p><code>e</code> - encoder object</p>
+<h3 id="returns_3">Returns</h3>
+<p>encoder's maximum frame length, e.g. the largest length that can be passed to quiet_encoder_send</p>
+<h2 id="quiet_encoder_emit">quiet_encoder_emit</h2>
+<div class="codehilite"><pre><span></span><span class="kt">ssize_t</span>
+
+<span class="nf">quiet_encoder_emit</span><span class="p">(</span><span class="n">quiet_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span>
+
+                   <span class="n">quiet_sample_t</span> <span class="o">*</span><span class="n">samplebuf</span><span class="p">,</span>
+
+                   <span class="kt">size_t</span> <span class="n">samplebuf_len</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_emit fills a block of samples pointed to by samplebuf by reading frames from its transmit queue and encoding them into sound by using the configuration specified at creation. These samples can be written out directly to a file or soundcard.</p>
+<p>If you are using a soundcard, you will have to carefully choose the sample size block. Typically, the largest size is 16384 samples. Larger block sizes will help hide uneven latencies in the encoding process and ensure smoother transmission at the cost of longer latencies.</p>
+<p>quiet_encoder_emit may return fewer than the number of samples requested. Unlike quiet_encoder_send, quiet_encoder_emit does not block, even when blocking mode is enabled. This is because soundcard interfaces typically require realtime sample generation.</p>
+<p>If quiet_encoder_emit returns 0, then the transmit queue is closed and empty, and no future calls to quiet_encoder_emit will retrieve any more samples.</p>
+<h3 id="parameters_8">Parameters</h3>
+<p><code>e</code> - encoder object</p>
+<p><code>samplebuf</code> - user-provided array where samples will be written</p>
+<p><code>samplebuf_len</code> - length of user-provided array</p>
+<h3 id="returns_4">Returns</h3>
+<p>the number of samples written to samplebuf, which shall never exceed samplebuf_len. If the returned number of samples written is less than samplebuf_len, then the encoder has finished encoding the payload (its transmit queue is empty and all state has been flushed out). The user should 0-fill any remaining length if the block is to be transmitted.</p>
+<p>If quiet_encoder_emit returns a negative length, then it will set the quiet error. Most commonly, this will happen when the transmit queue is empty and there are no frames ready to send, but the queue is still open. If and only if the queue is closed and has been completely read, quiet_encoder_emit will return 0 to signal EOF.</p>
+<h3 id="errors">Errors<super><a href="../errors/">&dagger;</a></super></h3>
+<p><code>foo</code> - bar baz</p>
+<p><code>qux</code> - quuux</p>
+<h2 id="quiet_encoder_close">quiet_encoder_close</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_encoder_close</span><span class="p">(</span><span class="n">quiet_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_close closes the encoder object. This has the effect of rejecting any future calls to quiet_encoder_send. Any previously queued frames will be written by quiet_encoder_emit. Once the send queue is empty, quiet_encoder_emit will set last error to quiet_closed.</p>
+<h3 id="parameters_9">Parameters</h3>
+<p><code>e</code> - encoder object</p>
+<h2 id="quiet_encoder_destroy">quiet_encoder_destroy</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_encoder_destroy</span><span class="p">(</span><span class="n">quiet_encoder</span> <span class="o">*</span><span class="n">e</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_destroy releases all resources allocated by the <a href="../encoding/#quiet_encoder"><code>quiet_encoder</code></a>. After calling this function, the user should not call any other encoder functions on the <a href="../encoding/#quiet_encoder"><code>quiet_encoder</code></a>.</p>
+<h3 id="parameters_10">Parameters</h3>
+<p><code>e</code> - encoder object</p>
           <aside class="copyright" role="note">
             
             Documentation built with

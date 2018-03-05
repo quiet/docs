@@ -267,6 +267,112 @@
         
       
       
+        <ul>
+          
+            <li class="anchor">
+              <a title="quiet_decoder" href="#quiet_decoder">
+                quiet_decoder
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_create" href="#quiet_decoder_create">
+                quiet_decoder_create
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_recv" href="#quiet_decoder_recv">
+                quiet_decoder_recv
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_set_blocking" href="#quiet_decoder_set_blocking">
+                quiet_decoder_set_blocking
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_set_nonblocking" href="#quiet_decoder_set_nonblocking">
+                quiet_decoder_set_nonblocking
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_consume" href="#quiet_decoder_consume">
+                quiet_decoder_consume
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_frame_in_progress" href="#quiet_decoder_frame_in_progress">
+                quiet_decoder_frame_in_progress
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_flush" href="#quiet_decoder_flush">
+                quiet_decoder_flush
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_close" href="#quiet_decoder_close">
+                quiet_decoder_close
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_checksum_fails" href="#quiet_decoder_checksum_fails">
+                quiet_decoder_checksum_fails
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_consume_stats" href="#quiet_decoder_consume_stats">
+                quiet_decoder_consume_stats
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_recv_stats" href="#quiet_decoder_recv_stats">
+                quiet_decoder_recv_stats
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_enable_stats" href="#quiet_decoder_enable_stats">
+                quiet_decoder_enable_stats
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_disable_stats" href="#quiet_decoder_disable_stats">
+                quiet_decoder_disable_stats
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_set_stats_blocking" href="#quiet_decoder_set_stats_blocking">
+                quiet_decoder_set_stats_blocking
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_set_stats_nonblocking" href="#quiet_decoder_set_stats_nonblocking">
+                quiet_decoder_set_stats_nonblocking
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_destroy" href="#quiet_decoder_destroy">
+                quiet_decoder_destroy
+              </a>
+            </li>
+          
+        </ul>
+      
     
   </li>
 
@@ -276,6 +382,26 @@
   <li>
     <a class="" title="Profiles" href="../profiles/">
       Profiles
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Errors" href="../errors/">
+      Errors
+    </a>
+    
+  </li>
+
+          
+            <div></div>
+            
+  <li>
+    <a class="" title="Frame Stats" href="../frame-stats/">
+      Frame Stats
     </a>
     
   </li>
@@ -292,6 +418,218 @@
         <div class="wrapper">
           
           <h1 id="decoding-raw-samples">Decoding Raw Samples</h1>
+<h2 id="quiet_decoder">quiet_decoder</h2>
+<div class="codehilite"><pre><span></span><span class="k">struct</span> <span class="n">quiet_decoder</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">quiet_decoder</span> <span class="n">quiet_decoder</span><span class="p">;</span>
+</pre></div>
+
+
+<h2 id="quiet_decoder_create">quiet_decoder_create</h2>
+<div class="codehilite"><pre><span></span><span class="n">quiet_decoder</span> <span class="o">*</span>
+
+<span class="nf">quiet_decoder_create</span><span class="p">(</span><span class="k">const</span> <span class="n">quiet_decoder_options</span> <span class="o">*</span><span class="n">opt</span><span class="p">,</span>
+
+                     <span class="kt">float</span> <span class="n">sample_rate</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_create creates and initializes a new libquiet decoder for a given set of options and sample rate.</p>
+<p>It is recommended to use the default sample rate of your device in order to avoid any possible implicit resampling, which can distort samples.</p>
+<h3 id="parameters">Parameters</h3>
+<p><code>opt</code> - <a href="../configuration/#quiet_decoder_options"><code>quiet_decoder_options</code></a> containing decoder configuration</p>
+<p><code>sample_rate</code> - Sample rate that decoder will consume at</p>
+<h3 id="returns">Returns</h3>
+<p>pointer to new decoder object, or NULL if creation failed.</p>
+<h2 id="quiet_decoder_recv">quiet_decoder_recv</h2>
+<div class="codehilite"><pre><span></span><span class="kt">ssize_t</span>
+
+<span class="nf">quiet_decoder_recv</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">,</span>
+
+                   <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span>
+
+                   <span class="kt">size_t</span> <span class="n">len</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_recv reads one frame from the decoder's receive buffer. By default, this is a nonblocking call and will fail quickly if no frames are ready to be received. However, if quiet_decoder_set_blocking is called prior to this call, then it will wait for as much as the timeout specified there until it can read a frame.</p>
+<p>If the user's supplied buffer is smaller than the length of the received frame, then only <code>len</code> bytes will be copied to <code>data</code>. The remaining bytes will be discarded.</p>
+<p>This function will never return frames for which the checksum has failed.</p>
+<p>If libquiet was built and linked with pthread, then this function may be called from any thread, and by multiple threads concurrently.</p>
+<p>quiet_decoder_recv will return 0 if the decoder has been closed and the receive queue is empty.</p>
+<p>quiet_decoder_recv will return a negative value and set the last error to quiet_timedout if blocking mode is enabled and no frame could be read before the timeout.</p>
+<p>quiet_decoder_recv will return a negative value and set the last error to quiet_would_block if nonblocking mode is enabled and no frame was available.</p>
+<h3 id="parameters_1">Parameters</h3>
+<p><code>d</code> - decoder object</p>
+<p><code>data</code> - user buffer which quiet will write received frame into</p>
+<p><code>len</code> - length of user-supplied buffer</p>
+<h3 id="returns_1">Returns</h3>
+<p>number of bytes written to buffer, 0 at EOF, or -1 if no frames available</p>
+<h2 id="quiet_decoder_set_blocking">quiet_decoder_set_blocking</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_decoder_set_blocking</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">,</span>
+
+                           <span class="kt">time_t</span> <span class="n">sec</span><span class="p">,</span>
+
+                           <span class="kt">long</span> <span class="n">nano</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_set_blocking changes the behavior of quiet_decoder_recv so that it will block until a frame can be read. It will block for approximately (nano + 1000000000*sec) nanoseconds.</p>
+<p>If <code>sec</code> and <code>nano</code> are both 0, then quiet_decoder_recv will block indefinitely until a frame is received.</p>
+<p>This function is only supported on systems with pthread. Calling quiet_decoder_set_blocking on a host without pthread will assert false.</p>
+<h3 id="parameters_2">Parameters</h3>
+<p><code>d</code> - decoder object</p>
+<p><code>sec</code> - time_t number of seconds to block for</p>
+<p><code>nano</code> - long number of nanoseconds to block for</p>
+<h2 id="quiet_decoder_set_nonblocking">quiet_decoder_set_nonblocking</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_decoder_set_nonblocking</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_set_nonblocking changes the behavior of quiet_decoder_recv so that it will not block if it cannot read a frame. This function restores the default behavior after quiet_decoder_set_blocking has been called.</p>
+<h3 id="parameters_3">Parameters</h3>
+<p><code>d</code> - decoder object</p>
+<h2 id="quiet_decoder_consume">quiet_decoder_consume</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_decoder_consume</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">,</span>
+
+                      <span class="k">const</span> <span class="n">quiet_sample_t</span> <span class="o">*</span><span class="n">samplebuf</span><span class="p">,</span>
+
+                      <span class="kt">size_t</span> <span class="n">sample_len</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_consume consumes sound samples and decodes them to frames. These can be samples obtained directly from a sound file, a soundcard's microphone, or any other source which can receive quiet_sample_t (float).</p>
+<p>If you are using a soundcard, it is recommended to use the largest block size offered. Typically, this is 16384 samples. Larger block sizes will help hide uneven latencies in the decoding process and ensure smoother reception at the cost of longer latencies.</p>
+<h3 id="parameters_4">Parameters</h3>
+<p><code>d</code> - decoder object</p>
+<p><code>samplebuf</code> - array of samples received from sound card</p>
+<p><code>sample_len</code> - number of samples in samplebuf</p>
+<h2 id="quiet_decoder_frame_in_progress">quiet_decoder_frame_in_progress</h2>
+<div class="codehilite"><pre><span></span><span class="kt">bool</span>
+
+<span class="nf">quiet_decoder_frame_in_progress</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_frame_in_progress determines if a frame is likely in the process of being received. It inspects information in the decoding process and will be relevant to the last call to quiet_decoder_consume. There is no guarantee of accuracy from this function, and both false-negatives and false-positives can occur.</p>
+<p>The output of this function can be useful to avoid collisions when two pairs of encoders/decoders share the same channel, e.g. in half-duplex.</p>
+<p>This function must be called from the same thread which calls quiet_decoder_consume.</p>
+<h3 id="parameters_5">Parameters</h3>
+<p><code>d</code> - decoder object</p>
+<h3 id="returns_2">Returns</h3>
+<p>true if a frame is likely being received</p>
+<h2 id="quiet_decoder_flush">quiet_decoder_flush</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_decoder_flush</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_flush empties out all internal buffers and attempts to decode them</p>
+<p>This function need only be called after the sound stream has stopped. It is especially useful for reading from sound files where there are no trailing samples to "push" the decoded data through the decoder's filters</p>
+<h3 id="parameters_6">Parameters</h3>
+<p><code>d</code> - decoder object</p>
+<h2 id="quiet_decoder_close">quiet_decoder_close</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_decoder_close</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_close closes the decoder object. Future calls to quiet_decoder_consume will still attempt the decoding process but will not enqueue any decoded frames into the receive queue, e.g. they become cpu-expensive no-ops. Any previously enqueued frames can still be read out by quiet_decoder_recv, and once the receive queue is empty, quiet_decoder_recv will set the last error to quiet_closed.</p>
+<h3 id="parameters_7">Parameters</h3>
+<p><code>d</code> - decoder object</p>
+<h2 id="quiet_decoder_checksum_fails">quiet_decoder_checksum_fails</h2>
+<div class="codehilite"><pre><span></span><span class="kt">unsigned</span> <span class="kt">int</span>
+
+<span class="nf">quiet_decoder_checksum_fails</span><span class="p">(</span><span class="k">const</span> <span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_checksum_fails returns the total number of frames decoded but which failed checksum across the lifetime of the decoder.</p>
+<h3 id="parameters_8">Parameters</h3>
+<p><code>d</code> - decoder object</p>
+<h3 id="returns_3">Returns</h3>
+<p>Total number of frames received with failed checksums</p>
+<h2 id="quiet_decoder_consume_stats">quiet_decoder_consume_stats</h2>
+<div class="codehilite"><pre><span></span><span class="k">const</span> <span class="n">quiet_decoder_frame_stats</span> <span class="o">*</span>
+
+<span class="nf">quiet_decoder_consume_stats</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">,</span>
+
+                            <span class="kt">size_t</span> <span class="o">*</span><span class="n">num_frames</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_consume_stats returns detailed info about the decoding process from the last call to quiet_decoder_consume_stats. It will save information on up to 8 frames. This includes frames which failed checksum. If quiet_decoder_consume found more than 8 frames, then information on only the first 8 frames will be saved.</p>
+<p>In order to use this functionality, quiet_decoder_enable_stats must be called on the decoder object before calling quiet_decoder_consume.</p>
+<p>This function must be called from the same thread that calls quiet_decoder_consume.</p>
+<h3 id="parameters_9">Parameters</h3>
+<p><code>d</code> - decoder object</p>
+<p><code>num_frames</code> - number of frames at returned pointer</p>
+<h3 id="returns_4">Returns</h3>
+<p><code>quiet_decoder_frame_stats</code> which is an array of structs containing stats info, num_frames long</p>
+<h2 id="quiet_decoder_recv_stats">quiet_decoder_recv_stats</h2>
+<div class="codehilite"><pre><span></span><span class="k">const</span> <span class="n">quiet_decoder_frame_stats</span> <span class="o">*</span>
+
+<span class="nf">quiet_decoder_recv_stats</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_decoder_enable_stats">quiet_decoder_enable_stats</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_decoder_enable_stats</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_enable_stats allocates the required memory needed to save symbol and other information on each frame decode. Italso adds a small overhead needed to copy this information into an internal buffer.</p>
+<p>By default, stats collection is disabled. Therefore, if the user would like to use quiet_decoder_consume_stats, then they must first call quiet_decoder_enable_stats.</p>
+<h3 id="parameters_10">Parameters</h3>
+<p><code>d</code> - decoder object</p>
+<h2 id="quiet_decoder_disable_stats">quiet_decoder_disable_stats</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_decoder_disable_stats</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_disable_stats frees all memory associated with stats collection.</p>
+<h3 id="parameters_11">Parameters</h3>
+<p><code>d</code> - decoder object</p>
+<h2 id="quiet_decoder_set_stats_blocking">quiet_decoder_set_stats_blocking</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_decoder_set_stats_blocking</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">,</span>
+
+                                 <span class="kt">time_t</span> <span class="n">sec</span><span class="p">,</span>
+
+                                 <span class="kt">long</span> <span class="n">nano</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_decoder_set_stats_nonblocking">quiet_decoder_set_stats_nonblocking</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_decoder_set_stats_nonblocking</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="quiet_decoder_destroy">quiet_decoder_destroy</h2>
+<div class="codehilite"><pre><span></span><span class="kt">void</span>
+
+<span class="nf">quiet_decoder_destroy</span><span class="p">(</span><span class="n">quiet_decoder</span> <span class="o">*</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_destroy releases all resources allocated by the <a href="../decoding/#quiet_decoder"><code>quiet_decoder</code></a>. After calling this function, the user should not call any other decoder functions on the decoder.</p>
+<h3 id="parameters_12">Parameters</h3>
+<p><code>d</code> - decoder object</p>
           <aside class="copyright" role="note">
             
             Documentation built with
