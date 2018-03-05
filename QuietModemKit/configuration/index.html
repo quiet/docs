@@ -247,6 +247,46 @@
         
       
       
+        <ul>
+          
+            <li class="anchor">
+              <a title="QMTransmitterConfig" href="#qmtransmitterconfig">
+                QMTransmitterConfig
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="initWithProfile:forKey:" href="#initwithprofileforkey">
+                initWithProfile:forKey:
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="initWithKey:" href="#initwithkey">
+                initWithKey:
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="QMReceiverConfig" href="#qmreceiverconfig">
+                QMReceiverConfig
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="initWithProfile:forKey:" href="#initwithprofileforkey_1">
+                initWithProfile:forKey:
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="initWithKey:" href="#initwithkey_1">
+                initWithKey:
+              </a>
+            </li>
+          
+        </ul>
+      
     
   </li>
 
@@ -312,6 +352,62 @@
         <div class="wrapper">
           
           <h1 id="modem-configuration">Modem Configuration</h1>
+<h2 id="qmtransmitterconfig">QMTransmitterConfig</h2>
+<div class="codehilite"><pre><span></span><span class="k">@interface</span> <span class="nc">QMTransmitterConfig</span> : <span class="bp">NSObject</span>
+
+<span class="k">@property</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">numBuffers</span><span class="p">;</span>
+
+<span class="k">@property</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">bufferLength</span><span class="p">;</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithProfile:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">profile</span> <span class="nf">forKey:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span><span class="p">;</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithKey:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div>
+
+
+<h3 id="numbuffers">numBuffers</h3>
+<h3 id="bufferlength">bufferLength</h3>
+<h2 id="initwithprofileforkey">initWithProfile:forKey:</h2>
+<div class="codehilite"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithProfile:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">profile</span>
+
+               <span class="nf">forKey:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span><span class="p">;</span>
+</pre></div>
+
+
+<h2 id="initwithkey">initWithKey:</h2>
+<div class="codehilite"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithKey:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span><span class="p">;</span>
+</pre></div>
+
+
+<h2 id="qmreceiverconfig">QMReceiverConfig</h2>
+<div class="codehilite"><pre><span></span><span class="k">@interface</span> <span class="nc">QMReceiverConfig</span> : <span class="bp">NSObject</span>
+
+<span class="k">@property</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">numBuffers</span><span class="p">;</span>
+
+<span class="k">@property</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">bufferLength</span><span class="p">;</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithProfile:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">profile</span> <span class="nf">forKey:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span><span class="p">;</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithKey:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div>
+
+
+<h3 id="numbuffers_1">numBuffers</h3>
+<h3 id="bufferlength_1">bufferLength</h3>
+<h2 id="initwithprofileforkey_1">initWithProfile:forKey:</h2>
+<div class="codehilite"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithProfile:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">profile</span>
+
+               <span class="nf">forKey:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span><span class="p">;</span>
+</pre></div>
+
+
+<h2 id="initwithkey_1">initWithKey:</h2>
+<div class="codehilite"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithKey:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">key</span><span class="p">;</span>
+</pre></div>
           <aside class="copyright" role="note">
             
             Documentation built with

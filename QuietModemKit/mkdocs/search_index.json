@@ -187,7 +187,7 @@
         }, 
         {
             "location": "/transmitting/", 
-            "text": "Transmitting Data\n\n\nQMTransmitterConfig\n\n\n@interface\n \nQMTransmitterConfig\n : \nNSObject\n\n\n\n@property\n \nunsigned\n \nint\n \nnumBuffers\n;\n\n\n\n@property\n \nunsigned\n \nint\n \nbufferLength\n;\n\n\n\n-\n \n(\nid\n)\ninitWithProfile:\n(\nNSString\n \n*\n)\nprofile\n \nforKey:\n(\nNSString\n \n*\n)\nkey\n;\n\n\n\n-\n \n(\nid\n)\ninitWithKey:\n(\nNSString\n \n*\n)\nkey\n;\n\n\n\n@end\n\n\n\n\n\n\nnumBuffers\n\n\nbufferLength\n\n\ninitWithConfig:\n\n\n-\n \n(\nid\n)\ninitWithConfig:\n(\nQMTransmitterConfig\n \n*\n)\nconf\n;\n\n\n\n\n\n\nsend:\n\n\n-\n \n(\nvoid\n)\nsend:\n(\nNSData\n \n*\n)\nframe\n;\n\n\n\n\n\n\nsetBlocking:withNano:\n\n\n-\n \n(\nvoid\n)\nsetBlocking:\n(\nlong\n)\nseconds\n\n\n           \nwithNano:\n(\nlong\n)\nnano\n;\n\n\n\n\n\n\nsetNonBlocking\n\n\n-\n \n(\nvoid\n)\nsetNonBlocking\n;\n\n\n\n\n\n\nclose\n\n\n-\n \n(\nvoid\n)\nclose\n;", 
+            "text": "Transmitting Data\n\n\nQMFrameTransmitter\n\n\n@interface\n \nQMFrameTransmitter\n : \nNSObject\n\n\n\n-\n \n(\nid\n)\ninitWithConfig:\n(\nQMTransmitterConfig\n \n*\n)\nconf\n;\n\n\n\n-\n \n(\nvoid\n)\nsend:\n(\nNSData\n \n*\n)\nframe\n;\n\n\n\n-\n \n(\nvoid\n)\nsetBlocking:\n(\nlong\n)\nseconds\n \nwithNano:\n(\nlong\n)\nnano\n;\n\n\n\n-\n \n(\nvoid\n)\nsetNonBlocking\n;\n\n\n\n-\n \n(\nvoid\n)\nclose\n;\n\n\n\n@end\n\n\n\n\n\n\ninitWithConfig:\n\n\n-\n \n(\nid\n)\ninitWithConfig:\n(\nQMTransmitterConfig\n \n*\n)\nconf\n;\n\n\n\n\n\n\nsend:\n\n\n-\n \n(\nvoid\n)\nsend:\n(\nNSData\n \n*\n)\nframe\n;\n\n\n\n\n\n\nsetBlocking:withNano:\n\n\n-\n \n(\nvoid\n)\nsetBlocking:\n(\nlong\n)\nseconds\n\n\n           \nwithNano:\n(\nlong\n)\nnano\n;\n\n\n\n\n\n\nsetNonBlocking\n\n\n-\n \n(\nvoid\n)\nsetNonBlocking\n;\n\n\n\n\n\n\nclose\n\n\n-\n \n(\nvoid\n)\nclose\n;", 
             "title": "Transmitting Data"
         }, 
         {
@@ -196,19 +196,9 @@
             "title": "Transmitting Data"
         }, 
         {
-            "location": "/transmitting/#qmtransmitterconfig", 
-            "text": "@interface   QMTransmitterConfig  :  NSObject  @property   unsigned   int   numBuffers ;  @property   unsigned   int   bufferLength ;  -   ( id ) initWithProfile: ( NSString   * ) profile   forKey: ( NSString   * ) key ;  -   ( id ) initWithKey: ( NSString   * ) key ;  @end", 
-            "title": "QMTransmitterConfig"
-        }, 
-        {
-            "location": "/transmitting/#numbuffers", 
-            "text": "", 
-            "title": "numBuffers"
-        }, 
-        {
-            "location": "/transmitting/#bufferlength", 
-            "text": "", 
-            "title": "bufferLength"
+            "location": "/transmitting/#qmframetransmitter", 
+            "text": "@interface   QMFrameTransmitter  :  NSObject  -   ( id ) initWithConfig: ( QMTransmitterConfig   * ) conf ;  -   ( void ) send: ( NSData   * ) frame ;  -   ( void ) setBlocking: ( long ) seconds   withNano: ( long ) nano ;  -   ( void ) setNonBlocking ;  -   ( void ) close ;  @end", 
+            "title": "QMFrameTransmitter"
         }, 
         {
             "location": "/transmitting/#initwithconfig", 
@@ -237,13 +227,18 @@
         }, 
         {
             "location": "/receiving/", 
-            "text": "Receiving Data\n\n\ninitWithConfig:\n\n\n-\n \n(\nid\n)\ninitWithConfig:\n(\nQMReceiverConfig\n \n*\n)\nconf\n;\n\n\n\n\n\n\nreceive\n\n\n-\n \n(\nNSData\n \n*\n)\nreceive\n;\n\n\n\n\n\n\nsetReceiveCallback:\n\n\n-\n \n(\nvoid\n)\nsetReceiveCallback:\n(\nQMFrameReceiverCallback\n)\nnewCallback\n;\n\n\n\n\n\n\nsetBlocking:withNano:\n\n\n-\n \n(\nvoid\n)\nsetBlocking:\n(\nlong\n)\nseconds\n\n\n           \nwithNano:\n(\nlong\n)\nnano\n;\n\n\n\n\n\n\nsetNonBlocking\n\n\n-\n \n(\nvoid\n)\nsetNonBlocking\n;\n\n\n\n\n\n\nclose\n\n\n-\n \n(\nvoid\n)\nclose\n;", 
+            "text": "Receiving Data\n\n\nQMFrameReceiver\n\n\n@interface\n \nQMFrameReceiver\n : \nNSObject\n\n\n\n-\n \n(\nid\n)\ninitWithConfig:\n(\nQMReceiverConfig\n \n*\n)\nconf\n;\n\n\n\n-\n \n(\nNSData\n \n*\n)\nreceive\n;\n\n\n\n-\n \n(\nvoid\n)\nsetReceiveCallback:\n(\nQMFrameReceiverCallback\n)\nnewCallback\n;\n\n\n\n-\n \n(\nvoid\n)\nsetBlocking:\n(\nlong\n)\nseconds\n \nwithNano:\n(\nlong\n)\nnano\n;\n\n\n\n-\n \n(\nvoid\n)\nsetNonBlocking\n;\n\n\n\n-\n \n(\nvoid\n)\nclose\n;\n\n\n\n@end\n\n\n\n\n\n\ninitWithConfig:\n\n\n-\n \n(\nid\n)\ninitWithConfig:\n(\nQMReceiverConfig\n \n*\n)\nconf\n;\n\n\n\n\n\n\nreceive\n\n\n-\n \n(\nNSData\n \n*\n)\nreceive\n;\n\n\n\n\n\n\nsetReceiveCallback:\n\n\n-\n \n(\nvoid\n)\nsetReceiveCallback:\n(\nQMFrameReceiverCallback\n)\nnewCallback\n;\n\n\n\n\n\n\nsetBlocking:withNano:\n\n\n-\n \n(\nvoid\n)\nsetBlocking:\n(\nlong\n)\nseconds\n\n\n           \nwithNano:\n(\nlong\n)\nnano\n;\n\n\n\n\n\n\nsetNonBlocking\n\n\n-\n \n(\nvoid\n)\nsetNonBlocking\n;\n\n\n\n\n\n\nclose\n\n\n-\n \n(\nvoid\n)\nclose\n;", 
             "title": "Receiving Data"
         }, 
         {
             "location": "/receiving/#receiving-data", 
             "text": "", 
             "title": "Receiving Data"
+        }, 
+        {
+            "location": "/receiving/#qmframereceiver", 
+            "text": "@interface   QMFrameReceiver  :  NSObject  -   ( id ) initWithConfig: ( QMReceiverConfig   * ) conf ;  -   ( NSData   * ) receive ;  -   ( void ) setReceiveCallback: ( QMFrameReceiverCallback ) newCallback ;  -   ( void ) setBlocking: ( long ) seconds   withNano: ( long ) nano ;  -   ( void ) setNonBlocking ;  -   ( void ) close ;  @end", 
+            "title": "QMFrameReceiver"
         }, 
         {
             "location": "/receiving/#initwithconfig", 
@@ -277,13 +272,63 @@
         }, 
         {
             "location": "/configuration/", 
-            "text": "Modem Configuration", 
+            "text": "Modem Configuration\n\n\nQMTransmitterConfig\n\n\n@interface\n \nQMTransmitterConfig\n : \nNSObject\n\n\n\n@property\n \nunsigned\n \nint\n \nnumBuffers\n;\n\n\n\n@property\n \nunsigned\n \nint\n \nbufferLength\n;\n\n\n\n-\n \n(\nid\n)\ninitWithProfile:\n(\nNSString\n \n*\n)\nprofile\n \nforKey:\n(\nNSString\n \n*\n)\nkey\n;\n\n\n\n-\n \n(\nid\n)\ninitWithKey:\n(\nNSString\n \n*\n)\nkey\n;\n\n\n\n@end\n\n\n\n\n\n\nnumBuffers\n\n\nbufferLength\n\n\ninitWithProfile:forKey:\n\n\n-\n \n(\nid\n)\ninitWithProfile:\n(\nNSString\n \n*\n)\nprofile\n\n\n               \nforKey:\n(\nNSString\n \n*\n)\nkey\n;\n\n\n\n\n\n\ninitWithKey:\n\n\n-\n \n(\nid\n)\ninitWithKey:\n(\nNSString\n \n*\n)\nkey\n;\n\n\n\n\n\n\nQMReceiverConfig\n\n\n@interface\n \nQMReceiverConfig\n : \nNSObject\n\n\n\n@property\n \nunsigned\n \nint\n \nnumBuffers\n;\n\n\n\n@property\n \nunsigned\n \nint\n \nbufferLength\n;\n\n\n\n-\n \n(\nid\n)\ninitWithProfile:\n(\nNSString\n \n*\n)\nprofile\n \nforKey:\n(\nNSString\n \n*\n)\nkey\n;\n\n\n\n-\n \n(\nid\n)\ninitWithKey:\n(\nNSString\n \n*\n)\nkey\n;\n\n\n\n@end\n\n\n\n\n\n\nnumBuffers\n\n\nbufferLength\n\n\ninitWithProfile:forKey:\n\n\n-\n \n(\nid\n)\ninitWithProfile:\n(\nNSString\n \n*\n)\nprofile\n\n\n               \nforKey:\n(\nNSString\n \n*\n)\nkey\n;\n\n\n\n\n\n\ninitWithKey:\n\n\n-\n \n(\nid\n)\ninitWithKey:\n(\nNSString\n \n*\n)\nkey\n;", 
             "title": "Modem Configuration"
         }, 
         {
             "location": "/configuration/#modem-configuration", 
             "text": "", 
             "title": "Modem Configuration"
+        }, 
+        {
+            "location": "/configuration/#qmtransmitterconfig", 
+            "text": "@interface   QMTransmitterConfig  :  NSObject  @property   unsigned   int   numBuffers ;  @property   unsigned   int   bufferLength ;  -   ( id ) initWithProfile: ( NSString   * ) profile   forKey: ( NSString   * ) key ;  -   ( id ) initWithKey: ( NSString   * ) key ;  @end", 
+            "title": "QMTransmitterConfig"
+        }, 
+        {
+            "location": "/configuration/#numbuffers", 
+            "text": "", 
+            "title": "numBuffers"
+        }, 
+        {
+            "location": "/configuration/#bufferlength", 
+            "text": "", 
+            "title": "bufferLength"
+        }, 
+        {
+            "location": "/configuration/#initwithprofileforkey", 
+            "text": "-   ( id ) initWithProfile: ( NSString   * ) profile \n\n                forKey: ( NSString   * ) key ;", 
+            "title": "initWithProfile:forKey:"
+        }, 
+        {
+            "location": "/configuration/#initwithkey", 
+            "text": "-   ( id ) initWithKey: ( NSString   * ) key ;", 
+            "title": "initWithKey:"
+        }, 
+        {
+            "location": "/configuration/#qmreceiverconfig", 
+            "text": "@interface   QMReceiverConfig  :  NSObject  @property   unsigned   int   numBuffers ;  @property   unsigned   int   bufferLength ;  -   ( id ) initWithProfile: ( NSString   * ) profile   forKey: ( NSString   * ) key ;  -   ( id ) initWithKey: ( NSString   * ) key ;  @end", 
+            "title": "QMReceiverConfig"
+        }, 
+        {
+            "location": "/configuration/#numbuffers_1", 
+            "text": "", 
+            "title": "numBuffers"
+        }, 
+        {
+            "location": "/configuration/#bufferlength_1", 
+            "text": "", 
+            "title": "bufferLength"
+        }, 
+        {
+            "location": "/configuration/#initwithprofileforkey_1", 
+            "text": "-   ( id ) initWithProfile: ( NSString   * ) profile \n\n                forKey: ( NSString   * ) key ;", 
+            "title": "initWithProfile:forKey:"
+        }, 
+        {
+            "location": "/configuration/#initwithkey_1", 
+            "text": "-   ( id ) initWithKey: ( NSString   * ) key ;", 
+            "title": "initWithKey:"
         }, 
         {
             "location": "/encoding/", 
@@ -552,6 +597,11 @@
         }, 
         {
             "location": "/frame-stats/", 
+            "text": "Frame Stats", 
+            "title": "Frame Stats"
+        }, 
+        {
+            "location": "/frame-stats/#frame-stats", 
             "text": "", 
             "title": "Frame Stats"
         }

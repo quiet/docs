@@ -262,7 +262,7 @@
         }, 
         {
             "location": "/receiving/", 
-            "text": "Receiving Data\n\n\nFrameReceiver\n\n\npublic\n \nclass\n \nFrameReceiver\n \n{\n\n\n    \npublic\n \nFrameReceiver\n(\nFrameReceiverConfig\n \nconf\n)\n \nthrows\n \nModemException\n;\n\n\n    \npublic\n \nlong\n \nreceive\n(\nbyte\n[]\n \nframe\n)\n \nthrows\n \nIOException\n;\n\n\n    \npublic\n \nlong\n \nreceive\n(\nbyte\n[]\n \nframe\n,\n \nlong\n \nlength\n)\n \nthrows\n \nIOException\n;\n\n\n    \npublic\n \nlong\n \nreceive\n(\nbyte\n[]\n \nframe\n,\n \nlong\n \noffset\n,\n \nlong\n \nlength\n)\n \nthrows\n \nIOException\n;\n\n\n    \npublic\n \nvoid\n \nsetBlocking\n(\nlong\n \nseconds\n,\n \nlong\n \nnano\n);\n\n\n    \npublic\n \nvoid\n \nsetNonBlocking\n();\n\n\n    \npublic\n \nvoid\n \nclose\n();\n\n\n    \npublic\n \nvoid\n \nterminate\n(\nint\n \nurgency\n);\n\n\n    \npublic\n \nvoid\n \nenableStats\n();\n\n\n    \npublic\n \nvoid\n \ndisableStats\n();\n\n\n    \npublic\n \nvoid\n \nstatsSetBlocking\n(\nlong\n \nseconds\n,\n \nlong\n \nnano\n);\n\n\n    \npublic\n \nvoid\n \nstatsSetNonblocking\n();\n\n\n    \npublic\n \nsynchronized\n \nFrameStats\n \nreceiveStats\n()\n \nthrows\n \nIOException\n;\n\n\n    \nprotected\n \nvoid\n \nfinalize\n();\n\n\n\n}\n\n\n\n\n\n\nFrameReceiver\n\n\npublic\n \n\n\nFrameReceiver\n(\nFrameReceiverConfig\n \nconf\n)\n\n\n\nthrows\n \nModemException\n\n\n\n\n\n\nreceive\n\n\npublic\n \nlong\n\n\n\nreceive\n(\nbyte\n[]\n \nframe\n)\n\n\n\nthrows\n \nIOException\n\n\n\n\n\n\nReceive a single frame of data and write it into \nframe\n. This function does not block by default.\n\n\nreceive\n\n\npublic\n \nlong\n\n\n\nreceive\n(\nbyte\n[]\n \nframe\n,\n\n\n        \nlong\n \nlength\n)\n\n\n\nthrows\n \nIOException\n\n\n\n\n\n\nreceive\n\n\npublic\n \nlong\n\n\n\nreceive\n(\nbyte\n[]\n \nframe\n,\n\n\n        \nlong\n \noffset\n,\n\n\n        \nlong\n \nlength\n)\n\n\n\nthrows\n \nIOException\n\n\n\n\n\n\nsetBlocking\n\n\npublic\n \nvoid\n\n\n\nsetBlocking\n(\nlong\n \nseconds\n,\n\n\n            \nlong\n \nnano\n)\n\n\n\n\n\n\nsetNonBlocking\n\n\npublic\n \nvoid\n\n\n\nsetNonBlocking\n()\n\n\n\n\n\n\nclose\n\n\npublic\n \nvoid\n\n\n\nclose\n()\n\n\n\n\n\n\nterminate\n\n\npublic\n \nvoid\n\n\n\nterminate\n(\nint\n \nurgency\n)\n\n\n\n\n\n\nenableStats\n\n\npublic\n \nvoid\n\n\n\nenableStats\n()\n\n\n\n\n\n\ndisableStats\n\n\npublic\n \nvoid\n\n\n\ndisableStats\n()\n\n\n\n\n\n\nstatsSetBlocking\n\n\npublic\n \nvoid\n\n\n\nstatsSetBlocking\n(\nlong\n \nseconds\n,\n\n\n                 \nlong\n \nnano\n)\n\n\n\n\n\n\nstatsSetNonblocking\n\n\npublic\n \nvoid\n\n\n\nstatsSetNonblocking\n()\n\n\n\n\n\n\nreceiveStats\n\n\npublic\n \nsynchronized\n \nFrameStats\n\n\n\nreceiveStats\n()\n\n\n\nthrows\n \nIOException\n\n\n\n\n\n\nfinalize\n\n\nprotected\n \nvoid\n\n\n\nfinalize\n()", 
+            "text": "Receiving Data\n\n\nFrameReceiver\n\n\npublic\n \nclass\n \nFrameReceiver\n \n{\n\n\n    \npublic\n \nFrameReceiver\n(\nFrameReceiverConfig\n \nconf\n)\n \nthrows\n \nModemException\n;\n\n\n    \npublic\n \nlong\n \nreceive\n(\nbyte\n[]\n \nframe\n)\n \nthrows\n \nIOException\n;\n\n\n    \npublic\n \nlong\n \nreceive\n(\nbyte\n[]\n \nframe\n,\n \nlong\n \nlength\n)\n \nthrows\n \nIOException\n;\n\n\n    \npublic\n \nlong\n \nreceive\n(\nbyte\n[]\n \nframe\n,\n \nlong\n \noffset\n,\n \nlong\n \nlength\n)\n \nthrows\n \nIOException\n;\n\n\n    \npublic\n \nvoid\n \nsetBlocking\n(\nlong\n \nseconds\n,\n \nlong\n \nnano\n);\n\n\n    \npublic\n \nvoid\n \nsetNonBlocking\n();\n\n\n    \npublic\n \nvoid\n \nclose\n();\n\n\n    \npublic\n \nvoid\n \nterminate\n(\nint\n \nurgency\n);\n\n\n    \npublic\n \nvoid\n \nenableStats\n();\n\n\n    \npublic\n \nvoid\n \ndisableStats\n();\n\n\n    \npublic\n \nvoid\n \nstatsSetBlocking\n(\nlong\n \nseconds\n,\n \nlong\n \nnano\n);\n\n\n    \npublic\n \nvoid\n \nstatsSetNonblocking\n();\n\n\n    \npublic\n \nsynchronized\n \nFrameStats\n \nreceiveStats\n()\n \nthrows\n \nIOException\n;\n\n\n    \nprotected\n \nvoid\n \nfinalize\n();\n\n\n\n}\n\n\n\n\n\n\nFrameReceiver\n\n\npublic\n \n\n\nFrameReceiver\n(\nFrameReceiverConfig\n \nconf\n)\n\n\n\nthrows\n \nModemException\n\n\n\n\n\n\nreceive\n\n\npublic\n \nlong\n\n\n\nreceive\n(\nbyte\n[]\n \nframe\n)\n\n\n\nthrows\n \nIOException\n\n\n\n\n\n\nReceive a single frame of data and write it into \nframe\n. This function does not block by default.\n\n\nreceive\n\n\npublic\n \nlong\n\n\n\nreceive\n(\nbyte\n[]\n \nframe\n,\n\n\n        \nlong\n \nlength\n)\n\n\n\nthrows\n \nIOException\n\n\n\n\n\n\nreceive\n\n\npublic\n \nlong\n\n\n\nreceive\n(\nbyte\n[]\n \nframe\n,\n\n\n        \nlong\n \noffset\n,\n\n\n        \nlong\n \nlength\n)\n\n\n\nthrows\n \nIOException\n\n\n\n\n\n\nsetBlocking\n\n\npublic\n \nvoid\n\n\n\nsetBlocking\n(\nlong\n \nseconds\n,\n\n\n            \nlong\n \nnano\n)\n\n\n\n\n\n\nsetNonBlocking\n\n\npublic\n \nvoid\n\n\n\nsetNonBlocking\n()\n\n\n\n\n\n\nclose\n\n\npublic\n \nvoid\n\n\n\nclose\n()\n\n\n\n\n\n\nterminate\n\n\npublic\n \nvoid\n\n\n\nterminate\n(\nint\n \nurgency\n)\n\n\n\n\n\n\nShut down the receiver.\n\n\nenableStats\n\n\npublic\n \nvoid\n\n\n\nenableStats\n()\n\n\n\n\n\n\ndisableStats\n\n\npublic\n \nvoid\n\n\n\ndisableStats\n()\n\n\n\n\n\n\nstatsSetBlocking\n\n\npublic\n \nvoid\n\n\n\nstatsSetBlocking\n(\nlong\n \nseconds\n,\n\n\n                 \nlong\n \nnano\n)\n\n\n\n\n\n\nstatsSetNonblocking\n\n\npublic\n \nvoid\n\n\n\nstatsSetNonblocking\n()\n\n\n\n\n\n\nreceiveStats\n\n\npublic\n \nsynchronized\n \nFrameStats\n\n\n\nreceiveStats\n()\n\n\n\nthrows\n \nIOException\n\n\n\n\n\n\nfinalize\n\n\nprotected\n \nvoid\n\n\n\nfinalize\n()", 
             "title": "Receiving Data"
         }, 
         {
@@ -312,7 +312,7 @@
         }, 
         {
             "location": "/receiving/#terminate", 
-            "text": "public   void  terminate ( int   urgency )", 
+            "text": "public   void  terminate ( int   urgency )   Shut down the receiver.", 
             "title": "terminate"
         }, 
         {
@@ -347,13 +347,103 @@
         }, 
         {
             "location": "/configuration/", 
-            "text": "Modem Configuration", 
+            "text": "Modem Configuration\n\n\nFrameTransmitterConfig\n\n\npublic\n \nclass\n \nFrameTransmitterConfig\n \n{\n\n\n    \npublic\n \nFrameTransmitterConfig\n(\nandroid\n.\ncontent\n.\nContext\n \nc\n,\n \nString\n \nkey\n)\n \nthrows\n \nIOException\n;\n\n\n    \npublic\n \nFrameTransmitterConfig\n(\nString\n \nprofiles\n,\n \nString\n \nkey\n);\n\n\n    \npublic\n \nvoid\n \nsetNumBuffers\n(\nlong\n \nnumBuffers\n);\n\n\n    \npublic\n \nvoid\n \nsetBufferLength\n(\nlong\n \nbufferLength\n);\n\n\n    \npublic\n \nlong\n \ngetNumBuffers\n();\n\n\n    \npublic\n \nlong\n \ngetBufferLength\n();\n\n\n    \npublic\n \nString\n \ngetDefaultProfiles\n(\nandroid\n.\ncontent\n.\nContext\n \nc\n)\n \nthrows\n \nIOException\n;\n\n\n    \nprotected\n \nvoid\n \nfinalize\n()\n \nthrows\n \nThrowable\n;\n\n\n\n}\n\n\n\n\n\n\nFrameTransmitterConfig\n\n\npublic\n \n\n\nFrameTransmitterConfig\n(\nandroid\n.\ncontent\n.\nContext\n \nc\n,\n\n\n                       \nString\n \nkey\n)\n\n\n\nthrows\n \nIOException\n\n\n\n\n\n\nFrameTransmitterConfig\n\n\npublic\n \n\n\nFrameTransmitterConfig\n(\nString\n \nprofiles\n,\n\n\n                       \nString\n \nkey\n)\n\n\n\n\n\n\nsetNumBuffers\n\n\npublic\n \nvoid\n\n\n\nsetNumBuffers\n(\nlong\n \nnumBuffers\n)\n\n\n\n\n\n\nsetBufferLength\n\n\npublic\n \nvoid\n\n\n\nsetBufferLength\n(\nlong\n \nbufferLength\n)\n\n\n\n\n\n\ngetNumBuffers\n\n\npublic\n \nlong\n\n\n\ngetNumBuffers\n()\n\n\n\n\n\n\ngetBufferLength\n\n\npublic\n \nlong\n\n\n\ngetBufferLength\n()\n\n\n\n\n\n\ngetDefaultProfiles\n\n\npublic\n \nString\n\n\n\ngetDefaultProfiles\n(\nandroid\n.\ncontent\n.\nContext\n \nc\n)\n\n\n\nthrows\n \nIOException\n\n\n\n\n\n\nfinalize\n\n\nprotected\n \nvoid\n\n\n\nfinalize\n()\n\n\n\nthrows\n \nThrowable\n\n\n\n\n\n\nFrameReceiverConfig\n\n\npublic\n \nclass\n \nFrameReceiverConfig\n \n{\n\n\n    \npublic\n \nFrameReceiverConfig\n(\nandroid\n.\ncontent\n.\nContext\n \nc\n,\n \nString\n \nkey\n)\n \nthrows\n \nIOException\n;\n\n\n    \npublic\n \nFrameReceiverConfig\n(\nString\n \nprofiles\n,\n \nString\n \nkey\n);\n\n\n    \npublic\n \nvoid\n \nsetNumBuffers\n(\nlong\n \nnumBuffers\n);\n\n\n    \npublic\n \nvoid\n \nsetBufferLength\n(\nlong\n \nbufferLength\n);\n\n\n    \npublic\n \nlong\n \ngetNumBuffers\n();\n\n\n    \npublic\n \nlong\n \ngetBufferLength\n();\n\n\n    \npublic\n \nString\n \ngetDefaultProfiles\n(\nandroid\n.\ncontent\n.\nContext\n \nc\n)\n \nthrows\n \nIOException\n;\n\n\n    \nprotected\n \nvoid\n \nfinalize\n()\n \nthrows\n \nThrowable\n;\n\n\n\n}\n\n\n\n\n\n\nFrameReceiverConfig\n\n\npublic\n \n\n\nFrameReceiverConfig\n(\nandroid\n.\ncontent\n.\nContext\n \nc\n,\n\n\n                    \nString\n \nkey\n)\n\n\n\nthrows\n \nIOException\n\n\n\n\n\n\nFrameReceiverConfig\n\n\npublic\n \n\n\nFrameReceiverConfig\n(\nString\n \nprofiles\n,\n\n\n                    \nString\n \nkey\n)\n\n\n\n\n\n\nsetNumBuffers\n\n\npublic\n \nvoid\n\n\n\nsetNumBuffers\n(\nlong\n \nnumBuffers\n)\n\n\n\n\n\n\nsetBufferLength\n\n\npublic\n \nvoid\n\n\n\nsetBufferLength\n(\nlong\n \nbufferLength\n)\n\n\n\n\n\n\ngetNumBuffers\n\n\npublic\n \nlong\n\n\n\ngetNumBuffers\n()\n\n\n\n\n\n\ngetBufferLength\n\n\npublic\n \nlong\n\n\n\ngetBufferLength\n()\n\n\n\n\n\n\ngetDefaultProfiles\n\n\npublic\n \nString\n\n\n\ngetDefaultProfiles\n(\nandroid\n.\ncontent\n.\nContext\n \nc\n)\n\n\n\nthrows\n \nIOException\n\n\n\n\n\n\nfinalize\n\n\nprotected\n \nvoid\n\n\n\nfinalize\n()\n\n\n\nthrows\n \nThrowable", 
             "title": "Modem Configuration"
         }, 
         {
             "location": "/configuration/#modem-configuration", 
             "text": "", 
             "title": "Modem Configuration"
+        }, 
+        {
+            "location": "/configuration/#frametransmitterconfig", 
+            "text": "public   class   FrameTransmitterConfig   { \n\n     public   FrameTransmitterConfig ( android . content . Context   c ,   String   key )   throws   IOException ; \n\n     public   FrameTransmitterConfig ( String   profiles ,   String   key ); \n\n     public   void   setNumBuffers ( long   numBuffers ); \n\n     public   void   setBufferLength ( long   bufferLength ); \n\n     public   long   getNumBuffers (); \n\n     public   long   getBufferLength (); \n\n     public   String   getDefaultProfiles ( android . content . Context   c )   throws   IOException ; \n\n     protected   void   finalize ()   throws   Throwable ;  }", 
+            "title": "FrameTransmitterConfig"
+        }, 
+        {
+            "location": "/configuration/#frametransmitterconfig_1", 
+            "text": "public   FrameTransmitterConfig ( android . content . Context   c , \n\n                        String   key )  throws   IOException", 
+            "title": "FrameTransmitterConfig"
+        }, 
+        {
+            "location": "/configuration/#frametransmitterconfig_2", 
+            "text": "public   FrameTransmitterConfig ( String   profiles , \n\n                        String   key )", 
+            "title": "FrameTransmitterConfig"
+        }, 
+        {
+            "location": "/configuration/#setnumbuffers", 
+            "text": "public   void  setNumBuffers ( long   numBuffers )", 
+            "title": "setNumBuffers"
+        }, 
+        {
+            "location": "/configuration/#setbufferlength", 
+            "text": "public   void  setBufferLength ( long   bufferLength )", 
+            "title": "setBufferLength"
+        }, 
+        {
+            "location": "/configuration/#getnumbuffers", 
+            "text": "public   long  getNumBuffers ()", 
+            "title": "getNumBuffers"
+        }, 
+        {
+            "location": "/configuration/#getbufferlength", 
+            "text": "public   long  getBufferLength ()", 
+            "title": "getBufferLength"
+        }, 
+        {
+            "location": "/configuration/#getdefaultprofiles", 
+            "text": "public   String  getDefaultProfiles ( android . content . Context   c )  throws   IOException", 
+            "title": "getDefaultProfiles"
+        }, 
+        {
+            "location": "/configuration/#finalize", 
+            "text": "protected   void  finalize ()  throws   Throwable", 
+            "title": "finalize"
+        }, 
+        {
+            "location": "/configuration/#framereceiverconfig", 
+            "text": "public   class   FrameReceiverConfig   { \n\n     public   FrameReceiverConfig ( android . content . Context   c ,   String   key )   throws   IOException ; \n\n     public   FrameReceiverConfig ( String   profiles ,   String   key ); \n\n     public   void   setNumBuffers ( long   numBuffers ); \n\n     public   void   setBufferLength ( long   bufferLength ); \n\n     public   long   getNumBuffers (); \n\n     public   long   getBufferLength (); \n\n     public   String   getDefaultProfiles ( android . content . Context   c )   throws   IOException ; \n\n     protected   void   finalize ()   throws   Throwable ;  }", 
+            "title": "FrameReceiverConfig"
+        }, 
+        {
+            "location": "/configuration/#framereceiverconfig_1", 
+            "text": "public   FrameReceiverConfig ( android . content . Context   c , \n\n                     String   key )  throws   IOException", 
+            "title": "FrameReceiverConfig"
+        }, 
+        {
+            "location": "/configuration/#framereceiverconfig_2", 
+            "text": "public   FrameReceiverConfig ( String   profiles , \n\n                     String   key )", 
+            "title": "FrameReceiverConfig"
+        }, 
+        {
+            "location": "/configuration/#setnumbuffers_1", 
+            "text": "public   void  setNumBuffers ( long   numBuffers )", 
+            "title": "setNumBuffers"
+        }, 
+        {
+            "location": "/configuration/#setbufferlength_1", 
+            "text": "public   void  setBufferLength ( long   bufferLength )", 
+            "title": "setBufferLength"
+        }, 
+        {
+            "location": "/configuration/#getnumbuffers_1", 
+            "text": "public   long  getNumBuffers ()", 
+            "title": "getNumBuffers"
+        }, 
+        {
+            "location": "/configuration/#getbufferlength_1", 
+            "text": "public   long  getBufferLength ()", 
+            "title": "getBufferLength"
+        }, 
+        {
+            "location": "/configuration/#getdefaultprofiles_1", 
+            "text": "public   String  getDefaultProfiles ( android . content . Context   c )  throws   IOException", 
+            "title": "getDefaultProfiles"
+        }, 
+        {
+            "location": "/configuration/#finalize_1", 
+            "text": "protected   void  finalize ()  throws   Throwable", 
+            "title": "finalize"
         }, 
         {
             "location": "/encoding/", 
@@ -622,6 +712,11 @@
         }, 
         {
             "location": "/frame-stats/", 
+            "text": "Frame Stats", 
+            "title": "Frame Stats"
+        }, 
+        {
+            "location": "/frame-stats/#frame-stats", 
             "text": "", 
             "title": "Frame Stats"
         }

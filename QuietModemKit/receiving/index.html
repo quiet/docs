@@ -240,6 +240,12 @@
         <ul>
           
             <li class="anchor">
+              <a title="QMFrameReceiver" href="#qmframereceiver">
+                QMFrameReceiver
+              </a>
+            </li>
+          
+            <li class="anchor">
               <a title="initWithConfig:" href="#initwithconfig">
                 initWithConfig:
               </a>
@@ -352,6 +358,25 @@
         <div class="wrapper">
           
           <h1 id="receiving-data">Receiving Data</h1>
+<h2 id="qmframereceiver">QMFrameReceiver</h2>
+<div class="codehilite"><pre><span></span><span class="k">@interface</span> <span class="nc">QMFrameReceiver</span> : <span class="bp">NSObject</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithConfig:</span><span class="p">(</span><span class="n">QMReceiverConfig</span> <span class="o">*</span><span class="p">)</span><span class="nv">conf</span><span class="p">;</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="bp">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nf">receive</span><span class="p">;</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setReceiveCallback:</span><span class="p">(</span><span class="n">QMFrameReceiverCallback</span><span class="p">)</span><span class="nv">newCallback</span><span class="p">;</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setBlocking:</span><span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="nv">seconds</span> <span class="nf">withNano:</span><span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="nv">nano</span><span class="p">;</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setNonBlocking</span><span class="p">;</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">close</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div>
+
+
 <h2 id="initwithconfig">initWithConfig:</h2>
 <div class="codehilite"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithConfig:</span><span class="p">(</span><span class="n">QMReceiverConfig</span> <span class="o">*</span><span class="p">)</span><span class="nv">conf</span><span class="p">;</span>
 </pre></div>

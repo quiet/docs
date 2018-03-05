@@ -247,6 +247,118 @@
         
       
       
+        <ul>
+          
+            <li class="anchor">
+              <a title="FrameTransmitterConfig" href="#frametransmitterconfig">
+                FrameTransmitterConfig
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="FrameTransmitterConfig" href="#frametransmitterconfig_1">
+                FrameTransmitterConfig
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="FrameTransmitterConfig" href="#frametransmitterconfig_2">
+                FrameTransmitterConfig
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="setNumBuffers" href="#setnumbuffers">
+                setNumBuffers
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="setBufferLength" href="#setbufferlength">
+                setBufferLength
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="getNumBuffers" href="#getnumbuffers">
+                getNumBuffers
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="getBufferLength" href="#getbufferlength">
+                getBufferLength
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="getDefaultProfiles" href="#getdefaultprofiles">
+                getDefaultProfiles
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="finalize" href="#finalize">
+                finalize
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="FrameReceiverConfig" href="#framereceiverconfig">
+                FrameReceiverConfig
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="FrameReceiverConfig" href="#framereceiverconfig_1">
+                FrameReceiverConfig
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="FrameReceiverConfig" href="#framereceiverconfig_2">
+                FrameReceiverConfig
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="setNumBuffers" href="#setnumbuffers_1">
+                setNumBuffers
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="setBufferLength" href="#setbufferlength_1">
+                setBufferLength
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="getNumBuffers" href="#getnumbuffers_1">
+                getNumBuffers
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="getBufferLength" href="#getbufferlength_1">
+                getBufferLength
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="getDefaultProfiles" href="#getdefaultprofiles_1">
+                getDefaultProfiles
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="finalize" href="#finalize_1">
+                finalize
+              </a>
+            </li>
+          
+        </ul>
+      
     
   </li>
 
@@ -312,6 +424,182 @@
         <div class="wrapper">
           
           <h1 id="modem-configuration">Modem Configuration</h1>
+<h2 id="frametransmitterconfig">FrameTransmitterConfig</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FrameTransmitterConfig</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nf">FrameTransmitterConfig</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">content</span><span class="o">.</span><span class="na">Context</span> <span class="n">c</span><span class="o">,</span> <span class="n">String</span> <span class="n">key</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">FrameTransmitterConfig</span><span class="o">(</span><span class="n">String</span> <span class="n">profiles</span><span class="o">,</span> <span class="n">String</span> <span class="n">key</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setNumBuffers</span><span class="o">(</span><span class="kt">long</span> <span class="n">numBuffers</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBufferLength</span><span class="o">(</span><span class="kt">long</span> <span class="n">bufferLength</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getNumBuffers</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getBufferLength</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getDefaultProfiles</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">content</span><span class="o">.</span><span class="na">Context</span> <span class="n">c</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">finalize</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span><span class="o">;</span>
+
+<span class="o">}</span>
+</pre></div>
+
+
+<h2 id="frametransmitterconfig_1">FrameTransmitterConfig</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> 
+
+<span class="nf">FrameTransmitterConfig</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">content</span><span class="o">.</span><span class="na">Context</span> <span class="n">c</span><span class="o">,</span>
+
+                       <span class="n">String</span> <span class="n">key</span><span class="o">)</span>
+
+<span class="kd">throws</span> <span class="n">IOException</span>
+</pre></div>
+
+
+<h2 id="frametransmitterconfig_2">FrameTransmitterConfig</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> 
+
+<span class="nf">FrameTransmitterConfig</span><span class="o">(</span><span class="n">String</span> <span class="n">profiles</span><span class="o">,</span>
+
+                       <span class="n">String</span> <span class="n">key</span><span class="o">)</span>
+</pre></div>
+
+
+<h2 id="setnumbuffers">setNumBuffers</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span>
+
+<span class="nf">setNumBuffers</span><span class="o">(</span><span class="kt">long</span> <span class="n">numBuffers</span><span class="o">)</span>
+</pre></div>
+
+
+<h2 id="setbufferlength">setBufferLength</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span>
+
+<span class="nf">setBufferLength</span><span class="o">(</span><span class="kt">long</span> <span class="n">bufferLength</span><span class="o">)</span>
+</pre></div>
+
+
+<h2 id="getnumbuffers">getNumBuffers</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">long</span>
+
+<span class="nf">getNumBuffers</span><span class="o">()</span>
+</pre></div>
+
+
+<h2 id="getbufferlength">getBufferLength</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">long</span>
+
+<span class="nf">getBufferLength</span><span class="o">()</span>
+</pre></div>
+
+
+<h2 id="getdefaultprofiles">getDefaultProfiles</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="n">String</span>
+
+<span class="nf">getDefaultProfiles</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">content</span><span class="o">.</span><span class="na">Context</span> <span class="n">c</span><span class="o">)</span>
+
+<span class="kd">throws</span> <span class="n">IOException</span>
+</pre></div>
+
+
+<h2 id="finalize">finalize</h2>
+<div class="codehilite"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span>
+
+<span class="nf">finalize</span><span class="o">()</span>
+
+<span class="kd">throws</span> <span class="n">Throwable</span>
+</pre></div>
+
+
+<h2 id="framereceiverconfig">FrameReceiverConfig</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FrameReceiverConfig</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nf">FrameReceiverConfig</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">content</span><span class="o">.</span><span class="na">Context</span> <span class="n">c</span><span class="o">,</span> <span class="n">String</span> <span class="n">key</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">FrameReceiverConfig</span><span class="o">(</span><span class="n">String</span> <span class="n">profiles</span><span class="o">,</span> <span class="n">String</span> <span class="n">key</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setNumBuffers</span><span class="o">(</span><span class="kt">long</span> <span class="n">numBuffers</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBufferLength</span><span class="o">(</span><span class="kt">long</span> <span class="n">bufferLength</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getNumBuffers</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getBufferLength</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getDefaultProfiles</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">content</span><span class="o">.</span><span class="na">Context</span> <span class="n">c</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">finalize</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span><span class="o">;</span>
+
+<span class="o">}</span>
+</pre></div>
+
+
+<h2 id="framereceiverconfig_1">FrameReceiverConfig</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> 
+
+<span class="nf">FrameReceiverConfig</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">content</span><span class="o">.</span><span class="na">Context</span> <span class="n">c</span><span class="o">,</span>
+
+                    <span class="n">String</span> <span class="n">key</span><span class="o">)</span>
+
+<span class="kd">throws</span> <span class="n">IOException</span>
+</pre></div>
+
+
+<h2 id="framereceiverconfig_2">FrameReceiverConfig</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> 
+
+<span class="nf">FrameReceiverConfig</span><span class="o">(</span><span class="n">String</span> <span class="n">profiles</span><span class="o">,</span>
+
+                    <span class="n">String</span> <span class="n">key</span><span class="o">)</span>
+</pre></div>
+
+
+<h2 id="setnumbuffers_1">setNumBuffers</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span>
+
+<span class="nf">setNumBuffers</span><span class="o">(</span><span class="kt">long</span> <span class="n">numBuffers</span><span class="o">)</span>
+</pre></div>
+
+
+<h2 id="setbufferlength_1">setBufferLength</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span>
+
+<span class="nf">setBufferLength</span><span class="o">(</span><span class="kt">long</span> <span class="n">bufferLength</span><span class="o">)</span>
+</pre></div>
+
+
+<h2 id="getnumbuffers_1">getNumBuffers</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">long</span>
+
+<span class="nf">getNumBuffers</span><span class="o">()</span>
+</pre></div>
+
+
+<h2 id="getbufferlength_1">getBufferLength</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">long</span>
+
+<span class="nf">getBufferLength</span><span class="o">()</span>
+</pre></div>
+
+
+<h2 id="getdefaultprofiles_1">getDefaultProfiles</h2>
+<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="n">String</span>
+
+<span class="nf">getDefaultProfiles</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">content</span><span class="o">.</span><span class="na">Context</span> <span class="n">c</span><span class="o">)</span>
+
+<span class="kd">throws</span> <span class="n">IOException</span>
+</pre></div>
+
+
+<h2 id="finalize_1">finalize</h2>
+<div class="codehilite"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span>
+
+<span class="nf">finalize</span><span class="o">()</span>
+
+<span class="kd">throws</span> <span class="n">Throwable</span>
+</pre></div>
           <aside class="copyright" role="note">
             
             Documentation built with

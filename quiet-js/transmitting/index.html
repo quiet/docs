@@ -230,32 +230,8 @@
         <ul>
           
             <li class="anchor">
-              <a title="Transmitter.transmit" href="#transmittertransmit">
-                Transmitter.transmit
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Transmitter.destroy" href="#transmitterdestroy">
-                Transmitter.destroy
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Transmitter.getAverageEncodeTime" href="#transmittergetaverageencodetime">
-                Transmitter.getAverageEncodeTime
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Quiet.addReadyCallback" href="#quietaddreadycallback">
-                Quiet.addReadyCallback
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Quiet.init" href="#quietinit">
-                Quiet.init
+              <a title="Transmitter" href="#transmitter">
+                Transmitter
               </a>
             </li>
           
@@ -266,38 +242,20 @@
             </li>
           
             <li class="anchor">
-              <a title="Quiet.receiver" href="#quietreceiver">
-                Quiet.receiver
+              <a title="Transmitter.transmit" href="#transmittertransmit_1">
+                Transmitter.transmit
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Quiet.str2ab" href="#quietstr2ab">
-                Quiet.str2ab
+              <a title="Transmitter.destroy" href="#transmitterdestroy_1">
+                Transmitter.destroy
               </a>
             </li>
           
             <li class="anchor">
-              <a title="Quiet.ab2str" href="#quietab2str">
-                Quiet.ab2str
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Quiet.mergeab" href="#quietmergeab">
-                Quiet.mergeab
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Receiver.destroy" href="#receiverdestroy">
-                Receiver.destroy
-              </a>
-            </li>
-          
-            <li class="anchor">
-              <a title="Receiver.getAverageDecodeTime" href="#receivergetaveragedecodetime">
-                Receiver.getAverageDecodeTime
+              <a title="Transmitter.getAverageEncodeTime" href="#transmittergetaverageencodetime_1">
+                Transmitter.getAverageEncodeTime
               </a>
             </li>
           
@@ -388,60 +346,15 @@
         <div class="wrapper">
           
           <h1 id="transmitting-data">Transmitting Data</h1>
-<h2 id="transmittertransmit">Transmitter.transmit</h2>
-<div class="codehilite"><pre><span></span><span class="nx">Transmitter</span><span class="p">.</span><span class="nx">transmit</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span>
-</pre></div>
-
-
+<h2 id="transmitter">Transmitter</h2>
+<h3 id="framelength">frameLength</h3>
+<p>length in bytes of each underlying transmit frame. calls to transmit() will automatically slice passed arraybuffer into frames of this length or shorter</p>
+<h3 id="transmittertransmit">Transmitter.transmit()</h3>
 <p>Callback for user to provide data to a Quiet transmitter</p>
-<h3 id="parameters">Parameters</h3>
-<p><code>payload</code> - bytes which will be encoded and sent to speaker</p>
-<h2 id="transmitterdestroy">Transmitter.destroy</h2>
-<div class="codehilite"><pre><span></span><span class="nx">Transmitter</span><span class="p">.</span><span class="nx">destroy</span><span class="p">()</span>
-</pre></div>
-
-
+<h3 id="transmitterdestroy">Transmitter.destroy()</h3>
 <p>immediately stop playback and release all resources</p>
-<h2 id="transmittergetaverageencodetime">Transmitter.getAverageEncodeTime</h2>
-<div class="codehilite"><pre><span></span><span class="nx">Transmitter</span><span class="p">.</span><span class="nx">getAverageEncodeTime</span><span class="p">()</span>
-</pre></div>
-
-
+<h3 id="transmittergetaverageencodetime">Transmitter.getAverageEncodeTime()</h3>
 <p>returns average time in ms spent encoding data into sound samples over the last 3 runs</p>
-<h2 id="quietaddreadycallback">Quiet.addReadyCallback</h2>
-<div class="codehilite"><pre><span></span><span class="nx">Quiet</span><span class="p">.</span><span class="nx">addReadyCallback</span><span class="p">(</span><span class="nx">c</span> <span class="p">[,</span>
-
-                       <span class="nx">onError</span><span class="p">])</span>
-</pre></div>
-
-
-<p>Add a callback to be called when Quiet is ready for use, e.g. when transmitters and receivers can be created.</p>
-<h3 id="parameters_1">Parameters</h3>
-<p><code>c</code> - The user function which will be called</p>
-<p><code>onError</code> - User errback function</p>
-<h2 id="quietinit">Quiet.init</h2>
-<div class="codehilite"><pre><span></span><span class="nx">Quiet</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">opts</span><span class="p">,</span>
-
-           <span class="nx">opts</span><span class="p">.</span><span class="nx">profilesPrefix</span><span class="p">,</span>
-
-           <span class="nx">opts</span><span class="p">.</span><span class="nx">memoryInitializerPrefix</span> <span class="p">[,</span>
-
-           <span class="nx">opts</span><span class="p">.</span><span class="nx">libfecPrefix</span> <span class="p">[,</span>
-
-           <span class="nx">opts</span><span class="p">.</span><span class="nx">onReady</span> <span class="p">[,</span>
-
-           <span class="nx">opts</span><span class="p">.</span><span class="nx">onError</span><span class="p">]]])</span>
-</pre></div>
-
-
-<p>Initialize Quiet and set up a callback to be called when Quiet is ready</p>
-<h3 id="parameters_2">Parameters</h3>
-<p><code>opts</code> - configuration options</p>
-<p><code>opts.profilesPrefix</code> - path prefix to quiet-profiles.json   this file configures transmitter and receiver parameters</p>
-<p><code>opts.memoryInitializerPrefix</code> - path prefix to quiet-emscripten.js.mem</p>
-<p><code>opts.libfecPrefix</code> - path prefix to libfec.js</p>
-<p><code>opts.onReady</code> - Quiet ready callback</p>
-<p><code>opts.onError</code> - User errback function</p>
 <h2 id="quiettransmitter">Quiet.transmitter</h2>
 <div class="codehilite"><pre><span></span><span class="nx">Quiet</span><span class="p">.</span><span class="nx">transmitter</span><span class="p">(</span><span class="nx">opts</span><span class="p">,</span>
 
@@ -455,8 +368,7 @@
 </pre></div>
 
 
-<p>Create a new transmitter configured by the given profile name.</p>
-<h3 id="parameters_3">Parameters</h3>
+<h3 id="parameters">Parameters</h3>
 <p><code>opts</code> - transmitter params</p>
 <p><code>opts.profile</code> - name of profile to use, must be a key in quiet-profiles.json OR an object which contains a single profile</p>
 <p><code>opts.onFinish</code> - user callback which will notify user when playback of all data in queue is complete    if the user calls transmit multiple times before waiting for onFinish, then onFinish will be called only once after    all of the data has been played out</p>
@@ -467,81 +379,25 @@
 <ul>
 <li>Transmitter object</li>
 </ul>
-<h2 id="quietreceiver">Quiet.receiver</h2>
-<div class="codehilite"><pre><span></span><span class="nx">Quiet</span><span class="p">.</span><span class="nx">receiver</span><span class="p">(</span><span class="nx">opts</span><span class="p">,</span>
-
-               <span class="nx">opts</span><span class="p">.</span><span class="nx">profile</span><span class="p">,</span>
-
-               <span class="nx">opts</span><span class="p">.</span><span class="nx">onReceive</span> <span class="p">[,</span>
-
-               <span class="nx">opts</span><span class="p">.</span><span class="nx">onCreate</span> <span class="p">[,</span>
-
-               <span class="nx">opts</span><span class="p">.</span><span class="nx">onCreateFail</span> <span class="p">[,</span>
-
-               <span class="nx">opts</span><span class="p">.</span><span class="nx">onReceiveFail</span> <span class="p">[,</span>
-
-               <span class="nx">opts</span><span class="p">.</span><span class="nx">onReceiverStatsUpdate</span><span class="p">]]]])</span>
+<h2 id="transmittertransmit_1">Transmitter.transmit</h2>
+<div class="codehilite"><pre><span></span><span class="nx">Transmitter</span><span class="p">.</span><span class="nx">transmit</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span>
 </pre></div>
 
 
-<p>Create a new receiver with the profile specified by profile (should match profile of transmitter).</p>
-<h3 id="parameters_4">Parameters</h3>
-<p><code>opts</code> - receiver params</p>
-<p><code>opts.profile</code> - name of profile to use, must be a key in quiet-profiles.json OR an object which contains a complete profile</p>
-<p><code>opts.onReceive</code> - callback which receiver will call to send user received data</p>
-<p><code>opts.onCreate</code> - callback to notify user that receiver has been created and is ready to receive. if the user needs to grant permission to use the microphone, this callback fires after that permission is granted.</p>
-<p><code>opts.onCreateFail</code> - callback to notify user that receiver could not be created</p>
-<p><code>opts.onReceiveFail</code> - callback to notify user that receiver received corrupted data</p>
-<p><code>opts.onReceiverStatsUpdate</code> - callback to notify user with new decode stats</p>
-<h3 id="returns_1">Returns</h3>
-<ul>
-<li>Receiver object</li>
-</ul>
-<h2 id="quietstr2ab">Quiet.str2ab</h2>
-<div class="codehilite"><pre><span></span><span class="nx">Quiet</span><span class="p">.</span><span class="nx">str2ab</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+<h3 id="parameters_1">Parameters</h3>
+<p><code>payload</code> - bytes which will be encoded and sent to speaker</p>
+<h2 id="transmitterdestroy_1">Transmitter.destroy</h2>
+<div class="codehilite"><pre><span></span><span class="nx">Transmitter</span><span class="p">.</span><span class="nx">destroy</span><span class="p">()</span>
 </pre></div>
 
 
-<p>Convert a string to array buffer in UTF8</p>
-<h3 id="parameters_5">Parameters</h3>
-<p><code>s</code> - string to be converted</p>
-<h3 id="returns_2">Returns</h3>
-<p>buf - converted arraybuffer</p>
-<h2 id="quietab2str">Quiet.ab2str</h2>
-<div class="codehilite"><pre><span></span><span class="nx">Quiet</span><span class="p">.</span><span class="nx">ab2str</span><span class="p">(</span><span class="nx">ab</span><span class="p">)</span>
+<p>immediately stop playback and release all resources</p>
+<h2 id="transmittergetaverageencodetime_1">Transmitter.getAverageEncodeTime</h2>
+<div class="codehilite"><pre><span></span><span class="nx">Transmitter</span><span class="p">.</span><span class="nx">getAverageEncodeTime</span><span class="p">()</span>
 </pre></div>
 
 
-<p>Convert an array buffer in UTF8 to string</p>
-<h3 id="parameters_6">Parameters</h3>
-<p><code>ab</code> - array buffer to be converted</p>
-<h3 id="returns_3">Returns</h3>
-<p>s - converted string</p>
-<h2 id="quietmergeab">Quiet.mergeab</h2>
-<div class="codehilite"><pre><span></span><span class="nx">Quiet</span><span class="p">.</span><span class="nx">mergeab</span><span class="p">(</span><span class="nx">ab1</span><span class="p">,</span>
-
-              <span class="nx">ab2</span><span class="p">)</span>
-</pre></div>
-
-
-<p>Merge 2 ArrayBuffers This is a convenience function to assist user receiver functions that want to aggregate multiple payloads.</p>
-<h3 id="parameters_7">Parameters</h3>
-<p><code>ab1</code> - beginning ArrayBuffer</p>
-<p><code>ab2</code> - ending ArrayBuffer</p>
-<h3 id="returns_4">Returns</h3>
-<p>buf - ab1 merged with ab2</p>
-<h2 id="receiverdestroy">Receiver.destroy</h2>
-<div class="codehilite"><pre><span></span><span class="nx">Receiver</span><span class="p">.</span><span class="nx">destroy</span><span class="p">()</span>
-</pre></div>
-
-
-<p>immediately stop sampling microphone and release all resources</p>
-<h2 id="receivergetaveragedecodetime">Receiver.getAverageDecodeTime</h2>
-<div class="codehilite"><pre><span></span><span class="nx">Receiver</span><span class="p">.</span><span class="nx">getAverageDecodeTime</span><span class="p">()</span>
-</pre></div>
-
-
-<p>returns average time in ms spent decoding data from sound samples over the last 3 runs</p>
+<p>returns average time in ms spent encoding data into sound samples over the last 3 runs</p>
           <aside class="copyright" role="note">
             
             Documentation built with

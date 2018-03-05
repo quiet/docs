@@ -287,6 +287,22 @@
         
       
       
+        <ul>
+          
+            <li class="anchor">
+              <a title="quiet_error" href="#quiet_error">
+                quiet_error
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_get_last_error" href="#quiet_get_last_error">
+                quiet_get_last_error
+              </a>
+            </li>
+          
+        </ul>
+      
     
   </li>
 
@@ -312,6 +328,51 @@
         <div class="wrapper">
           
           <h1 id="errors">Errors</h1>
+<h2 id="quiet_error">quiet_error</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">enum</span> <span class="p">{</span>
+
+    <span class="n">quiet_success</span><span class="p">,</span>
+
+    <span class="n">quiet_mem_fail</span><span class="p">,</span>
+
+    <span class="n">quiet_encoder_bad_config</span><span class="p">,</span>
+
+    <span class="n">quiet_profile_malformed_json</span><span class="p">,</span>
+
+    <span class="n">quiet_profile_missing_key</span><span class="p">,</span>
+
+    <span class="n">quiet_profile_invalid_profile</span><span class="p">,</span>
+
+    <span class="n">quiet_msg_size</span><span class="p">,</span>
+
+    <span class="n">quiet_would_block</span><span class="p">,</span>
+
+    <span class="n">quiet_timedout</span><span class="p">,</span>
+
+    <span class="n">quiet_io</span>
+
+<span class="p">}</span> <span class="n">quiet_error</span><span class="p">;</span>
+</pre></div>
+
+
+<h3 id="quiet_success">quiet_success</h3>
+<h3 id="quiet_mem_fail">quiet_mem_fail</h3>
+<h3 id="quiet_encoder_bad_config">quiet_encoder_bad_config</h3>
+<h3 id="quiet_profile_malformed_json">quiet_profile_malformed_json</h3>
+<h3 id="quiet_profile_missing_key">quiet_profile_missing_key</h3>
+<h3 id="quiet_profile_invalid_profile">quiet_profile_invalid_profile</h3>
+<h3 id="quiet_msg_size">quiet_msg_size</h3>
+<h3 id="quiet_would_block">quiet_would_block</h3>
+<h3 id="quiet_timedout">quiet_timedout</h3>
+<h3 id="quiet_io">quiet_io</h3>
+<h2 id="quiet_get_last_error">quiet_get_last_error</h2>
+<div class="codehilite"><pre><span></span><span class="n">quiet_error</span>
+
+<span class="nf">quiet_get_last_error</span><span class="p">();</span>
+</pre></div>
+
+
+<p>quiet_get_last_error retrieves the last error set. If libquiet was compiled with pthread, then this error will be specific to the thread where this is called.</p>
           <aside class="copyright" role="note">
             
             Documentation built with

@@ -250,6 +250,42 @@
         <ul>
           
             <li class="anchor">
+              <a title="quiet_decoder_profile_file" href="#quiet_decoder_profile_file">
+                quiet_decoder_profile_file
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_profile_filename" href="#quiet_decoder_profile_filename">
+                quiet_decoder_profile_filename
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_profile_str" href="#quiet_decoder_profile_str">
+                quiet_decoder_profile_str
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_profile_file" href="#quiet_encoder_profile_file">
+                quiet_encoder_profile_file
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_profile_filename" href="#quiet_encoder_profile_filename">
+                quiet_encoder_profile_filename
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoder_profile_str" href="#quiet_encoder_profile_str">
+                quiet_encoder_profile_str
+              </a>
+            </li>
+          
+            <li class="anchor">
               <a title="quiet_encoder_options" href="#quiet_encoder_options">
                 quiet_encoder_options
               </a>
@@ -258,6 +294,60 @@
             <li class="anchor">
               <a title="quiet_decoder_options" href="#quiet_decoder_options">
                 quiet_decoder_options
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_modulator_options" href="#quiet_modulator_options">
+                quiet_modulator_options
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_demodulator_options" href="#quiet_demodulator_options">
+                quiet_demodulator_options
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_encoding_t" href="#quiet_encoding_t">
+                quiet_encoding_t
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_ofdm_options" href="#quiet_ofdm_options">
+                quiet_ofdm_options
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_checksum_scheme_t" href="#quiet_checksum_scheme_t">
+                quiet_checksum_scheme_t
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_error_correction_scheme_t" href="#quiet_error_correction_scheme_t">
+                quiet_error_correction_scheme_t
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_modulation_scheme_t" href="#quiet_modulation_scheme_t">
+                quiet_modulation_scheme_t
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_dc_filter_options" href="#quiet_dc_filter_options">
+                quiet_dc_filter_options
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_resampler_options" href="#quiet_resampler_options">
+                quiet_resampler_options
               </a>
             </li>
           
@@ -329,6 +419,98 @@
           
           <h1 id="modem-configuration">Modem Configuration</h1>
 <p>The primary configuration structures for libquiet are <code>quiet_encoder_options</code> and <code>quiet_decoder_options</code>. Although it is possible to modify values in these structures, it is generally recommended to use the JSON-based configuration system instead, as that system works consistently across all platforms. This page documents how to configure from the JSON profiles as well as the raw configuration structures themselves.</p>
+<h2 id="quiet_decoder_profile_file">quiet_decoder_profile_file</h2>
+<div class="codehilite"><pre><span></span><span class="n">quiet_decoder_options</span> <span class="o">*</span>
+
+<span class="nf">quiet_decoder_profile_file</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="n">f</span><span class="p">,</span>
+
+                           <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">profilename</span><span class="p">);</span>
+</pre></div>
+
+
+<p>libquiet's configuration options are fairly numerous, and testing can be frustrating when configuration requires recompilation. For this reason, libquiet provides a JSON file containing multiple sets of configuration  profiles  and functions to read and validate them.</p>
+<p>Each profile provides access to every option contained in quiet_encoder_options/quiet_decoder_options. It is hoped that this will give good default options and provide a starting place for users to tune new profiles.</p>
+<p>quiet_decoder_profile_file reads the profile given by profilename from the file pointer and returns the corresponding <a href="../configuration/#quiet_decoder_options"><code>quiet_decoder_options</code></a>.</p>
+<h3 id="parameters">Parameters</h3>
+<p><code>f</code> - file pointer which contains a valid JSON libquiet profile set</p>
+<p><code>profilename</code> - the string key of the profile to fetch</p>
+<h3 id="returns">Returns</h3>
+<p>a pointer to an initialized <a href="../configuration/#quiet_decoder_options"><code>quiet_decoder_options</code></a> or NULL if decoding failed. must be freed by caller (with free()).</p>
+<h2 id="quiet_decoder_profile_filename">quiet_decoder_profile_filename</h2>
+<div class="codehilite"><pre><span></span><span class="n">quiet_decoder_options</span> <span class="o">*</span>
+
+<span class="nf">quiet_decoder_profile_filename</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fname</span><span class="p">,</span>
+
+                               <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">profilename</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_profile_filename reads the profile given by profilename from the file located at filename and returns the corresponding <a href="../configuration/#quiet_decoder_options"><code>quiet_decoder_options</code></a>.</p>
+<h3 id="parameters_1">Parameters</h3>
+<p><code>fname</code> - path to a file which will be opened and read, must contain a valid JSON liquiet profile set</p>
+<p><code>profilename</code> - the string key of the profile to fetch</p>
+<h3 id="returns_1">Returns</h3>
+<p>a pointer to an initialized <a href="../configuration/#quiet_decoder_options"><code>quiet_decoder_options</code></a> or NULL if decoding failed. must be freed by caller (with free()).</p>
+<h2 id="quiet_decoder_profile_str">quiet_decoder_profile_str</h2>
+<div class="codehilite"><pre><span></span><span class="n">quiet_decoder_options</span> <span class="o">*</span>
+
+<span class="nf">quiet_decoder_profile_str</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">input</span><span class="p">,</span>
+
+                          <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">profilename</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_decoder_profile_str reads the profile given by profilename from the input and returns the corresponding <a href="../configuration/#quiet_decoder_options"><code>quiet_decoder_options</code></a>.</p>
+<h3 id="parameters_2">Parameters</h3>
+<p><code>input</code> - a string containing a valid JSON libquiet profile set</p>
+<p><code>profilename</code> - the string key of the profile to fetch</p>
+<h3 id="returns_2">Returns</h3>
+<p>a pointer to an initialized <a href="../configuration/#quiet_decoder_options"><code>quiet_decoder_options</code></a> or NULL if decoding failed. must be freed by caller (with free()).</p>
+<h2 id="quiet_encoder_profile_file">quiet_encoder_profile_file</h2>
+<div class="codehilite"><pre><span></span><span class="n">quiet_encoder_options</span> <span class="o">*</span>
+
+<span class="nf">quiet_encoder_profile_file</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="n">f</span><span class="p">,</span>
+
+                           <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">profilename</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_profile_file reads the profile given by profilename from the file pointer and returns the corresponding <a href="../configuration/#quiet_encoder_options"><code>quiet_encoder_options</code></a>.</p>
+<h3 id="parameters_3">Parameters</h3>
+<p><code>f</code> - file pointer which contains a valid JSON libquiet profile set</p>
+<p><code>profilename</code> - the string key of the profile to fetch</p>
+<h3 id="returns_3">Returns</h3>
+<p>a pointer to an initialized <a href="../configuration/#quiet_encoder_options"><code>quiet_encoder_options</code></a> or NULL if decoding failed. must be freed by caller (with free()).</p>
+<h2 id="quiet_encoder_profile_filename">quiet_encoder_profile_filename</h2>
+<div class="codehilite"><pre><span></span><span class="n">quiet_encoder_options</span> <span class="o">*</span>
+
+<span class="nf">quiet_encoder_profile_filename</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fname</span><span class="p">,</span>
+
+                               <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">profilename</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_profile_filename reads the profile given by profilename from the file located at filename and returns the corresponding <a href="../configuration/#quiet_encoder_options"><code>quiet_encoder_options</code></a>.</p>
+<h3 id="parameters_4">Parameters</h3>
+<p><code>fname</code> - path to a file which will be opened and read, must contain a valid JSON liquiet profile set</p>
+<p><code>profilename</code> - the string key of the profile to fetch</p>
+<h3 id="returns_4">Returns</h3>
+<p>a pointer to an initialized <a href="../configuration/#quiet_encoder_options"><code>quiet_encoder_options</code></a> or NULL if decoding failed. must be freed by caller (with free()).</p>
+<h2 id="quiet_encoder_profile_str">quiet_encoder_profile_str</h2>
+<div class="codehilite"><pre><span></span><span class="n">quiet_encoder_options</span> <span class="o">*</span>
+
+<span class="nf">quiet_encoder_profile_str</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">input</span><span class="p">,</span>
+
+                          <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">profilename</span><span class="p">);</span>
+</pre></div>
+
+
+<p>quiet_encoder_profile_str reads the profile given by profilename from the input and returns the corresponding <a href="../configuration/#quiet_encoder_options"><code>quiet_encoder_options</code></a>.</p>
+<h3 id="parameters_5">Parameters</h3>
+<p><code>input</code> - a string containing a valid JSON libquiet profile set</p>
+<p><code>profilename</code> - the string key of the profile to fetch</p>
+<h3 id="returns_5">Returns</h3>
+<p>a pointer to an initialized <a href="../configuration/#quiet_encoder_options"><code>quiet_encoder_options</code></a> or NULL if decoding failed. must be freed by caller (with free()).</p>
 <h2 id="quiet_encoder_options">quiet_encoder_options</h2>
 <div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
 
@@ -385,6 +567,7 @@
 <h3 id="header_mod_scheme">header_mod_scheme</h3>
 <h3 id="frame_len">frame_len</h3>
 <p>Maximum frame length.</p>
+<p>This value controls the maximum length of the user-controlled section of the frame. There is overhead in starting new frames, and each frame performs its own CRC check which either accepts or rejects the frame. A frame begins with a synchronization section which the decoder uses to detect and lock on to the frame. Over time, the synchronization will drift, which makes shorter frames easier to decode than longer frames.</p>
 <h2 id="quiet_decoder_options">quiet_decoder_options</h2>
 <div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
 
@@ -430,6 +613,558 @@
 <h3 id="header_mod_scheme_1">header_mod_scheme</h3>
 <h3 id="is_debug">is_debug</h3>
 <p>Enable debug mode on receiver.</p>
+<p>In order for this flag to work, libquiet must be compiled in debug mode (<code>#define QUIET_DEBUG 1</code>). Once enabled, this mode causes the decoder to use liquid to create debug files which can be viewed in matlab/octave. These files have the filename format framesync_d, where d is an increasing number. These files can be useful for tracking the decoder's behavior.</p>
+<h2 id="quiet_modulator_options">quiet_modulator_options</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">shape</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">samples_per_symbol</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">symbol_delay</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">excess_bw</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">center_rads</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">gain</span><span class="p">;</span>
+
+    <span class="n">quiet_dc_filter_options</span> <span class="n">dc_filter_opt</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="n">quiet_modulator_options</span><span class="p">;</span>
+</pre></div>
+
+
+<p>This set of options is used only by the encoder</p>
+<p>The modulator is a combination element which interpolates the encoded signal (rescaling in frequency domain) and then mixes it onto a carrier of a given frequency. Finally, a gain is applied, and an optional DC blocker removes DC components.</p>
+<h3 id="shape">shape</h3>
+<p>Numerical value for shape of interpolation filter.</p>
+<p>These values correspond to those used by liquid DSP. In particular,</p>
+<p>1: Nyquist Kaiser</p>
+<p>2: Parks-McClellan</p>
+<p>3: Raised Cosine</p>
+<p>4: Flipped Exponential (Nyquist)</p>
+<p>5: Flipped Hyperbolic Secant (Nyquist)</p>
+<p>6: Flipped Arc-Hyperbolic Secant (Nyquist)</p>
+<p>7: Root-Nyquist Kaiser (Approximate Optimum)</p>
+<p>8: Root-Nyquist Kaiser (True Optimum)</p>
+<p>9: Root Raised Cosine</p>
+<p>10: Harris-Moerder-3</p>
+<p>11: GMSK Transmit</p>
+<p>12: GMSK Receive</p>
+<p>13: Flipped Exponential (root-Nyquist)</p>
+<p>14: Flipped Hyperbolic Secant (root-Nyquist)</p>
+<p>15: Flipped Arc-Hyperbolic Secant (root-Nyquist)</p>
+<p>All other values invalid</p>
+<h3 id="samples_per_symbol">samples_per_symbol</h3>
+<p>interpolation factor</p>
+<h3 id="symbol_delay">symbol_delay</h3>
+<p>interpolation filter delay</p>
+<h3 id="excess_bw">excess_bw</h3>
+<p>interpolation roll-off factor</p>
+<h3 id="center_rads">center_rads</h3>
+<p>carrier frequency, [0, 2*pi)</p>
+<h3 id="gain">gain</h3>
+<p>gain, [0, 0.5]</p>
+<h3 id="dc_filter_opt">dc_filter_opt</h3>
+<p>dc blocker options</p>
+<h2 id="quiet_demodulator_options">quiet_demodulator_options</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">shape</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">samples_per_symbol</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">symbol_delay</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">excess_bw</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">center_rads</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="n">quiet_demodulator_options</span><span class="p">;</span>
+</pre></div>
+
+
+<p>This set of options is used only by the decoder</p>
+<p>The demodulator is a combination element which inverts the operations of the modulator. It first mixes down from the carrier and then performs decimation to recover the signal.</p>
+<h3 id="shape_1">shape</h3>
+<p>Numerical value for shape of decimation filter.</p>
+<p>This uses the same set of values as <code>quiet_modulator_options.shape</code></p>
+<h3 id="samples_per_symbol_1">samples_per_symbol</h3>
+<p>decimation factor</p>
+<h3 id="symbol_delay_1">symbol_delay</h3>
+<p>decimation filter delay</p>
+<h3 id="excess_bw_1">excess_bw</h3>
+<p>decimation roll-off factor</p>
+<h3 id="center_rads_1">center_rads</h3>
+<p>carrier frequency, [0, 2*pi)</p>
+<h2 id="quiet_encoding_t">quiet_encoding_t</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">enum</span> <span class="p">{</span>
+
+    <span class="n">ofdm_encoding</span><span class="p">,</span>
+
+    <span class="n">modem_encoding</span><span class="p">,</span>
+
+    <span class="n">gmsk_encoding</span>
+
+<span class="p">}</span> <span class="n">quiet_encoding_t</span><span class="p">;</span>
+</pre></div>
+
+
+<p>Selects operational mode for encoder/decoder. OFDM and Modem mode use the same modulation schemes while gmsk ignores the supplied scheme and uses its own</p>
+<h3 id="ofdm_encoding">ofdm_encoding</h3>
+<p>Encode/decode in OFDM mode.</p>
+<h3 id="modem_encoding">modem_encoding</h3>
+<p>Encode/decode in modem mode.</p>
+<h3 id="gmsk_encoding">gmsk_encoding</h3>
+<p>Encode/decode in gaussian minimum shift keying mode.</p>
+<p>GMSK mode does not offer the modulation modes given by the other encodings. It has a fairly limited bitrate, but the advantage of GMSK is that its receiver does not need to compute any FFTs, making it suitable for low-power receivers or situations with little computational capacity.</p>
+<h2 id="quiet_ofdm_options">quiet_ofdm_options</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">num_subcarriers</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">cyclic_prefix_len</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">taper_len</span><span class="p">;</span>
+
+    <span class="kt">size_t</span> <span class="n">left_band</span><span class="p">;</span>
+
+    <span class="kt">size_t</span> <span class="n">right_band</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="n">quiet_ofdm_options</span><span class="p">;</span>
+</pre></div>
+
+
+<p>These options configure the behavior of OFDM, orthogonal frequency division multiplexing, as used by the encoder. OFDM places the modulated symbols on to multiple orthogonal subcarriers. This can help the decoder estabilish good equalization when used on a system with uneven filtering.</p>
+<h3 id="num_subcarriers">num_subcarriers</h3>
+<p>total number of subcarriers used, inlcuding guard bands and pilots</p>
+<h3 id="cyclic_prefix_len">cyclic_prefix_len</h3>
+<p>number of cyclic prefix samples between symbols</p>
+<h3 id="taper_len">taper_len</h3>
+<p>number of taper window between symbols</p>
+<h3 id="left_band">left_band</h3>
+<p>number of extra guard subcarriers inserted on left (low freq)</p>
+<h3 id="right_band">right_band</h3>
+<p>number of extra guard subcarriers inserted on right (high freq)</p>
+<h2 id="quiet_checksum_scheme_t">quiet_checksum_scheme_t</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">enum</span> <span class="p">{</span>
+
+    <span class="n">quiet_checksum_none</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+
+    <span class="n">quiet_checksum_8bit</span><span class="p">,</span>
+
+    <span class="n">quiet_checksum_crc8</span><span class="p">,</span>
+
+    <span class="n">quiet_checksum_crc16</span><span class="p">,</span>
+
+    <span class="n">quiet_checksum_crc24</span><span class="p">,</span>
+
+    <span class="n">quiet_checksum_crc32</span>
+
+<span class="p">}</span> <span class="n">quiet_checksum_scheme_t</span><span class="p">;</span>
+</pre></div>
+
+
+<h3 id="quiet_checksum_none">quiet_checksum_none</h3>
+<p>no error-detection</p>
+<h3 id="quiet_checksum_8bit">quiet_checksum_8bit</h3>
+<p>8-bit checksum</p>
+<h3 id="quiet_checksum_crc8">quiet_checksum_crc8</h3>
+<p>8-bit CRC</p>
+<h3 id="quiet_checksum_crc16">quiet_checksum_crc16</h3>
+<p>16-bit CRC</p>
+<h3 id="quiet_checksum_crc24">quiet_checksum_crc24</h3>
+<p>24-bit CRC</p>
+<h3 id="quiet_checksum_crc32">quiet_checksum_crc32</h3>
+<p>32-bit CRC</p>
+<h2 id="quiet_error_correction_scheme_t">quiet_error_correction_scheme_t</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">enum</span> <span class="p">{</span>
+
+    <span class="n">quiet_error_correction_none</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_repeat_3</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_repeat_5</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_hamming_7_4</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_hamming_7_4_parity</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_hamming_12_8</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_golay_24_12</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_secded_22_16</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_secded_39_32</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_secded_72_64</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_12_7</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_12_9</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_13_9</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_16_15</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_perf_23_7</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_perf_34_7</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_perf_45_7</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_perf_56_7</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_perf_67_7</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_perf_78_7</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_perf_23_9</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_perf_34_9</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_perf_45_9</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_perf_56_9</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_perf_67_9</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_conv_perf_78_9</span><span class="p">,</span>
+
+    <span class="n">quiet_error_correction_reed_solomon_223_255</span>
+
+<span class="p">}</span> <span class="n">quiet_error_correction_scheme_t</span><span class="p">;</span>
+</pre></div>
+
+
+<h3 id="quiet_error_correction_none">quiet_error_correction_none</h3>
+<p>no error-correction</p>
+<h3 id="quiet_error_correction_repeat_3">quiet_error_correction_repeat_3</h3>
+<p>simple repeat code, r1/3</p>
+<h3 id="quiet_error_correction_repeat_5">quiet_error_correction_repeat_5</h3>
+<p>simple repeat code, r1/5</p>
+<h3 id="quiet_error_correction_hamming_7_4">quiet_error_correction_hamming_7_4</h3>
+<p>Hamming (7,4) block code, r1/2 (really 4/7)</p>
+<h3 id="quiet_error_correction_hamming_7_4_parity">quiet_error_correction_hamming_7_4_parity</h3>
+<p>Hamming (7,4) with extra parity bit, r1/2.</p>
+<h3 id="quiet_error_correction_hamming_12_8">quiet_error_correction_hamming_12_8</h3>
+<p>Hamming (12,8) block code, r2/3.</p>
+<h3 id="quiet_error_correction_golay_24_12">quiet_error_correction_golay_24_12</h3>
+<p>Golay (24,12) block code, r1/2.</p>
+<h3 id="quiet_error_correction_secded_22_16">quiet_error_correction_secded_22_16</h3>
+<p>SEC-DED (22,16) block code, r8/11.</p>
+<h3 id="quiet_error_correction_secded_39_32">quiet_error_correction_secded_39_32</h3>
+<p>SEC-DED (39,32) block code.</p>
+<h3 id="quiet_error_correction_secded_72_64">quiet_error_correction_secded_72_64</h3>
+<p>SEC-DED (72,64) block code, r8/9.</p>
+<h3 id="quiet_error_correction_conv_12_7">quiet_error_correction_conv_12_7</h3>
+<p>convolutional code r1/2, K=7, dfree=10</p>
+<h3 id="quiet_error_correction_conv_12_9">quiet_error_correction_conv_12_9</h3>
+<p>convolutional code r1/2, K=9, dfree=12</p>
+<h3 id="quiet_error_correction_conv_13_9">quiet_error_correction_conv_13_9</h3>
+<p>convolutional code r1/3, K=9, dfree=18</p>
+<h3 id="quiet_error_correction_conv_16_15">quiet_error_correction_conv_16_15</h3>
+<p>convolutional code 1/6, K=15, dfree&lt;=57 (Heller 1968)</p>
+<h3 id="quiet_error_correction_conv_perf_23_7">quiet_error_correction_conv_perf_23_7</h3>
+<p>perforated convolutional code r2/3, K=7, dfree=6</p>
+<h3 id="quiet_error_correction_conv_perf_34_7">quiet_error_correction_conv_perf_34_7</h3>
+<p>perforated convolutional code r3/4, K=7, dfree=5</p>
+<h3 id="quiet_error_correction_conv_perf_45_7">quiet_error_correction_conv_perf_45_7</h3>
+<p>perforated convolutional code r4/5, K=7, dfree=4</p>
+<h3 id="quiet_error_correction_conv_perf_56_7">quiet_error_correction_conv_perf_56_7</h3>
+<p>perforated convolutional code r5/6, K=7, dfree=4</p>
+<h3 id="quiet_error_correction_conv_perf_67_7">quiet_error_correction_conv_perf_67_7</h3>
+<p>perforated convolutional code r6/7, K=7, dfree=3</p>
+<h3 id="quiet_error_correction_conv_perf_78_7">quiet_error_correction_conv_perf_78_7</h3>
+<p>perforated convolutional code r7/8, K=7, dfree=3</p>
+<h3 id="quiet_error_correction_conv_perf_23_9">quiet_error_correction_conv_perf_23_9</h3>
+<p>perforated convolutional code r2/3, K=9, dfree=7</p>
+<h3 id="quiet_error_correction_conv_perf_34_9">quiet_error_correction_conv_perf_34_9</h3>
+<p>perforated convolutional code r3/4, K=9, dfree=6</p>
+<h3 id="quiet_error_correction_conv_perf_45_9">quiet_error_correction_conv_perf_45_9</h3>
+<p>perforated convolutional code r4/5, K=9, dfree=5</p>
+<h3 id="quiet_error_correction_conv_perf_56_9">quiet_error_correction_conv_perf_56_9</h3>
+<p>perforated convolutional code r5/6, K=9, dfree=5</p>
+<h3 id="quiet_error_correction_conv_perf_67_9">quiet_error_correction_conv_perf_67_9</h3>
+<p>perforated convolutional code r6/7, K=9, dfree=4</p>
+<h3 id="quiet_error_correction_conv_perf_78_9">quiet_error_correction_conv_perf_78_9</h3>
+<p>perforated convolutional code r7/8, K=9, dfree=4</p>
+<h3 id="quiet_error_correction_reed_solomon_223_255">quiet_error_correction_reed_solomon_223_255</h3>
+<p>Reed-Solomon m=8, n=255, k=223.</p>
+<h2 id="quiet_modulation_scheme_t">quiet_modulation_scheme_t</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">enum</span> <span class="p">{</span>
+
+    <span class="n">quiet_modulation_psk2</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_psk4</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_psk8</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_psk16</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_psk32</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_psk64</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_psk128</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_psk256</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_dpsk2</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_dpsk4</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_dpsk8</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_dpsk16</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_dpsk32</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_dpsk64</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_dpsk128</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_dpsk256</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_ask2</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_ask4</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_ask8</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_ask16</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_ask32</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_ask64</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_ask128</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_ask256</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask4</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask8</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask16</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask32</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask64</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask128</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask256</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask512</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask1024</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask2048</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask4096</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask8192</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask16384</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask32768</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qask65536</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_apsk4</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_apsk8</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_apsk16</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_apsk32</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_apsk64</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_apsk128</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_apsk256</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_bpsk</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_qpsk</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_ook</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_sqask32</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_sqask128</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_v29</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_opt_qask16</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_opt_qask32</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_opt_qask64</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_opt_qask128</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_opt_qask256</span><span class="p">,</span>
+
+    <span class="n">quiet_modulation_vtech</span>
+
+<span class="p">}</span> <span class="n">quiet_modulation_scheme_t</span><span class="p">;</span>
+</pre></div>
+
+
+<h3 id="quiet_modulation_psk2">quiet_modulation_psk2</h3>
+<p>phase-shift keying-2</p>
+<h3 id="quiet_modulation_psk4">quiet_modulation_psk4</h3>
+<p>phase-shift keying-4</p>
+<h3 id="quiet_modulation_psk8">quiet_modulation_psk8</h3>
+<p>phase-shift keying-8</p>
+<h3 id="quiet_modulation_psk16">quiet_modulation_psk16</h3>
+<p>phase-shift keying-16</p>
+<h3 id="quiet_modulation_psk32">quiet_modulation_psk32</h3>
+<p>phase-shift keying-32</p>
+<h3 id="quiet_modulation_psk64">quiet_modulation_psk64</h3>
+<p>phase-shift keying-64</p>
+<h3 id="quiet_modulation_psk128">quiet_modulation_psk128</h3>
+<p>phase-shift keying-128</p>
+<h3 id="quiet_modulation_psk256">quiet_modulation_psk256</h3>
+<p>phase-shift keying-256</p>
+<h3 id="quiet_modulation_dpsk2">quiet_modulation_dpsk2</h3>
+<p>differential phase-shift keying-2</p>
+<h3 id="quiet_modulation_dpsk4">quiet_modulation_dpsk4</h3>
+<p>differential phase-shift keying-4</p>
+<h3 id="quiet_modulation_dpsk8">quiet_modulation_dpsk8</h3>
+<p>differential phase-shift keying-8</p>
+<h3 id="quiet_modulation_dpsk16">quiet_modulation_dpsk16</h3>
+<p>differential phase-shift keying-16</p>
+<h3 id="quiet_modulation_dpsk32">quiet_modulation_dpsk32</h3>
+<p>differential phase-shift keying-32</p>
+<h3 id="quiet_modulation_dpsk64">quiet_modulation_dpsk64</h3>
+<p>differential phase-shift keying-64</p>
+<h3 id="quiet_modulation_dpsk128">quiet_modulation_dpsk128</h3>
+<p>differential phase-shift keying-128</p>
+<h3 id="quiet_modulation_dpsk256">quiet_modulation_dpsk256</h3>
+<p>differential phase-shift keying-256</p>
+<h3 id="quiet_modulation_ask2">quiet_modulation_ask2</h3>
+<p>amplitude-shift keying-2</p>
+<h3 id="quiet_modulation_ask4">quiet_modulation_ask4</h3>
+<p>amplitude-shift keying-4</p>
+<h3 id="quiet_modulation_ask8">quiet_modulation_ask8</h3>
+<p>amplitude-shift keying-8</p>
+<h3 id="quiet_modulation_ask16">quiet_modulation_ask16</h3>
+<p>amplitude-shift keying-16</p>
+<h3 id="quiet_modulation_ask32">quiet_modulation_ask32</h3>
+<p>amplitude-shift keying-32</p>
+<h3 id="quiet_modulation_ask64">quiet_modulation_ask64</h3>
+<p>amplitude-shift keying-64</p>
+<h3 id="quiet_modulation_ask128">quiet_modulation_ask128</h3>
+<p>amplitude-shift keying-128</p>
+<h3 id="quiet_modulation_ask256">quiet_modulation_ask256</h3>
+<p>amplitude-shift keying-256</p>
+<h3 id="quiet_modulation_qask4">quiet_modulation_qask4</h3>
+<p>quadrature amplitude-shift keying-4</p>
+<h3 id="quiet_modulation_qask8">quiet_modulation_qask8</h3>
+<p>quadrature amplitude-shift keying-8</p>
+<h3 id="quiet_modulation_qask16">quiet_modulation_qask16</h3>
+<p>quadrature amplitude-shift keying-16</p>
+<h3 id="quiet_modulation_qask32">quiet_modulation_qask32</h3>
+<p>quadrature amplitude-shift keying-32</p>
+<h3 id="quiet_modulation_qask64">quiet_modulation_qask64</h3>
+<p>quadrature amplitude-shift keying-64</p>
+<h3 id="quiet_modulation_qask128">quiet_modulation_qask128</h3>
+<p>quadrature amplitude-shift keying-128</p>
+<h3 id="quiet_modulation_qask256">quiet_modulation_qask256</h3>
+<p>quadrature amplitude-shift keying-256</p>
+<h3 id="quiet_modulation_qask512">quiet_modulation_qask512</h3>
+<p>quadrature amplitude-shift keying-512</p>
+<h3 id="quiet_modulation_qask1024">quiet_modulation_qask1024</h3>
+<p>quadrature amplitude-shift keying-1024</p>
+<h3 id="quiet_modulation_qask2048">quiet_modulation_qask2048</h3>
+<p>quadrature amplitude-shift keying-2048</p>
+<h3 id="quiet_modulation_qask4096">quiet_modulation_qask4096</h3>
+<p>quadrature amplitude-shift keying-4096</p>
+<h3 id="quiet_modulation_qask8192">quiet_modulation_qask8192</h3>
+<p>quadrature amplitude-shift keying-8192</p>
+<h3 id="quiet_modulation_qask16384">quiet_modulation_qask16384</h3>
+<p>quadrature amplitude-shift keying-16384</p>
+<h3 id="quiet_modulation_qask32768">quiet_modulation_qask32768</h3>
+<p>quadrature amplitude-shift keying-32768</p>
+<h3 id="quiet_modulation_qask65536">quiet_modulation_qask65536</h3>
+<p>quadrature amplitude-shift keying-65536</p>
+<h3 id="quiet_modulation_apsk4">quiet_modulation_apsk4</h3>
+<p>amplitude phase-shift keying-4</p>
+<h3 id="quiet_modulation_apsk8">quiet_modulation_apsk8</h3>
+<p>amplitude phase-shift keying-8</p>
+<h3 id="quiet_modulation_apsk16">quiet_modulation_apsk16</h3>
+<p>amplitude phase-shift keying-16</p>
+<h3 id="quiet_modulation_apsk32">quiet_modulation_apsk32</h3>
+<p>amplitude phase-shift keying-32</p>
+<h3 id="quiet_modulation_apsk64">quiet_modulation_apsk64</h3>
+<p>amplitude phase-shift keying-64</p>
+<h3 id="quiet_modulation_apsk128">quiet_modulation_apsk128</h3>
+<p>amplitude phase-shift keying-128</p>
+<h3 id="quiet_modulation_apsk256">quiet_modulation_apsk256</h3>
+<p>amplitude phase-shift keying-256</p>
+<h3 id="quiet_modulation_bpsk">quiet_modulation_bpsk</h3>
+<p>binary phase-shift keying</p>
+<h3 id="quiet_modulation_qpsk">quiet_modulation_qpsk</h3>
+<p>quaternary phase-shift keying</p>
+<h3 id="quiet_modulation_ook">quiet_modulation_ook</h3>
+<p>on-off keying</p>
+<h3 id="quiet_modulation_sqask32">quiet_modulation_sqask32</h3>
+<p>square quadrature amplitude-shift keying-32</p>
+<h3 id="quiet_modulation_sqask128">quiet_modulation_sqask128</h3>
+<p>square quadrature amplitude-shift keying-128</p>
+<h3 id="quiet_modulation_v29">quiet_modulation_v29</h3>
+<p>V.29 star constellation.</p>
+<h3 id="quiet_modulation_opt_qask16">quiet_modulation_opt_qask16</h3>
+<p>optimal quadrature amplitude-shift keying-16</p>
+<h3 id="quiet_modulation_opt_qask32">quiet_modulation_opt_qask32</h3>
+<p>optimal quadrature amplitude-shift keying-32</p>
+<h3 id="quiet_modulation_opt_qask64">quiet_modulation_opt_qask64</h3>
+<p>optimal quadrature amplitude-shift keying-64</p>
+<h3 id="quiet_modulation_opt_qask128">quiet_modulation_opt_qask128</h3>
+<p>optimal quadrature amplitude-shift keying-128</p>
+<h3 id="quiet_modulation_opt_qask256">quiet_modulation_opt_qask256</h3>
+<p>optimal quadrature amplitude-shift keying-256</p>
+<h3 id="quiet_modulation_vtech">quiet_modulation_vtech</h3>
+<p>Virginia Tech logo constellation.</p>
+<h2 id="quiet_dc_filter_options">quiet_dc_filter_options</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+
+    <span class="kt">float</span> <span class="n">alpha</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="n">quiet_dc_filter_options</span><span class="p">;</span>
+</pre></div>
+
+
+<p>This DC blocker is applied near the end of the signal chain so that any leftover DC component is removed. This is important for audio signals as we do not want to send any DC out to speakers</p>
+<p>transfer function H(z)=(1 - (z^-1))/(1 - (1-alpha)*(z^-1))</p>
+<h3 id="alpha">alpha</h3>
+<h2 id="quiet_resampler_options">quiet_resampler_options</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+
+    <span class="kt">size_t</span> <span class="n">delay</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">bandwidth</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">attenuation</span><span class="p">;</span>
+
+    <span class="kt">size_t</span> <span class="n">filter_bank_size</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="n">quiet_resampler_options</span><span class="p">;</span>
+</pre></div>
+
+
+<p>Controls arbitrary resample unit used by libquiet after generating 44.1kHz signal or before decoding signal</p>
+<p>This resampler will be applied to set the sample rate to the rate given when creating an encoder or decoder</p>
+<h3 id="delay">delay</h3>
+<h3 id="bandwidth">bandwidth</h3>
+<h3 id="attenuation">attenuation</h3>
+<h3 id="filter_bank_size">filter_bank_size</h3>
           <aside class="copyright" role="note">
             
             Documentation built with

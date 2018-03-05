@@ -294,6 +294,24 @@
     
       
       
+        
+      
+      
+        <ul>
+          
+            <li class="anchor">
+              <a title="quiet_decoder_frame_stats" href="#quiet_decoder_frame_stats">
+                quiet_decoder_frame_stats
+              </a>
+            </li>
+          
+            <li class="anchor">
+              <a title="quiet_complex" href="#quiet_complex">
+                quiet_complex
+              </a>
+            </li>
+          
+        </ul>
       
     
   </li>
@@ -309,9 +327,46 @@
       <article class="article">
         <div class="wrapper">
           
-            <h1>Frame Stats</h1>
-          
-          
+          <h1 id="frame-stats">Frame Stats</h1>
+<h2 id="quiet_decoder_frame_stats">quiet_decoder_frame_stats</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+
+    <span class="k">const</span> <span class="n">quiet_complex</span> <span class="o">*</span> <span class="n">symbols</span><span class="p">;</span>
+
+    <span class="kt">size_t</span> <span class="n">num_symbols</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">error_vector_magnitude</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">received_signal_strength_indicator</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">checksum_passed</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="n">quiet_decoder_frame_stats</span><span class="p">;</span>
+</pre></div>
+
+
+<p>This contains information about the decoding process related to a single frame. The frame may have been detected but failed to pass checksum or may have been successfully received.</p>
+<h3 id="symbols">symbols</h3>
+<p>Raw symbols, in complex plane, as seen after decimation and downmixing.</p>
+<h3 id="num_symbols">num_symbols</h3>
+<h3 id="error_vector_magnitude">error_vector_magnitude</h3>
+<p>Magnitude of vector from received symbols to reference symbols, in dB.</p>
+<h3 id="received_signal_strength_indicator">received_signal_strength_indicator</h3>
+<p>Power level of received signal after decimation and downmixing, in dB.</p>
+<h3 id="checksum_passed">checksum_passed</h3>
+<h2 id="quiet_complex">quiet_complex</h2>
+<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+
+    <span class="kt">float</span> <span class="n">real</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">imaginary</span><span class="p">;</span>
+
+<span class="p">}</span> <span class="n">quiet_complex</span><span class="p">;</span>
+</pre></div>
+
+
+<h3 id="real">real</h3>
+<h3 id="imaginary">imaginary</h3>
           <aside class="copyright" role="note">
             
             Documentation built with

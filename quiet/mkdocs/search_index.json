@@ -367,13 +367,103 @@
         }, 
         {
             "location": "/configuration/", 
-            "text": "Modem Configuration\n\n\nThe primary configuration structures for libquiet are \nquiet_encoder_options\n and \nquiet_decoder_options\n. Although it is possible to modify values in these structures, it is generally recommended to use the JSON-based configuration system instead, as that system works consistently across all platforms. This page documents how to configure from the JSON profiles as well as the raw configuration structures themselves.\n\n\nquiet_encoder_options\n\n\ntypedef\n \nstruct\n \n{\n\n\n    \nquiet_ofdm_options\n \nofdmopt\n;\n\n\n    \nquiet_modulator_options\n \nmodopt\n;\n\n\n    \nquiet_resampler_options\n \nresampler\n;\n\n\n    \nquiet_encoding_t\n \nencoding\n;\n\n\n    \nquiet_checksum_scheme_t\n \nchecksum_scheme\n;\n\n\n    \nquiet_error_correction_scheme_t\n \ninner_fec_scheme\n;\n\n\n    \nquiet_error_correction_scheme_t\n \nouter_fec_scheme\n;\n\n\n    \nquiet_modulation_scheme_t\n \nmod_scheme\n;\n\n\n    \nbool\n \nheader_override_defaults\n;\n\n\n    \nquiet_checksum_scheme_t\n \nheader_checksum_scheme\n;\n\n\n    \nquiet_error_correction_scheme_t\n \nheader_inner_fec_scheme\n;\n\n\n    \nquiet_error_correction_scheme_t\n \nheader_outer_fec_scheme\n;\n\n\n    \nquiet_modulation_scheme_t\n \nheader_mod_scheme\n;\n\n\n    \nsize_t\n \nframe_len\n;\n\n\n\n}\n \nquiet_encoder_options\n;\n\n\n\n\n\n\nThis specifies a complete set of options for the encoder in libquiet.\n\n\nofdmopt\n\n\nOFDM options, used only by OFDM mode.\n\n\nmodopt\n\n\nInterpolation filter and carrier frequency options.\n\n\nresampler\n\n\nResampler configuration (if specified frequency is not 44.1kHz)\n\n\nencoding\n\n\nEncoder mode, one of {ofdm_encoding, modem_encoding, gmsk_encoding}.\n\n\nchecksum_scheme\n\n\ninner_fec_scheme\n\n\nouter_fec_scheme\n\n\nmod_scheme\n\n\nheader_override_defaults\n\n\nHeader schemes These control the frame header properties Only used if header_override_defaults = true.\n\n\nheader_checksum_scheme\n\n\nheader_inner_fec_scheme\n\n\nheader_outer_fec_scheme\n\n\nheader_mod_scheme\n\n\nframe_len\n\n\nMaximum frame length.\n\n\nquiet_decoder_options\n\n\ntypedef\n \nstruct\n \n{\n\n\n    \nquiet_ofdm_options\n \nofdmopt\n;\n\n\n    \nquiet_demodulator_options\n \ndemodopt\n;\n\n\n    \nquiet_resampler_options\n \nresampler\n;\n\n\n    \nquiet_encoding_t\n \nencoding\n;\n\n\n    \nbool\n \nheader_override_defaults\n;\n\n\n    \nquiet_checksum_scheme_t\n \nheader_checksum_scheme\n;\n\n\n    \nquiet_error_correction_scheme_t\n \nheader_inner_fec_scheme\n;\n\n\n    \nquiet_error_correction_scheme_t\n \nheader_outer_fec_scheme\n;\n\n\n    \nquiet_modulation_scheme_t\n \nheader_mod_scheme\n;\n\n\n    \nbool\n \nis_debug\n;\n\n\n\n}\n \nquiet_decoder_options\n;\n\n\n\n\n\n\nThis specifies a complete set of options for the decoder in libquiet.\n\n\nIn order for a decoder to decode the signals from an encoder, certain options must match between both. In particular, the encoding mode and modopt/demodopt must match. Additionally, if ofdm_encoding is used, then the ofdmopt must also match. If the header options are overriden in the encoder, then they must also be overriden in the decoder.\n\n\nofdmopt\n\n\nOFDM options, used only by OFDM mode.\n\n\ndemodopt\n\n\nDecimation filter and carrier frequency options.\n\n\nresampler\n\n\nResampler configuration (if specified frequency is not 44.1kHz)\n\n\nencoding\n\n\nEncoder mode, one of {ofdm_encoding, modem_encoding, gmsk_encoding}.\n\n\nheader_override_defaults\n\n\nHeader schemes These control the frame header properties Only used if header_override_defaults = true.\n\n\nheader_checksum_scheme\n\n\nheader_inner_fec_scheme\n\n\nheader_outer_fec_scheme\n\n\nheader_mod_scheme\n\n\nis_debug\n\n\nEnable debug mode on receiver.", 
+            "text": "Modem Configuration\n\n\nThe primary configuration structures for libquiet are \nquiet_encoder_options\n and \nquiet_decoder_options\n. Although it is possible to modify values in these structures, it is generally recommended to use the JSON-based configuration system instead, as that system works consistently across all platforms. This page documents how to configure from the JSON profiles as well as the raw configuration structures themselves.\n\n\nquiet_decoder_profile_file\n\n\nquiet_decoder_options\n \n*\n\n\n\nquiet_decoder_profile_file\n(\nFILE\n \n*\nf\n,\n\n\n                           \nconst\n \nchar\n \n*\nprofilename\n);\n\n\n\n\n\n\nlibquiet's configuration options are fairly numerous, and testing can be frustrating when configuration requires recompilation. For this reason, libquiet provides a JSON file containing multiple sets of configuration  profiles  and functions to read and validate them.\n\n\nEach profile provides access to every option contained in quiet_encoder_options/quiet_decoder_options. It is hoped that this will give good default options and provide a starting place for users to tune new profiles.\n\n\nquiet_decoder_profile_file reads the profile given by profilename from the file pointer and returns the corresponding \nquiet_decoder_options\n.\n\n\nParameters\n\n\nf\n - file pointer which contains a valid JSON libquiet profile set\n\n\nprofilename\n - the string key of the profile to fetch\n\n\nReturns\n\n\na pointer to an initialized \nquiet_decoder_options\n or NULL if decoding failed. must be freed by caller (with free()).\n\n\nquiet_decoder_profile_filename\n\n\nquiet_decoder_options\n \n*\n\n\n\nquiet_decoder_profile_filename\n(\nconst\n \nchar\n \n*\nfname\n,\n\n\n                               \nconst\n \nchar\n \n*\nprofilename\n);\n\n\n\n\n\n\nquiet_decoder_profile_filename reads the profile given by profilename from the file located at filename and returns the corresponding \nquiet_decoder_options\n.\n\n\nParameters\n\n\nfname\n - path to a file which will be opened and read, must contain a valid JSON liquiet profile set\n\n\nprofilename\n - the string key of the profile to fetch\n\n\nReturns\n\n\na pointer to an initialized \nquiet_decoder_options\n or NULL if decoding failed. must be freed by caller (with free()).\n\n\nquiet_decoder_profile_str\n\n\nquiet_decoder_options\n \n*\n\n\n\nquiet_decoder_profile_str\n(\nconst\n \nchar\n \n*\ninput\n,\n\n\n                          \nconst\n \nchar\n \n*\nprofilename\n);\n\n\n\n\n\n\nquiet_decoder_profile_str reads the profile given by profilename from the input and returns the corresponding \nquiet_decoder_options\n.\n\n\nParameters\n\n\ninput\n - a string containing a valid JSON libquiet profile set\n\n\nprofilename\n - the string key of the profile to fetch\n\n\nReturns\n\n\na pointer to an initialized \nquiet_decoder_options\n or NULL if decoding failed. must be freed by caller (with free()).\n\n\nquiet_encoder_profile_file\n\n\nquiet_encoder_options\n \n*\n\n\n\nquiet_encoder_profile_file\n(\nFILE\n \n*\nf\n,\n\n\n                           \nconst\n \nchar\n \n*\nprofilename\n);\n\n\n\n\n\n\nquiet_encoder_profile_file reads the profile given by profilename from the file pointer and returns the corresponding \nquiet_encoder_options\n.\n\n\nParameters\n\n\nf\n - file pointer which contains a valid JSON libquiet profile set\n\n\nprofilename\n - the string key of the profile to fetch\n\n\nReturns\n\n\na pointer to an initialized \nquiet_encoder_options\n or NULL if decoding failed. must be freed by caller (with free()).\n\n\nquiet_encoder_profile_filename\n\n\nquiet_encoder_options\n \n*\n\n\n\nquiet_encoder_profile_filename\n(\nconst\n \nchar\n \n*\nfname\n,\n\n\n                               \nconst\n \nchar\n \n*\nprofilename\n);\n\n\n\n\n\n\nquiet_encoder_profile_filename reads the profile given by profilename from the file located at filename and returns the corresponding \nquiet_encoder_options\n.\n\n\nParameters\n\n\nfname\n - path to a file which will be opened and read, must contain a valid JSON liquiet profile set\n\n\nprofilename\n - the string key of the profile to fetch\n\n\nReturns\n\n\na pointer to an initialized \nquiet_encoder_options\n or NULL if decoding failed. must be freed by caller (with free()).\n\n\nquiet_encoder_profile_str\n\n\nquiet_encoder_options\n \n*\n\n\n\nquiet_encoder_profile_str\n(\nconst\n \nchar\n \n*\ninput\n,\n\n\n                          \nconst\n \nchar\n \n*\nprofilename\n);\n\n\n\n\n\n\nquiet_encoder_profile_str reads the profile given by profilename from the input and returns the corresponding \nquiet_encoder_options\n.\n\n\nParameters\n\n\ninput\n - a string containing a valid JSON libquiet profile set\n\n\nprofilename\n - the string key of the profile to fetch\n\n\nReturns\n\n\na pointer to an initialized \nquiet_encoder_options\n or NULL if decoding failed. must be freed by caller (with free()).\n\n\nquiet_encoder_options\n\n\ntypedef\n \nstruct\n \n{\n\n\n    \nquiet_ofdm_options\n \nofdmopt\n;\n\n\n    \nquiet_modulator_options\n \nmodopt\n;\n\n\n    \nquiet_resampler_options\n \nresampler\n;\n\n\n    \nquiet_encoding_t\n \nencoding\n;\n\n\n    \nquiet_checksum_scheme_t\n \nchecksum_scheme\n;\n\n\n    \nquiet_error_correction_scheme_t\n \ninner_fec_scheme\n;\n\n\n    \nquiet_error_correction_scheme_t\n \nouter_fec_scheme\n;\n\n\n    \nquiet_modulation_scheme_t\n \nmod_scheme\n;\n\n\n    \nbool\n \nheader_override_defaults\n;\n\n\n    \nquiet_checksum_scheme_t\n \nheader_checksum_scheme\n;\n\n\n    \nquiet_error_correction_scheme_t\n \nheader_inner_fec_scheme\n;\n\n\n    \nquiet_error_correction_scheme_t\n \nheader_outer_fec_scheme\n;\n\n\n    \nquiet_modulation_scheme_t\n \nheader_mod_scheme\n;\n\n\n    \nsize_t\n \nframe_len\n;\n\n\n\n}\n \nquiet_encoder_options\n;\n\n\n\n\n\n\nThis specifies a complete set of options for the encoder in libquiet.\n\n\nofdmopt\n\n\nOFDM options, used only by OFDM mode.\n\n\nmodopt\n\n\nInterpolation filter and carrier frequency options.\n\n\nresampler\n\n\nResampler configuration (if specified frequency is not 44.1kHz)\n\n\nencoding\n\n\nEncoder mode, one of {ofdm_encoding, modem_encoding, gmsk_encoding}.\n\n\nchecksum_scheme\n\n\ninner_fec_scheme\n\n\nouter_fec_scheme\n\n\nmod_scheme\n\n\nheader_override_defaults\n\n\nHeader schemes These control the frame header properties Only used if header_override_defaults = true.\n\n\nheader_checksum_scheme\n\n\nheader_inner_fec_scheme\n\n\nheader_outer_fec_scheme\n\n\nheader_mod_scheme\n\n\nframe_len\n\n\nMaximum frame length.\n\n\nThis value controls the maximum length of the user-controlled section of the frame. There is overhead in starting new frames, and each frame performs its own CRC check which either accepts or rejects the frame. A frame begins with a synchronization section which the decoder uses to detect and lock on to the frame. Over time, the synchronization will drift, which makes shorter frames easier to decode than longer frames.\n\n\nquiet_decoder_options\n\n\ntypedef\n \nstruct\n \n{\n\n\n    \nquiet_ofdm_options\n \nofdmopt\n;\n\n\n    \nquiet_demodulator_options\n \ndemodopt\n;\n\n\n    \nquiet_resampler_options\n \nresampler\n;\n\n\n    \nquiet_encoding_t\n \nencoding\n;\n\n\n    \nbool\n \nheader_override_defaults\n;\n\n\n    \nquiet_checksum_scheme_t\n \nheader_checksum_scheme\n;\n\n\n    \nquiet_error_correction_scheme_t\n \nheader_inner_fec_scheme\n;\n\n\n    \nquiet_error_correction_scheme_t\n \nheader_outer_fec_scheme\n;\n\n\n    \nquiet_modulation_scheme_t\n \nheader_mod_scheme\n;\n\n\n    \nbool\n \nis_debug\n;\n\n\n\n}\n \nquiet_decoder_options\n;\n\n\n\n\n\n\nThis specifies a complete set of options for the decoder in libquiet.\n\n\nIn order for a decoder to decode the signals from an encoder, certain options must match between both. In particular, the encoding mode and modopt/demodopt must match. Additionally, if ofdm_encoding is used, then the ofdmopt must also match. If the header options are overriden in the encoder, then they must also be overriden in the decoder.\n\n\nofdmopt\n\n\nOFDM options, used only by OFDM mode.\n\n\ndemodopt\n\n\nDecimation filter and carrier frequency options.\n\n\nresampler\n\n\nResampler configuration (if specified frequency is not 44.1kHz)\n\n\nencoding\n\n\nEncoder mode, one of {ofdm_encoding, modem_encoding, gmsk_encoding}.\n\n\nheader_override_defaults\n\n\nHeader schemes These control the frame header properties Only used if header_override_defaults = true.\n\n\nheader_checksum_scheme\n\n\nheader_inner_fec_scheme\n\n\nheader_outer_fec_scheme\n\n\nheader_mod_scheme\n\n\nis_debug\n\n\nEnable debug mode on receiver.\n\n\nIn order for this flag to work, libquiet must be compiled in debug mode (\n#define QUIET_DEBUG 1\n). Once enabled, this mode causes the decoder to use liquid to create debug files which can be viewed in matlab/octave. These files have the filename format framesync_d, where d is an increasing number. These files can be useful for tracking the decoder's behavior.\n\n\nquiet_modulator_options\n\n\ntypedef\n \nstruct\n \n{\n\n\n    \nunsigned\n \nint\n \nshape\n;\n\n\n    \nunsigned\n \nint\n \nsamples_per_symbol\n;\n\n\n    \nunsigned\n \nint\n \nsymbol_delay\n;\n\n\n    \nfloat\n \nexcess_bw\n;\n\n\n    \nfloat\n \ncenter_rads\n;\n\n\n    \nfloat\n \ngain\n;\n\n\n    \nquiet_dc_filter_options\n \ndc_filter_opt\n;\n\n\n\n}\n \nquiet_modulator_options\n;\n\n\n\n\n\n\nThis set of options is used only by the encoder\n\n\nThe modulator is a combination element which interpolates the encoded signal (rescaling in frequency domain) and then mixes it onto a carrier of a given frequency. Finally, a gain is applied, and an optional DC blocker removes DC components.\n\n\nshape\n\n\nNumerical value for shape of interpolation filter.\n\n\nThese values correspond to those used by liquid DSP. In particular,\n\n\n1: Nyquist Kaiser\n\n\n2: Parks-McClellan\n\n\n3: Raised Cosine\n\n\n4: Flipped Exponential (Nyquist)\n\n\n5: Flipped Hyperbolic Secant (Nyquist)\n\n\n6: Flipped Arc-Hyperbolic Secant (Nyquist)\n\n\n7: Root-Nyquist Kaiser (Approximate Optimum)\n\n\n8: Root-Nyquist Kaiser (True Optimum)\n\n\n9: Root Raised Cosine\n\n\n10: Harris-Moerder-3\n\n\n11: GMSK Transmit\n\n\n12: GMSK Receive\n\n\n13: Flipped Exponential (root-Nyquist)\n\n\n14: Flipped Hyperbolic Secant (root-Nyquist)\n\n\n15: Flipped Arc-Hyperbolic Secant (root-Nyquist)\n\n\nAll other values invalid\n\n\nsamples_per_symbol\n\n\ninterpolation factor\n\n\nsymbol_delay\n\n\ninterpolation filter delay\n\n\nexcess_bw\n\n\ninterpolation roll-off factor\n\n\ncenter_rads\n\n\ncarrier frequency, [0, 2*pi)\n\n\ngain\n\n\ngain, [0, 0.5]\n\n\ndc_filter_opt\n\n\ndc blocker options\n\n\nquiet_demodulator_options\n\n\ntypedef\n \nstruct\n \n{\n\n\n    \nunsigned\n \nint\n \nshape\n;\n\n\n    \nunsigned\n \nint\n \nsamples_per_symbol\n;\n\n\n    \nunsigned\n \nint\n \nsymbol_delay\n;\n\n\n    \nfloat\n \nexcess_bw\n;\n\n\n    \nfloat\n \ncenter_rads\n;\n\n\n\n}\n \nquiet_demodulator_options\n;\n\n\n\n\n\n\nThis set of options is used only by the decoder\n\n\nThe demodulator is a combination element which inverts the operations of the modulator. It first mixes down from the carrier and then performs decimation to recover the signal.\n\n\nshape\n\n\nNumerical value for shape of decimation filter.\n\n\nThis uses the same set of values as \nquiet_modulator_options.shape\n\n\nsamples_per_symbol\n\n\ndecimation factor\n\n\nsymbol_delay\n\n\ndecimation filter delay\n\n\nexcess_bw\n\n\ndecimation roll-off factor\n\n\ncenter_rads\n\n\ncarrier frequency, [0, 2*pi)\n\n\nquiet_encoding_t\n\n\ntypedef\n \nenum\n \n{\n\n\n    \nofdm_encoding\n,\n\n\n    \nmodem_encoding\n,\n\n\n    \ngmsk_encoding\n\n\n\n}\n \nquiet_encoding_t\n;\n\n\n\n\n\n\nSelects operational mode for encoder/decoder. OFDM and Modem mode use the same modulation schemes while gmsk ignores the supplied scheme and uses its own\n\n\nofdm_encoding\n\n\nEncode/decode in OFDM mode.\n\n\nmodem_encoding\n\n\nEncode/decode in modem mode.\n\n\ngmsk_encoding\n\n\nEncode/decode in gaussian minimum shift keying mode.\n\n\nGMSK mode does not offer the modulation modes given by the other encodings. It has a fairly limited bitrate, but the advantage of GMSK is that its receiver does not need to compute any FFTs, making it suitable for low-power receivers or situations with little computational capacity.\n\n\nquiet_ofdm_options\n\n\ntypedef\n \nstruct\n \n{\n\n\n    \nunsigned\n \nint\n \nnum_subcarriers\n;\n\n\n    \nunsigned\n \nint\n \ncyclic_prefix_len\n;\n\n\n    \nunsigned\n \nint\n \ntaper_len\n;\n\n\n    \nsize_t\n \nleft_band\n;\n\n\n    \nsize_t\n \nright_band\n;\n\n\n\n}\n \nquiet_ofdm_options\n;\n\n\n\n\n\n\nThese options configure the behavior of OFDM, orthogonal frequency division multiplexing, as used by the encoder. OFDM places the modulated symbols on to multiple orthogonal subcarriers. This can help the decoder estabilish good equalization when used on a system with uneven filtering.\n\n\nnum_subcarriers\n\n\ntotal number of subcarriers used, inlcuding guard bands and pilots\n\n\ncyclic_prefix_len\n\n\nnumber of cyclic prefix samples between symbols\n\n\ntaper_len\n\n\nnumber of taper window between symbols\n\n\nleft_band\n\n\nnumber of extra guard subcarriers inserted on left (low freq)\n\n\nright_band\n\n\nnumber of extra guard subcarriers inserted on right (high freq)\n\n\nquiet_checksum_scheme_t\n\n\ntypedef\n \nenum\n \n{\n\n\n    \nquiet_checksum_none\n \n=\n \n1\n,\n\n\n    \nquiet_checksum_8bit\n,\n\n\n    \nquiet_checksum_crc8\n,\n\n\n    \nquiet_checksum_crc16\n,\n\n\n    \nquiet_checksum_crc24\n,\n\n\n    \nquiet_checksum_crc32\n\n\n\n}\n \nquiet_checksum_scheme_t\n;\n\n\n\n\n\n\nquiet_checksum_none\n\n\nno error-detection\n\n\nquiet_checksum_8bit\n\n\n8-bit checksum\n\n\nquiet_checksum_crc8\n\n\n8-bit CRC\n\n\nquiet_checksum_crc16\n\n\n16-bit CRC\n\n\nquiet_checksum_crc24\n\n\n24-bit CRC\n\n\nquiet_checksum_crc32\n\n\n32-bit CRC\n\n\nquiet_error_correction_scheme_t\n\n\ntypedef\n \nenum\n \n{\n\n\n    \nquiet_error_correction_none\n \n=\n \n1\n,\n\n\n    \nquiet_error_correction_repeat_3\n,\n\n\n    \nquiet_error_correction_repeat_5\n,\n\n\n    \nquiet_error_correction_hamming_7_4\n,\n\n\n    \nquiet_error_correction_hamming_7_4_parity\n,\n\n\n    \nquiet_error_correction_hamming_12_8\n,\n\n\n    \nquiet_error_correction_golay_24_12\n,\n\n\n    \nquiet_error_correction_secded_22_16\n,\n\n\n    \nquiet_error_correction_secded_39_32\n,\n\n\n    \nquiet_error_correction_secded_72_64\n,\n\n\n    \nquiet_error_correction_conv_12_7\n,\n\n\n    \nquiet_error_correction_conv_12_9\n,\n\n\n    \nquiet_error_correction_conv_13_9\n,\n\n\n    \nquiet_error_correction_conv_16_15\n,\n\n\n    \nquiet_error_correction_conv_perf_23_7\n,\n\n\n    \nquiet_error_correction_conv_perf_34_7\n,\n\n\n    \nquiet_error_correction_conv_perf_45_7\n,\n\n\n    \nquiet_error_correction_conv_perf_56_7\n,\n\n\n    \nquiet_error_correction_conv_perf_67_7\n,\n\n\n    \nquiet_error_correction_conv_perf_78_7\n,\n\n\n    \nquiet_error_correction_conv_perf_23_9\n,\n\n\n    \nquiet_error_correction_conv_perf_34_9\n,\n\n\n    \nquiet_error_correction_conv_perf_45_9\n,\n\n\n    \nquiet_error_correction_conv_perf_56_9\n,\n\n\n    \nquiet_error_correction_conv_perf_67_9\n,\n\n\n    \nquiet_error_correction_conv_perf_78_9\n,\n\n\n    \nquiet_error_correction_reed_solomon_223_255\n\n\n\n}\n \nquiet_error_correction_scheme_t\n;\n\n\n\n\n\n\nquiet_error_correction_none\n\n\nno error-correction\n\n\nquiet_error_correction_repeat_3\n\n\nsimple repeat code, r1/3\n\n\nquiet_error_correction_repeat_5\n\n\nsimple repeat code, r1/5\n\n\nquiet_error_correction_hamming_7_4\n\n\nHamming (7,4) block code, r1/2 (really 4/7)\n\n\nquiet_error_correction_hamming_7_4_parity\n\n\nHamming (7,4) with extra parity bit, r1/2.\n\n\nquiet_error_correction_hamming_12_8\n\n\nHamming (12,8) block code, r2/3.\n\n\nquiet_error_correction_golay_24_12\n\n\nGolay (24,12) block code, r1/2.\n\n\nquiet_error_correction_secded_22_16\n\n\nSEC-DED (22,16) block code, r8/11.\n\n\nquiet_error_correction_secded_39_32\n\n\nSEC-DED (39,32) block code.\n\n\nquiet_error_correction_secded_72_64\n\n\nSEC-DED (72,64) block code, r8/9.\n\n\nquiet_error_correction_conv_12_7\n\n\nconvolutional code r1/2, K=7, dfree=10\n\n\nquiet_error_correction_conv_12_9\n\n\nconvolutional code r1/2, K=9, dfree=12\n\n\nquiet_error_correction_conv_13_9\n\n\nconvolutional code r1/3, K=9, dfree=18\n\n\nquiet_error_correction_conv_16_15\n\n\nconvolutional code 1/6, K=15, dfree\n=57 (Heller 1968)\n\n\nquiet_error_correction_conv_perf_23_7\n\n\nperforated convolutional code r2/3, K=7, dfree=6\n\n\nquiet_error_correction_conv_perf_34_7\n\n\nperforated convolutional code r3/4, K=7, dfree=5\n\n\nquiet_error_correction_conv_perf_45_7\n\n\nperforated convolutional code r4/5, K=7, dfree=4\n\n\nquiet_error_correction_conv_perf_56_7\n\n\nperforated convolutional code r5/6, K=7, dfree=4\n\n\nquiet_error_correction_conv_perf_67_7\n\n\nperforated convolutional code r6/7, K=7, dfree=3\n\n\nquiet_error_correction_conv_perf_78_7\n\n\nperforated convolutional code r7/8, K=7, dfree=3\n\n\nquiet_error_correction_conv_perf_23_9\n\n\nperforated convolutional code r2/3, K=9, dfree=7\n\n\nquiet_error_correction_conv_perf_34_9\n\n\nperforated convolutional code r3/4, K=9, dfree=6\n\n\nquiet_error_correction_conv_perf_45_9\n\n\nperforated convolutional code r4/5, K=9, dfree=5\n\n\nquiet_error_correction_conv_perf_56_9\n\n\nperforated convolutional code r5/6, K=9, dfree=5\n\n\nquiet_error_correction_conv_perf_67_9\n\n\nperforated convolutional code r6/7, K=9, dfree=4\n\n\nquiet_error_correction_conv_perf_78_9\n\n\nperforated convolutional code r7/8, K=9, dfree=4\n\n\nquiet_error_correction_reed_solomon_223_255\n\n\nReed-Solomon m=8, n=255, k=223.\n\n\nquiet_modulation_scheme_t\n\n\ntypedef\n \nenum\n \n{\n\n\n    \nquiet_modulation_psk2\n \n=\n \n1\n,\n\n\n    \nquiet_modulation_psk4\n,\n\n\n    \nquiet_modulation_psk8\n,\n\n\n    \nquiet_modulation_psk16\n,\n\n\n    \nquiet_modulation_psk32\n,\n\n\n    \nquiet_modulation_psk64\n,\n\n\n    \nquiet_modulation_psk128\n,\n\n\n    \nquiet_modulation_psk256\n,\n\n\n    \nquiet_modulation_dpsk2\n,\n\n\n    \nquiet_modulation_dpsk4\n,\n\n\n    \nquiet_modulation_dpsk8\n,\n\n\n    \nquiet_modulation_dpsk16\n,\n\n\n    \nquiet_modulation_dpsk32\n,\n\n\n    \nquiet_modulation_dpsk64\n,\n\n\n    \nquiet_modulation_dpsk128\n,\n\n\n    \nquiet_modulation_dpsk256\n,\n\n\n    \nquiet_modulation_ask2\n,\n\n\n    \nquiet_modulation_ask4\n,\n\n\n    \nquiet_modulation_ask8\n,\n\n\n    \nquiet_modulation_ask16\n,\n\n\n    \nquiet_modulation_ask32\n,\n\n\n    \nquiet_modulation_ask64\n,\n\n\n    \nquiet_modulation_ask128\n,\n\n\n    \nquiet_modulation_ask256\n,\n\n\n    \nquiet_modulation_qask4\n,\n\n\n    \nquiet_modulation_qask8\n,\n\n\n    \nquiet_modulation_qask16\n,\n\n\n    \nquiet_modulation_qask32\n,\n\n\n    \nquiet_modulation_qask64\n,\n\n\n    \nquiet_modulation_qask128\n,\n\n\n    \nquiet_modulation_qask256\n,\n\n\n    \nquiet_modulation_qask512\n,\n\n\n    \nquiet_modulation_qask1024\n,\n\n\n    \nquiet_modulation_qask2048\n,\n\n\n    \nquiet_modulation_qask4096\n,\n\n\n    \nquiet_modulation_qask8192\n,\n\n\n    \nquiet_modulation_qask16384\n,\n\n\n    \nquiet_modulation_qask32768\n,\n\n\n    \nquiet_modulation_qask65536\n,\n\n\n    \nquiet_modulation_apsk4\n,\n\n\n    \nquiet_modulation_apsk8\n,\n\n\n    \nquiet_modulation_apsk16\n,\n\n\n    \nquiet_modulation_apsk32\n,\n\n\n    \nquiet_modulation_apsk64\n,\n\n\n    \nquiet_modulation_apsk128\n,\n\n\n    \nquiet_modulation_apsk256\n,\n\n\n    \nquiet_modulation_bpsk\n,\n\n\n    \nquiet_modulation_qpsk\n,\n\n\n    \nquiet_modulation_ook\n,\n\n\n    \nquiet_modulation_sqask32\n,\n\n\n    \nquiet_modulation_sqask128\n,\n\n\n    \nquiet_modulation_v29\n,\n\n\n    \nquiet_modulation_opt_qask16\n,\n\n\n    \nquiet_modulation_opt_qask32\n,\n\n\n    \nquiet_modulation_opt_qask64\n,\n\n\n    \nquiet_modulation_opt_qask128\n,\n\n\n    \nquiet_modulation_opt_qask256\n,\n\n\n    \nquiet_modulation_vtech\n\n\n\n}\n \nquiet_modulation_scheme_t\n;\n\n\n\n\n\n\nquiet_modulation_psk2\n\n\nphase-shift keying-2\n\n\nquiet_modulation_psk4\n\n\nphase-shift keying-4\n\n\nquiet_modulation_psk8\n\n\nphase-shift keying-8\n\n\nquiet_modulation_psk16\n\n\nphase-shift keying-16\n\n\nquiet_modulation_psk32\n\n\nphase-shift keying-32\n\n\nquiet_modulation_psk64\n\n\nphase-shift keying-64\n\n\nquiet_modulation_psk128\n\n\nphase-shift keying-128\n\n\nquiet_modulation_psk256\n\n\nphase-shift keying-256\n\n\nquiet_modulation_dpsk2\n\n\ndifferential phase-shift keying-2\n\n\nquiet_modulation_dpsk4\n\n\ndifferential phase-shift keying-4\n\n\nquiet_modulation_dpsk8\n\n\ndifferential phase-shift keying-8\n\n\nquiet_modulation_dpsk16\n\n\ndifferential phase-shift keying-16\n\n\nquiet_modulation_dpsk32\n\n\ndifferential phase-shift keying-32\n\n\nquiet_modulation_dpsk64\n\n\ndifferential phase-shift keying-64\n\n\nquiet_modulation_dpsk128\n\n\ndifferential phase-shift keying-128\n\n\nquiet_modulation_dpsk256\n\n\ndifferential phase-shift keying-256\n\n\nquiet_modulation_ask2\n\n\namplitude-shift keying-2\n\n\nquiet_modulation_ask4\n\n\namplitude-shift keying-4\n\n\nquiet_modulation_ask8\n\n\namplitude-shift keying-8\n\n\nquiet_modulation_ask16\n\n\namplitude-shift keying-16\n\n\nquiet_modulation_ask32\n\n\namplitude-shift keying-32\n\n\nquiet_modulation_ask64\n\n\namplitude-shift keying-64\n\n\nquiet_modulation_ask128\n\n\namplitude-shift keying-128\n\n\nquiet_modulation_ask256\n\n\namplitude-shift keying-256\n\n\nquiet_modulation_qask4\n\n\nquadrature amplitude-shift keying-4\n\n\nquiet_modulation_qask8\n\n\nquadrature amplitude-shift keying-8\n\n\nquiet_modulation_qask16\n\n\nquadrature amplitude-shift keying-16\n\n\nquiet_modulation_qask32\n\n\nquadrature amplitude-shift keying-32\n\n\nquiet_modulation_qask64\n\n\nquadrature amplitude-shift keying-64\n\n\nquiet_modulation_qask128\n\n\nquadrature amplitude-shift keying-128\n\n\nquiet_modulation_qask256\n\n\nquadrature amplitude-shift keying-256\n\n\nquiet_modulation_qask512\n\n\nquadrature amplitude-shift keying-512\n\n\nquiet_modulation_qask1024\n\n\nquadrature amplitude-shift keying-1024\n\n\nquiet_modulation_qask2048\n\n\nquadrature amplitude-shift keying-2048\n\n\nquiet_modulation_qask4096\n\n\nquadrature amplitude-shift keying-4096\n\n\nquiet_modulation_qask8192\n\n\nquadrature amplitude-shift keying-8192\n\n\nquiet_modulation_qask16384\n\n\nquadrature amplitude-shift keying-16384\n\n\nquiet_modulation_qask32768\n\n\nquadrature amplitude-shift keying-32768\n\n\nquiet_modulation_qask65536\n\n\nquadrature amplitude-shift keying-65536\n\n\nquiet_modulation_apsk4\n\n\namplitude phase-shift keying-4\n\n\nquiet_modulation_apsk8\n\n\namplitude phase-shift keying-8\n\n\nquiet_modulation_apsk16\n\n\namplitude phase-shift keying-16\n\n\nquiet_modulation_apsk32\n\n\namplitude phase-shift keying-32\n\n\nquiet_modulation_apsk64\n\n\namplitude phase-shift keying-64\n\n\nquiet_modulation_apsk128\n\n\namplitude phase-shift keying-128\n\n\nquiet_modulation_apsk256\n\n\namplitude phase-shift keying-256\n\n\nquiet_modulation_bpsk\n\n\nbinary phase-shift keying\n\n\nquiet_modulation_qpsk\n\n\nquaternary phase-shift keying\n\n\nquiet_modulation_ook\n\n\non-off keying\n\n\nquiet_modulation_sqask32\n\n\nsquare quadrature amplitude-shift keying-32\n\n\nquiet_modulation_sqask128\n\n\nsquare quadrature amplitude-shift keying-128\n\n\nquiet_modulation_v29\n\n\nV.29 star constellation.\n\n\nquiet_modulation_opt_qask16\n\n\noptimal quadrature amplitude-shift keying-16\n\n\nquiet_modulation_opt_qask32\n\n\noptimal quadrature amplitude-shift keying-32\n\n\nquiet_modulation_opt_qask64\n\n\noptimal quadrature amplitude-shift keying-64\n\n\nquiet_modulation_opt_qask128\n\n\noptimal quadrature amplitude-shift keying-128\n\n\nquiet_modulation_opt_qask256\n\n\noptimal quadrature amplitude-shift keying-256\n\n\nquiet_modulation_vtech\n\n\nVirginia Tech logo constellation.\n\n\nquiet_dc_filter_options\n\n\ntypedef\n \nstruct\n \n{\n\n\n    \nfloat\n \nalpha\n;\n\n\n\n}\n \nquiet_dc_filter_options\n;\n\n\n\n\n\n\nThis DC blocker is applied near the end of the signal chain so that any leftover DC component is removed. This is important for audio signals as we do not want to send any DC out to speakers\n\n\ntransfer function H(z)=(1 - (z^-1))/(1 - (1-alpha)*(z^-1))\n\n\nalpha\n\n\nquiet_resampler_options\n\n\ntypedef\n \nstruct\n \n{\n\n\n    \nsize_t\n \ndelay\n;\n\n\n    \nfloat\n \nbandwidth\n;\n\n\n    \nfloat\n \nattenuation\n;\n\n\n    \nsize_t\n \nfilter_bank_size\n;\n\n\n\n}\n \nquiet_resampler_options\n;\n\n\n\n\n\n\nControls arbitrary resample unit used by libquiet after generating 44.1kHz signal or before decoding signal\n\n\nThis resampler will be applied to set the sample rate to the rate given when creating an encoder or decoder\n\n\ndelay\n\n\nbandwidth\n\n\nattenuation\n\n\nfilter_bank_size", 
             "title": "Modem Configuration"
         }, 
         {
             "location": "/configuration/#modem-configuration", 
             "text": "The primary configuration structures for libquiet are  quiet_encoder_options  and  quiet_decoder_options . Although it is possible to modify values in these structures, it is generally recommended to use the JSON-based configuration system instead, as that system works consistently across all platforms. This page documents how to configure from the JSON profiles as well as the raw configuration structures themselves.", 
             "title": "Modem Configuration"
+        }, 
+        {
+            "location": "/configuration/#quiet_decoder_profile_file", 
+            "text": "quiet_decoder_options   *  quiet_decoder_profile_file ( FILE   * f , \n\n                            const   char   * profilename );   libquiet's configuration options are fairly numerous, and testing can be frustrating when configuration requires recompilation. For this reason, libquiet provides a JSON file containing multiple sets of configuration  profiles  and functions to read and validate them.  Each profile provides access to every option contained in quiet_encoder_options/quiet_decoder_options. It is hoped that this will give good default options and provide a starting place for users to tune new profiles.  quiet_decoder_profile_file reads the profile given by profilename from the file pointer and returns the corresponding  quiet_decoder_options .", 
+            "title": "quiet_decoder_profile_file"
+        }, 
+        {
+            "location": "/configuration/#parameters", 
+            "text": "f  - file pointer which contains a valid JSON libquiet profile set  profilename  - the string key of the profile to fetch", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/configuration/#returns", 
+            "text": "a pointer to an initialized  quiet_decoder_options  or NULL if decoding failed. must be freed by caller (with free()).", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/configuration/#quiet_decoder_profile_filename", 
+            "text": "quiet_decoder_options   *  quiet_decoder_profile_filename ( const   char   * fname , \n\n                                const   char   * profilename );   quiet_decoder_profile_filename reads the profile given by profilename from the file located at filename and returns the corresponding  quiet_decoder_options .", 
+            "title": "quiet_decoder_profile_filename"
+        }, 
+        {
+            "location": "/configuration/#parameters_1", 
+            "text": "fname  - path to a file which will be opened and read, must contain a valid JSON liquiet profile set  profilename  - the string key of the profile to fetch", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/configuration/#returns_1", 
+            "text": "a pointer to an initialized  quiet_decoder_options  or NULL if decoding failed. must be freed by caller (with free()).", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/configuration/#quiet_decoder_profile_str", 
+            "text": "quiet_decoder_options   *  quiet_decoder_profile_str ( const   char   * input , \n\n                           const   char   * profilename );   quiet_decoder_profile_str reads the profile given by profilename from the input and returns the corresponding  quiet_decoder_options .", 
+            "title": "quiet_decoder_profile_str"
+        }, 
+        {
+            "location": "/configuration/#parameters_2", 
+            "text": "input  - a string containing a valid JSON libquiet profile set  profilename  - the string key of the profile to fetch", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/configuration/#returns_2", 
+            "text": "a pointer to an initialized  quiet_decoder_options  or NULL if decoding failed. must be freed by caller (with free()).", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/configuration/#quiet_encoder_profile_file", 
+            "text": "quiet_encoder_options   *  quiet_encoder_profile_file ( FILE   * f , \n\n                            const   char   * profilename );   quiet_encoder_profile_file reads the profile given by profilename from the file pointer and returns the corresponding  quiet_encoder_options .", 
+            "title": "quiet_encoder_profile_file"
+        }, 
+        {
+            "location": "/configuration/#parameters_3", 
+            "text": "f  - file pointer which contains a valid JSON libquiet profile set  profilename  - the string key of the profile to fetch", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/configuration/#returns_3", 
+            "text": "a pointer to an initialized  quiet_encoder_options  or NULL if decoding failed. must be freed by caller (with free()).", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/configuration/#quiet_encoder_profile_filename", 
+            "text": "quiet_encoder_options   *  quiet_encoder_profile_filename ( const   char   * fname , \n\n                                const   char   * profilename );   quiet_encoder_profile_filename reads the profile given by profilename from the file located at filename and returns the corresponding  quiet_encoder_options .", 
+            "title": "quiet_encoder_profile_filename"
+        }, 
+        {
+            "location": "/configuration/#parameters_4", 
+            "text": "fname  - path to a file which will be opened and read, must contain a valid JSON liquiet profile set  profilename  - the string key of the profile to fetch", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/configuration/#returns_4", 
+            "text": "a pointer to an initialized  quiet_encoder_options  or NULL if decoding failed. must be freed by caller (with free()).", 
+            "title": "Returns"
+        }, 
+        {
+            "location": "/configuration/#quiet_encoder_profile_str", 
+            "text": "quiet_encoder_options   *  quiet_encoder_profile_str ( const   char   * input , \n\n                           const   char   * profilename );   quiet_encoder_profile_str reads the profile given by profilename from the input and returns the corresponding  quiet_encoder_options .", 
+            "title": "quiet_encoder_profile_str"
+        }, 
+        {
+            "location": "/configuration/#parameters_5", 
+            "text": "input  - a string containing a valid JSON libquiet profile set  profilename  - the string key of the profile to fetch", 
+            "title": "Parameters"
+        }, 
+        {
+            "location": "/configuration/#returns_5", 
+            "text": "a pointer to an initialized  quiet_encoder_options  or NULL if decoding failed. must be freed by caller (with free()).", 
+            "title": "Returns"
         }, 
         {
             "location": "/configuration/#quiet_encoder_options", 
@@ -447,7 +537,7 @@
         }, 
         {
             "location": "/configuration/#frame_len", 
-            "text": "Maximum frame length.", 
+            "text": "Maximum frame length.  This value controls the maximum length of the user-controlled section of the frame. There is overhead in starting new frames, and each frame performs its own CRC check which either accepts or rejects the frame. A frame begins with a synchronization section which the decoder uses to detect and lock on to the frame. Over time, the synchronization will drift, which makes shorter frames easier to decode than longer frames.", 
             "title": "frame_len"
         }, 
         {
@@ -502,18 +592,648 @@
         }, 
         {
             "location": "/configuration/#is_debug", 
-            "text": "Enable debug mode on receiver.", 
+            "text": "Enable debug mode on receiver.  In order for this flag to work, libquiet must be compiled in debug mode ( #define QUIET_DEBUG 1 ). Once enabled, this mode causes the decoder to use liquid to create debug files which can be viewed in matlab/octave. These files have the filename format framesync_d, where d is an increasing number. These files can be useful for tracking the decoder's behavior.", 
             "title": "is_debug"
         }, 
         {
+            "location": "/configuration/#quiet_modulator_options", 
+            "text": "typedef   struct   { \n\n     unsigned   int   shape ; \n\n     unsigned   int   samples_per_symbol ; \n\n     unsigned   int   symbol_delay ; \n\n     float   excess_bw ; \n\n     float   center_rads ; \n\n     float   gain ; \n\n     quiet_dc_filter_options   dc_filter_opt ;  }   quiet_modulator_options ;   This set of options is used only by the encoder  The modulator is a combination element which interpolates the encoded signal (rescaling in frequency domain) and then mixes it onto a carrier of a given frequency. Finally, a gain is applied, and an optional DC blocker removes DC components.", 
+            "title": "quiet_modulator_options"
+        }, 
+        {
+            "location": "/configuration/#shape", 
+            "text": "Numerical value for shape of interpolation filter.  These values correspond to those used by liquid DSP. In particular,  1: Nyquist Kaiser  2: Parks-McClellan  3: Raised Cosine  4: Flipped Exponential (Nyquist)  5: Flipped Hyperbolic Secant (Nyquist)  6: Flipped Arc-Hyperbolic Secant (Nyquist)  7: Root-Nyquist Kaiser (Approximate Optimum)  8: Root-Nyquist Kaiser (True Optimum)  9: Root Raised Cosine  10: Harris-Moerder-3  11: GMSK Transmit  12: GMSK Receive  13: Flipped Exponential (root-Nyquist)  14: Flipped Hyperbolic Secant (root-Nyquist)  15: Flipped Arc-Hyperbolic Secant (root-Nyquist)  All other values invalid", 
+            "title": "shape"
+        }, 
+        {
+            "location": "/configuration/#samples_per_symbol", 
+            "text": "interpolation factor", 
+            "title": "samples_per_symbol"
+        }, 
+        {
+            "location": "/configuration/#symbol_delay", 
+            "text": "interpolation filter delay", 
+            "title": "symbol_delay"
+        }, 
+        {
+            "location": "/configuration/#excess_bw", 
+            "text": "interpolation roll-off factor", 
+            "title": "excess_bw"
+        }, 
+        {
+            "location": "/configuration/#center_rads", 
+            "text": "carrier frequency, [0, 2*pi)", 
+            "title": "center_rads"
+        }, 
+        {
+            "location": "/configuration/#gain", 
+            "text": "gain, [0, 0.5]", 
+            "title": "gain"
+        }, 
+        {
+            "location": "/configuration/#dc_filter_opt", 
+            "text": "dc blocker options", 
+            "title": "dc_filter_opt"
+        }, 
+        {
+            "location": "/configuration/#quiet_demodulator_options", 
+            "text": "typedef   struct   { \n\n     unsigned   int   shape ; \n\n     unsigned   int   samples_per_symbol ; \n\n     unsigned   int   symbol_delay ; \n\n     float   excess_bw ; \n\n     float   center_rads ;  }   quiet_demodulator_options ;   This set of options is used only by the decoder  The demodulator is a combination element which inverts the operations of the modulator. It first mixes down from the carrier and then performs decimation to recover the signal.", 
+            "title": "quiet_demodulator_options"
+        }, 
+        {
+            "location": "/configuration/#shape_1", 
+            "text": "Numerical value for shape of decimation filter.  This uses the same set of values as  quiet_modulator_options.shape", 
+            "title": "shape"
+        }, 
+        {
+            "location": "/configuration/#samples_per_symbol_1", 
+            "text": "decimation factor", 
+            "title": "samples_per_symbol"
+        }, 
+        {
+            "location": "/configuration/#symbol_delay_1", 
+            "text": "decimation filter delay", 
+            "title": "symbol_delay"
+        }, 
+        {
+            "location": "/configuration/#excess_bw_1", 
+            "text": "decimation roll-off factor", 
+            "title": "excess_bw"
+        }, 
+        {
+            "location": "/configuration/#center_rads_1", 
+            "text": "carrier frequency, [0, 2*pi)", 
+            "title": "center_rads"
+        }, 
+        {
+            "location": "/configuration/#quiet_encoding_t", 
+            "text": "typedef   enum   { \n\n     ofdm_encoding , \n\n     modem_encoding , \n\n     gmsk_encoding  }   quiet_encoding_t ;   Selects operational mode for encoder/decoder. OFDM and Modem mode use the same modulation schemes while gmsk ignores the supplied scheme and uses its own", 
+            "title": "quiet_encoding_t"
+        }, 
+        {
+            "location": "/configuration/#ofdm_encoding", 
+            "text": "Encode/decode in OFDM mode.", 
+            "title": "ofdm_encoding"
+        }, 
+        {
+            "location": "/configuration/#modem_encoding", 
+            "text": "Encode/decode in modem mode.", 
+            "title": "modem_encoding"
+        }, 
+        {
+            "location": "/configuration/#gmsk_encoding", 
+            "text": "Encode/decode in gaussian minimum shift keying mode.  GMSK mode does not offer the modulation modes given by the other encodings. It has a fairly limited bitrate, but the advantage of GMSK is that its receiver does not need to compute any FFTs, making it suitable for low-power receivers or situations with little computational capacity.", 
+            "title": "gmsk_encoding"
+        }, 
+        {
+            "location": "/configuration/#quiet_ofdm_options", 
+            "text": "typedef   struct   { \n\n     unsigned   int   num_subcarriers ; \n\n     unsigned   int   cyclic_prefix_len ; \n\n     unsigned   int   taper_len ; \n\n     size_t   left_band ; \n\n     size_t   right_band ;  }   quiet_ofdm_options ;   These options configure the behavior of OFDM, orthogonal frequency division multiplexing, as used by the encoder. OFDM places the modulated symbols on to multiple orthogonal subcarriers. This can help the decoder estabilish good equalization when used on a system with uneven filtering.", 
+            "title": "quiet_ofdm_options"
+        }, 
+        {
+            "location": "/configuration/#num_subcarriers", 
+            "text": "total number of subcarriers used, inlcuding guard bands and pilots", 
+            "title": "num_subcarriers"
+        }, 
+        {
+            "location": "/configuration/#cyclic_prefix_len", 
+            "text": "number of cyclic prefix samples between symbols", 
+            "title": "cyclic_prefix_len"
+        }, 
+        {
+            "location": "/configuration/#taper_len", 
+            "text": "number of taper window between symbols", 
+            "title": "taper_len"
+        }, 
+        {
+            "location": "/configuration/#left_band", 
+            "text": "number of extra guard subcarriers inserted on left (low freq)", 
+            "title": "left_band"
+        }, 
+        {
+            "location": "/configuration/#right_band", 
+            "text": "number of extra guard subcarriers inserted on right (high freq)", 
+            "title": "right_band"
+        }, 
+        {
+            "location": "/configuration/#quiet_checksum_scheme_t", 
+            "text": "typedef   enum   { \n\n     quiet_checksum_none   =   1 , \n\n     quiet_checksum_8bit , \n\n     quiet_checksum_crc8 , \n\n     quiet_checksum_crc16 , \n\n     quiet_checksum_crc24 , \n\n     quiet_checksum_crc32  }   quiet_checksum_scheme_t ;", 
+            "title": "quiet_checksum_scheme_t"
+        }, 
+        {
+            "location": "/configuration/#quiet_checksum_none", 
+            "text": "no error-detection", 
+            "title": "quiet_checksum_none"
+        }, 
+        {
+            "location": "/configuration/#quiet_checksum_8bit", 
+            "text": "8-bit checksum", 
+            "title": "quiet_checksum_8bit"
+        }, 
+        {
+            "location": "/configuration/#quiet_checksum_crc8", 
+            "text": "8-bit CRC", 
+            "title": "quiet_checksum_crc8"
+        }, 
+        {
+            "location": "/configuration/#quiet_checksum_crc16", 
+            "text": "16-bit CRC", 
+            "title": "quiet_checksum_crc16"
+        }, 
+        {
+            "location": "/configuration/#quiet_checksum_crc24", 
+            "text": "24-bit CRC", 
+            "title": "quiet_checksum_crc24"
+        }, 
+        {
+            "location": "/configuration/#quiet_checksum_crc32", 
+            "text": "32-bit CRC", 
+            "title": "quiet_checksum_crc32"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_scheme_t", 
+            "text": "typedef   enum   { \n\n     quiet_error_correction_none   =   1 , \n\n     quiet_error_correction_repeat_3 , \n\n     quiet_error_correction_repeat_5 , \n\n     quiet_error_correction_hamming_7_4 , \n\n     quiet_error_correction_hamming_7_4_parity , \n\n     quiet_error_correction_hamming_12_8 , \n\n     quiet_error_correction_golay_24_12 , \n\n     quiet_error_correction_secded_22_16 , \n\n     quiet_error_correction_secded_39_32 , \n\n     quiet_error_correction_secded_72_64 , \n\n     quiet_error_correction_conv_12_7 , \n\n     quiet_error_correction_conv_12_9 , \n\n     quiet_error_correction_conv_13_9 , \n\n     quiet_error_correction_conv_16_15 , \n\n     quiet_error_correction_conv_perf_23_7 , \n\n     quiet_error_correction_conv_perf_34_7 , \n\n     quiet_error_correction_conv_perf_45_7 , \n\n     quiet_error_correction_conv_perf_56_7 , \n\n     quiet_error_correction_conv_perf_67_7 , \n\n     quiet_error_correction_conv_perf_78_7 , \n\n     quiet_error_correction_conv_perf_23_9 , \n\n     quiet_error_correction_conv_perf_34_9 , \n\n     quiet_error_correction_conv_perf_45_9 , \n\n     quiet_error_correction_conv_perf_56_9 , \n\n     quiet_error_correction_conv_perf_67_9 , \n\n     quiet_error_correction_conv_perf_78_9 , \n\n     quiet_error_correction_reed_solomon_223_255  }   quiet_error_correction_scheme_t ;", 
+            "title": "quiet_error_correction_scheme_t"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_none", 
+            "text": "no error-correction", 
+            "title": "quiet_error_correction_none"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_repeat_3", 
+            "text": "simple repeat code, r1/3", 
+            "title": "quiet_error_correction_repeat_3"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_repeat_5", 
+            "text": "simple repeat code, r1/5", 
+            "title": "quiet_error_correction_repeat_5"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_hamming_7_4", 
+            "text": "Hamming (7,4) block code, r1/2 (really 4/7)", 
+            "title": "quiet_error_correction_hamming_7_4"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_hamming_7_4_parity", 
+            "text": "Hamming (7,4) with extra parity bit, r1/2.", 
+            "title": "quiet_error_correction_hamming_7_4_parity"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_hamming_12_8", 
+            "text": "Hamming (12,8) block code, r2/3.", 
+            "title": "quiet_error_correction_hamming_12_8"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_golay_24_12", 
+            "text": "Golay (24,12) block code, r1/2.", 
+            "title": "quiet_error_correction_golay_24_12"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_secded_22_16", 
+            "text": "SEC-DED (22,16) block code, r8/11.", 
+            "title": "quiet_error_correction_secded_22_16"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_secded_39_32", 
+            "text": "SEC-DED (39,32) block code.", 
+            "title": "quiet_error_correction_secded_39_32"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_secded_72_64", 
+            "text": "SEC-DED (72,64) block code, r8/9.", 
+            "title": "quiet_error_correction_secded_72_64"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_12_7", 
+            "text": "convolutional code r1/2, K=7, dfree=10", 
+            "title": "quiet_error_correction_conv_12_7"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_12_9", 
+            "text": "convolutional code r1/2, K=9, dfree=12", 
+            "title": "quiet_error_correction_conv_12_9"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_13_9", 
+            "text": "convolutional code r1/3, K=9, dfree=18", 
+            "title": "quiet_error_correction_conv_13_9"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_16_15", 
+            "text": "convolutional code 1/6, K=15, dfree =57 (Heller 1968)", 
+            "title": "quiet_error_correction_conv_16_15"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_perf_23_7", 
+            "text": "perforated convolutional code r2/3, K=7, dfree=6", 
+            "title": "quiet_error_correction_conv_perf_23_7"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_perf_34_7", 
+            "text": "perforated convolutional code r3/4, K=7, dfree=5", 
+            "title": "quiet_error_correction_conv_perf_34_7"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_perf_45_7", 
+            "text": "perforated convolutional code r4/5, K=7, dfree=4", 
+            "title": "quiet_error_correction_conv_perf_45_7"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_perf_56_7", 
+            "text": "perforated convolutional code r5/6, K=7, dfree=4", 
+            "title": "quiet_error_correction_conv_perf_56_7"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_perf_67_7", 
+            "text": "perforated convolutional code r6/7, K=7, dfree=3", 
+            "title": "quiet_error_correction_conv_perf_67_7"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_perf_78_7", 
+            "text": "perforated convolutional code r7/8, K=7, dfree=3", 
+            "title": "quiet_error_correction_conv_perf_78_7"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_perf_23_9", 
+            "text": "perforated convolutional code r2/3, K=9, dfree=7", 
+            "title": "quiet_error_correction_conv_perf_23_9"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_perf_34_9", 
+            "text": "perforated convolutional code r3/4, K=9, dfree=6", 
+            "title": "quiet_error_correction_conv_perf_34_9"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_perf_45_9", 
+            "text": "perforated convolutional code r4/5, K=9, dfree=5", 
+            "title": "quiet_error_correction_conv_perf_45_9"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_perf_56_9", 
+            "text": "perforated convolutional code r5/6, K=9, dfree=5", 
+            "title": "quiet_error_correction_conv_perf_56_9"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_perf_67_9", 
+            "text": "perforated convolutional code r6/7, K=9, dfree=4", 
+            "title": "quiet_error_correction_conv_perf_67_9"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_conv_perf_78_9", 
+            "text": "perforated convolutional code r7/8, K=9, dfree=4", 
+            "title": "quiet_error_correction_conv_perf_78_9"
+        }, 
+        {
+            "location": "/configuration/#quiet_error_correction_reed_solomon_223_255", 
+            "text": "Reed-Solomon m=8, n=255, k=223.", 
+            "title": "quiet_error_correction_reed_solomon_223_255"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_scheme_t", 
+            "text": "typedef   enum   { \n\n     quiet_modulation_psk2   =   1 , \n\n     quiet_modulation_psk4 , \n\n     quiet_modulation_psk8 , \n\n     quiet_modulation_psk16 , \n\n     quiet_modulation_psk32 , \n\n     quiet_modulation_psk64 , \n\n     quiet_modulation_psk128 , \n\n     quiet_modulation_psk256 , \n\n     quiet_modulation_dpsk2 , \n\n     quiet_modulation_dpsk4 , \n\n     quiet_modulation_dpsk8 , \n\n     quiet_modulation_dpsk16 , \n\n     quiet_modulation_dpsk32 , \n\n     quiet_modulation_dpsk64 , \n\n     quiet_modulation_dpsk128 , \n\n     quiet_modulation_dpsk256 , \n\n     quiet_modulation_ask2 , \n\n     quiet_modulation_ask4 , \n\n     quiet_modulation_ask8 , \n\n     quiet_modulation_ask16 , \n\n     quiet_modulation_ask32 , \n\n     quiet_modulation_ask64 , \n\n     quiet_modulation_ask128 , \n\n     quiet_modulation_ask256 , \n\n     quiet_modulation_qask4 , \n\n     quiet_modulation_qask8 , \n\n     quiet_modulation_qask16 , \n\n     quiet_modulation_qask32 , \n\n     quiet_modulation_qask64 , \n\n     quiet_modulation_qask128 , \n\n     quiet_modulation_qask256 , \n\n     quiet_modulation_qask512 , \n\n     quiet_modulation_qask1024 , \n\n     quiet_modulation_qask2048 , \n\n     quiet_modulation_qask4096 , \n\n     quiet_modulation_qask8192 , \n\n     quiet_modulation_qask16384 , \n\n     quiet_modulation_qask32768 , \n\n     quiet_modulation_qask65536 , \n\n     quiet_modulation_apsk4 , \n\n     quiet_modulation_apsk8 , \n\n     quiet_modulation_apsk16 , \n\n     quiet_modulation_apsk32 , \n\n     quiet_modulation_apsk64 , \n\n     quiet_modulation_apsk128 , \n\n     quiet_modulation_apsk256 , \n\n     quiet_modulation_bpsk , \n\n     quiet_modulation_qpsk , \n\n     quiet_modulation_ook , \n\n     quiet_modulation_sqask32 , \n\n     quiet_modulation_sqask128 , \n\n     quiet_modulation_v29 , \n\n     quiet_modulation_opt_qask16 , \n\n     quiet_modulation_opt_qask32 , \n\n     quiet_modulation_opt_qask64 , \n\n     quiet_modulation_opt_qask128 , \n\n     quiet_modulation_opt_qask256 , \n\n     quiet_modulation_vtech  }   quiet_modulation_scheme_t ;", 
+            "title": "quiet_modulation_scheme_t"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_psk2", 
+            "text": "phase-shift keying-2", 
+            "title": "quiet_modulation_psk2"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_psk4", 
+            "text": "phase-shift keying-4", 
+            "title": "quiet_modulation_psk4"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_psk8", 
+            "text": "phase-shift keying-8", 
+            "title": "quiet_modulation_psk8"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_psk16", 
+            "text": "phase-shift keying-16", 
+            "title": "quiet_modulation_psk16"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_psk32", 
+            "text": "phase-shift keying-32", 
+            "title": "quiet_modulation_psk32"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_psk64", 
+            "text": "phase-shift keying-64", 
+            "title": "quiet_modulation_psk64"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_psk128", 
+            "text": "phase-shift keying-128", 
+            "title": "quiet_modulation_psk128"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_psk256", 
+            "text": "phase-shift keying-256", 
+            "title": "quiet_modulation_psk256"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_dpsk2", 
+            "text": "differential phase-shift keying-2", 
+            "title": "quiet_modulation_dpsk2"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_dpsk4", 
+            "text": "differential phase-shift keying-4", 
+            "title": "quiet_modulation_dpsk4"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_dpsk8", 
+            "text": "differential phase-shift keying-8", 
+            "title": "quiet_modulation_dpsk8"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_dpsk16", 
+            "text": "differential phase-shift keying-16", 
+            "title": "quiet_modulation_dpsk16"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_dpsk32", 
+            "text": "differential phase-shift keying-32", 
+            "title": "quiet_modulation_dpsk32"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_dpsk64", 
+            "text": "differential phase-shift keying-64", 
+            "title": "quiet_modulation_dpsk64"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_dpsk128", 
+            "text": "differential phase-shift keying-128", 
+            "title": "quiet_modulation_dpsk128"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_dpsk256", 
+            "text": "differential phase-shift keying-256", 
+            "title": "quiet_modulation_dpsk256"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_ask2", 
+            "text": "amplitude-shift keying-2", 
+            "title": "quiet_modulation_ask2"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_ask4", 
+            "text": "amplitude-shift keying-4", 
+            "title": "quiet_modulation_ask4"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_ask8", 
+            "text": "amplitude-shift keying-8", 
+            "title": "quiet_modulation_ask8"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_ask16", 
+            "text": "amplitude-shift keying-16", 
+            "title": "quiet_modulation_ask16"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_ask32", 
+            "text": "amplitude-shift keying-32", 
+            "title": "quiet_modulation_ask32"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_ask64", 
+            "text": "amplitude-shift keying-64", 
+            "title": "quiet_modulation_ask64"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_ask128", 
+            "text": "amplitude-shift keying-128", 
+            "title": "quiet_modulation_ask128"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_ask256", 
+            "text": "amplitude-shift keying-256", 
+            "title": "quiet_modulation_ask256"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask4", 
+            "text": "quadrature amplitude-shift keying-4", 
+            "title": "quiet_modulation_qask4"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask8", 
+            "text": "quadrature amplitude-shift keying-8", 
+            "title": "quiet_modulation_qask8"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask16", 
+            "text": "quadrature amplitude-shift keying-16", 
+            "title": "quiet_modulation_qask16"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask32", 
+            "text": "quadrature amplitude-shift keying-32", 
+            "title": "quiet_modulation_qask32"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask64", 
+            "text": "quadrature amplitude-shift keying-64", 
+            "title": "quiet_modulation_qask64"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask128", 
+            "text": "quadrature amplitude-shift keying-128", 
+            "title": "quiet_modulation_qask128"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask256", 
+            "text": "quadrature amplitude-shift keying-256", 
+            "title": "quiet_modulation_qask256"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask512", 
+            "text": "quadrature amplitude-shift keying-512", 
+            "title": "quiet_modulation_qask512"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask1024", 
+            "text": "quadrature amplitude-shift keying-1024", 
+            "title": "quiet_modulation_qask1024"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask2048", 
+            "text": "quadrature amplitude-shift keying-2048", 
+            "title": "quiet_modulation_qask2048"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask4096", 
+            "text": "quadrature amplitude-shift keying-4096", 
+            "title": "quiet_modulation_qask4096"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask8192", 
+            "text": "quadrature amplitude-shift keying-8192", 
+            "title": "quiet_modulation_qask8192"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask16384", 
+            "text": "quadrature amplitude-shift keying-16384", 
+            "title": "quiet_modulation_qask16384"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask32768", 
+            "text": "quadrature amplitude-shift keying-32768", 
+            "title": "quiet_modulation_qask32768"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qask65536", 
+            "text": "quadrature amplitude-shift keying-65536", 
+            "title": "quiet_modulation_qask65536"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_apsk4", 
+            "text": "amplitude phase-shift keying-4", 
+            "title": "quiet_modulation_apsk4"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_apsk8", 
+            "text": "amplitude phase-shift keying-8", 
+            "title": "quiet_modulation_apsk8"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_apsk16", 
+            "text": "amplitude phase-shift keying-16", 
+            "title": "quiet_modulation_apsk16"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_apsk32", 
+            "text": "amplitude phase-shift keying-32", 
+            "title": "quiet_modulation_apsk32"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_apsk64", 
+            "text": "amplitude phase-shift keying-64", 
+            "title": "quiet_modulation_apsk64"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_apsk128", 
+            "text": "amplitude phase-shift keying-128", 
+            "title": "quiet_modulation_apsk128"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_apsk256", 
+            "text": "amplitude phase-shift keying-256", 
+            "title": "quiet_modulation_apsk256"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_bpsk", 
+            "text": "binary phase-shift keying", 
+            "title": "quiet_modulation_bpsk"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_qpsk", 
+            "text": "quaternary phase-shift keying", 
+            "title": "quiet_modulation_qpsk"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_ook", 
+            "text": "on-off keying", 
+            "title": "quiet_modulation_ook"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_sqask32", 
+            "text": "square quadrature amplitude-shift keying-32", 
+            "title": "quiet_modulation_sqask32"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_sqask128", 
+            "text": "square quadrature amplitude-shift keying-128", 
+            "title": "quiet_modulation_sqask128"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_v29", 
+            "text": "V.29 star constellation.", 
+            "title": "quiet_modulation_v29"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_opt_qask16", 
+            "text": "optimal quadrature amplitude-shift keying-16", 
+            "title": "quiet_modulation_opt_qask16"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_opt_qask32", 
+            "text": "optimal quadrature amplitude-shift keying-32", 
+            "title": "quiet_modulation_opt_qask32"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_opt_qask64", 
+            "text": "optimal quadrature amplitude-shift keying-64", 
+            "title": "quiet_modulation_opt_qask64"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_opt_qask128", 
+            "text": "optimal quadrature amplitude-shift keying-128", 
+            "title": "quiet_modulation_opt_qask128"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_opt_qask256", 
+            "text": "optimal quadrature amplitude-shift keying-256", 
+            "title": "quiet_modulation_opt_qask256"
+        }, 
+        {
+            "location": "/configuration/#quiet_modulation_vtech", 
+            "text": "Virginia Tech logo constellation.", 
+            "title": "quiet_modulation_vtech"
+        }, 
+        {
+            "location": "/configuration/#quiet_dc_filter_options", 
+            "text": "typedef   struct   { \n\n     float   alpha ;  }   quiet_dc_filter_options ;   This DC blocker is applied near the end of the signal chain so that any leftover DC component is removed. This is important for audio signals as we do not want to send any DC out to speakers  transfer function H(z)=(1 - (z^-1))/(1 - (1-alpha)*(z^-1))", 
+            "title": "quiet_dc_filter_options"
+        }, 
+        {
+            "location": "/configuration/#alpha", 
+            "text": "", 
+            "title": "alpha"
+        }, 
+        {
+            "location": "/configuration/#quiet_resampler_options", 
+            "text": "typedef   struct   { \n\n     size_t   delay ; \n\n     float   bandwidth ; \n\n     float   attenuation ; \n\n     size_t   filter_bank_size ;  }   quiet_resampler_options ;   Controls arbitrary resample unit used by libquiet after generating 44.1kHz signal or before decoding signal  This resampler will be applied to set the sample rate to the rate given when creating an encoder or decoder", 
+            "title": "quiet_resampler_options"
+        }, 
+        {
+            "location": "/configuration/#delay", 
+            "text": "", 
+            "title": "delay"
+        }, 
+        {
+            "location": "/configuration/#bandwidth", 
+            "text": "", 
+            "title": "bandwidth"
+        }, 
+        {
+            "location": "/configuration/#attenuation", 
+            "text": "", 
+            "title": "attenuation"
+        }, 
+        {
+            "location": "/configuration/#filter_bank_size", 
+            "text": "", 
+            "title": "filter_bank_size"
+        }, 
+        {
             "location": "/encoding/", 
-            "text": "Encoding Raw Samples\n\n\nquiet_encoder\n\n\nstruct\n \nquiet_encoder\n;\n\n\n\ntypedef\n \nstruct\n \nquiet_encoder\n \nquiet_encoder\n;\n\n\n\n\n\n\nquiet_encoder_create\n\n\nquiet_encoder\n \n*\n\n\n\nquiet_encoder_create\n(\nconst\n \nquiet_encoder_options\n \n*\nopt\n,\n\n\n                     \nfloat\n \nsample_rate\n);\n\n\n\n\n\n\nquiet_encoder_create creates and initializes a new libquiet encoder for a given set of options and sample rate. As libquiet makes use of its own resampler, it is suggested to use the default sample rate of your device, so as to not invoke any implicit resamplers.\n\n\nParameters\n\n\nopt\n - \nquiet_encoder_options\n containing encoder configuration\n\n\nsample_rate\n - Sample rate that encoder will generate at\n\n\nReturns\n\n\npointer to a new encoder object, or NULL if creation failed\n\n\nquiet_encoder_send\n\n\nssize_t\n\n\n\nquiet_encoder_send\n(\nquiet_encoder\n \n*\ne\n,\n\n\n                   \nconst\n \nvoid\n \n*\nbuf\n,\n\n\n                   \nsize_t\n \nlen\n);\n\n\n\n\n\n\nquiet_encoder_send copies the frame provided by the user to an internal transmit queue. By default, this is a nonblocking call and will fail if the queue is full. However, if quiet_encoder_set_blocking has been called first, then it will wait for as much as the timeout length specified there if the frame cannot be immediately written.\n\n\nThe frame provided must be no longer than the maximum frame length of the encoder. If the frame is longer, it will be rejected entirely, and no data will be transmitted.\n\n\nIf libquiet was built and linked with pthread, then this function may be called from any thread, and by multiple threads concurrently.\n\n\nquiet_encoder_send will return 0 if the queue is closed to signal EOF.\n\n\nquiet_encoder_send will return a negative value and set the last error to quiet_timedout if the send queue is full and no space was made before the timeout\n\n\nquiet_encoder_send will return a negative value and set the last error to quiet_would_block if the send queue is full and the encoder is in nonblocking mode\n\n\nParameters\n\n\ne\n - encoder object\n\n\nbuf\n - user buffer containing the frame payload\n\n\nlen\n - the number of bytes in buf\n\n\nReturns\n\n\nthe number of bytes copied from the buffer, 0 if the queue is closed, or -1 if sending failed\n\n\nquiet_encoder_set_blocking\n\n\nvoid\n\n\n\nquiet_encoder_set_blocking\n(\nquiet_encoder\n \n*\ne\n,\n\n\n                           \ntime_t\n \nsec\n,\n\n\n                           \nlong\n \nnano\n);\n\n\n\n\n\n\nquiet_encoder_set_blocking changes the behavior of quiet_encoder_send so that it will block until a frame can be written. It will block for approximately (nano + 1000000000*sec) nanoseconds.\n\n\nIf \nsec\n and \nnano\n are both 0, then quiet_encoder_send will block indefinitely until a frame is sent.\n\n\nThis function is only supported on systems with pthread. Calling quiet_encoder_set_blocking on a host without pthread will assert false.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nsec\n - time_t number of seconds to block for\n\n\nnano\n - long number of nanoseconds to block for\n\n\nquiet_encoder_set_nonblocking\n\n\nvoid\n\n\n\nquiet_encoder_set_nonblocking\n(\nquiet_encoder\n \n*\ne\n);\n\n\n\n\n\n\nquiet_encoder_set_nonblocking changes the behavior of quiet_encoder_send so that it will not block if it cannot write a frame. This function restores the default behavior after quiet_encoder_set_blocking has been called.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nquiet_encoder_set_emit_blocking\n\n\nvoid\n\n\n\nquiet_encoder_set_emit_blocking\n(\nquiet_encoder\n \n*\ne\n,\n\n\n                                \ntime_t\n \nsec\n,\n\n\n                                \nlong\n \nnano\n);\n\n\n\n\n\n\nquiet_encoder_set_emit_blocking changes quiet_encoder_emit so that it will block until a frame is read. It will block for approximately (nano + 1000000000*sec) nanoseconds.\n\n\nquiet_encoder_emit may emit some empty (silence) samples if one frame is available but more frames are needed for the full length of the block given to quiet_encoder_emit. That is, quiet_encoder_emit will not block the tail of one frame while waiting for the next.\n\n\nIf \nsec\n and \nnano\n are both 0, then quiet_encoder_emit will block indefinitely until a frame is read.\n\n\nThis function is only supported on systems with pthread. Calling quiet_encoder_set_blocking on a host without pthread will assert false.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nsec\n - time_t number of seconds to block for\n\n\nnano\n - long number of nanoseconds to block for\n\n\nquiet_encoder_set_emit_nonblocking\n\n\nvoid\n\n\n\nquiet_encoder_set_emit_nonblocking\n(\nquiet_encoder\n \n*\ne\n);\n\n\n\n\n\n\nquiet_encoder_set_emit_nonblocking changes the behavior of quiet_encoder_emit so that it will not block if it cannot read a frame. This function restores the default behavior after quiet_encoder_set_emit_blocking has been called.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nquiet_encoder_clamp_frame_len\n\n\nsize_t\n\n\n\nquiet_encoder_clamp_frame_len\n(\nquiet_encoder\n \n*\ne\n,\n\n\n                              \nsize_t\n \nsample_len\n);\n\n\n\n\n\n\nquiet_encoder_clamp_frame_len enables a mode in the encoder which prevents data frames from overlapping multiple blocks of samples, e.g. multiple calls to quiet_encoder_emit. This can be very convenient if your environment cannot keep up in realtime due to e.g. GC pauses. The transmission of data will succeed as long as the blocks of samples are played out smoothly (gaps between blocks are ok, gaps within blocks are not ok).\n\n\nCalling this with the size of your sample block will clamp the frame length of this encoder and toggle the \nis_close_frame\n flag which will ensure that sample blocks will always end in silence. This will never result in a frame length longer than the one provided in the creation of the encoder, but it may result in a shorter frame length.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nsample_len\n - size of sample block\n\n\nReturns\n\n\nthe new frame length\n\n\nquiet_encoder_get_frame_len\n\n\nsize_t\n\n\n\nquiet_encoder_get_frame_len\n(\nconst\n \nquiet_encoder\n \n*\ne\n);\n\n\n\n\n\n\nParameters\n\n\ne\n - encoder object\n\n\nReturns\n\n\nencoder's maximum frame length, e.g. the largest length that can be passed to quiet_encoder_send\n\n\nquiet_encoder_emit\n\n\nssize_t\n\n\n\nquiet_encoder_emit\n(\nquiet_encoder\n \n*\ne\n,\n\n\n                   \nquiet_sample_t\n \n*\nsamplebuf\n,\n\n\n                   \nsize_t\n \nsamplebuf_len\n);\n\n\n\n\n\n\nquiet_encoder_emit fills a block of samples pointed to by samplebuf by reading frames from its transmit queue and encoding them into sound by using the configuration specified at creation. These samples can be written out directly to a file or soundcard.\n\n\nIf you are using a soundcard, you will have to carefully choose the sample size block. Typically, the largest size is 16384 samples. Larger block sizes will help hide uneven latencies in the encoding process and ensure smoother transmission at the cost of longer latencies.\n\n\nquiet_encoder_emit may return fewer than the number of samples requested. Unlike quiet_encoder_send, quiet_encoder_emit does not block, even when blocking mode is enabled. This is because soundcard interfaces typically require realtime sample generation.\n\n\nIf quiet_encoder_emit returns 0, then the transmit queue is closed and empty, and no future calls to quiet_encoder_emit will retrieve any more samples.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nsamplebuf\n - user-provided array where samples will be written\n\n\nsamplebuf_len\n - length of user-provided array\n\n\nReturns\n\n\nthe number of samples written to samplebuf, which shall never exceed samplebuf_len. If the returned number of samples written is less than samplebuf_len, then the encoder has finished encoding the payload (its transmit queue is empty and all state has been flushed out). The user should 0-fill any remaining length if the block is to be transmitted.\n\n\nIf quiet_encoder_emit returns a negative length, then it will set the quiet error. Most commonly, this will happen when the transmit queue is empty and there are no frames ready to send, but the queue is still open. If and only if the queue is closed and has been completely read, quiet_encoder_emit will return 0 to signal EOF.\n\n\nErrors\n\n\nfoo\n - bar baz\n\n\nqux\n - quuux\n\n\nquiet_encoder_close\n\n\nvoid\n\n\n\nquiet_encoder_close\n(\nquiet_encoder\n \n*\ne\n);\n\n\n\n\n\n\nquiet_encoder_close closes the encoder object. This has the effect of rejecting any future calls to quiet_encoder_send. Any previously queued frames will be written by quiet_encoder_emit. Once the send queue is empty, quiet_encoder_emit will set last error to quiet_closed.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nquiet_encoder_destroy\n\n\nvoid\n\n\n\nquiet_encoder_destroy\n(\nquiet_encoder\n \n*\ne\n);\n\n\n\n\n\n\nquiet_encoder_destroy releases all resources allocated by the \nquiet_encoder\n. After calling this function, the user should not call any other encoder functions on the \nquiet_encoder\n.\n\n\nParameters\n\n\ne\n - encoder object", 
+            "text": "Encoding Raw Samples\n\n\nquiet_sample_t\n\n\ntypedef\n \nfloat\n \nquiet_sample_t\n;\n\n\n\n\n\n\nAll modem values generated are floating-point values between -1.0 and 1.0.\n\n\nquiet_encoder\n\n\nstruct\n \nquiet_encoder\n;\n\n\n\ntypedef\n \nstruct\n \nquiet_encoder\n \nquiet_encoder\n;\n\n\n\n\n\n\nquiet_encoder_create\n\n\nquiet_encoder\n \n*\n\n\n\nquiet_encoder_create\n(\nconst\n \nquiet_encoder_options\n \n*\nopt\n,\n\n\n                     \nfloat\n \nsample_rate\n);\n\n\n\n\n\n\nquiet_encoder_create creates and initializes a new libquiet encoder for a given set of options and sample rate. As libquiet makes use of its own resampler, it is suggested to use the default sample rate of your device, so as to not invoke any implicit resamplers.\n\n\nParameters\n\n\nopt\n - \nquiet_encoder_options\n containing encoder configuration\n\n\nsample_rate\n - Sample rate that encoder will generate at\n\n\nReturns\n\n\npointer to a new encoder object, or NULL if creation failed\n\n\nquiet_encoder_send\n\n\nssize_t\n\n\n\nquiet_encoder_send\n(\nquiet_encoder\n \n*\ne\n,\n\n\n                   \nconst\n \nvoid\n \n*\nbuf\n,\n\n\n                   \nsize_t\n \nlen\n);\n\n\n\n\n\n\nquiet_encoder_send copies the frame provided by the user to an internal transmit queue. By default, this is a nonblocking call and will fail if the queue is full. However, if quiet_encoder_set_blocking has been called first, then it will wait for as much as the timeout length specified there if the frame cannot be immediately written.\n\n\nThe frame provided must be no longer than the maximum frame length of the encoder. If the frame is longer, it will be rejected entirely, and no data will be transmitted.\n\n\nIf libquiet was built and linked with pthread, then this function may be called from any thread, and by multiple threads concurrently.\n\n\nquiet_encoder_send will return 0 if the queue is closed to signal EOF.\n\n\nquiet_encoder_send will return a negative value and set the last error to quiet_timedout if the send queue is full and no space was made before the timeout\n\n\nquiet_encoder_send will return a negative value and set the last error to quiet_would_block if the send queue is full and the encoder is in nonblocking mode\n\n\nParameters\n\n\ne\n - encoder object\n\n\nbuf\n - user buffer containing the frame payload\n\n\nlen\n - the number of bytes in buf\n\n\nReturns\n\n\nthe number of bytes copied from the buffer, 0 if the queue is closed, or -1 if sending failed\n\n\nquiet_encoder_set_blocking\n\n\nvoid\n\n\n\nquiet_encoder_set_blocking\n(\nquiet_encoder\n \n*\ne\n,\n\n\n                           \ntime_t\n \nsec\n,\n\n\n                           \nlong\n \nnano\n);\n\n\n\n\n\n\nquiet_encoder_set_blocking changes the behavior of quiet_encoder_send so that it will block until a frame can be written. It will block for approximately (nano + 1000000000*sec) nanoseconds.\n\n\nIf \nsec\n and \nnano\n are both 0, then quiet_encoder_send will block indefinitely until a frame is sent.\n\n\nThis function is only supported on systems with pthread. Calling quiet_encoder_set_blocking on a host without pthread will assert false.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nsec\n - time_t number of seconds to block for\n\n\nnano\n - long number of nanoseconds to block for\n\n\nquiet_encoder_set_nonblocking\n\n\nvoid\n\n\n\nquiet_encoder_set_nonblocking\n(\nquiet_encoder\n \n*\ne\n);\n\n\n\n\n\n\nquiet_encoder_set_nonblocking changes the behavior of quiet_encoder_send so that it will not block if it cannot write a frame. This function restores the default behavior after quiet_encoder_set_blocking has been called.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nquiet_encoder_set_emit_blocking\n\n\nvoid\n\n\n\nquiet_encoder_set_emit_blocking\n(\nquiet_encoder\n \n*\ne\n,\n\n\n                                \ntime_t\n \nsec\n,\n\n\n                                \nlong\n \nnano\n);\n\n\n\n\n\n\nquiet_encoder_set_emit_blocking changes quiet_encoder_emit so that it will block until a frame is read. It will block for approximately (nano + 1000000000*sec) nanoseconds.\n\n\nquiet_encoder_emit may emit some empty (silence) samples if one frame is available but more frames are needed for the full length of the block given to quiet_encoder_emit. That is, quiet_encoder_emit will not block the tail of one frame while waiting for the next.\n\n\nIf \nsec\n and \nnano\n are both 0, then quiet_encoder_emit will block indefinitely until a frame is read.\n\n\nThis function is only supported on systems with pthread. Calling quiet_encoder_set_blocking on a host without pthread will assert false.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nsec\n - time_t number of seconds to block for\n\n\nnano\n - long number of nanoseconds to block for\n\n\nquiet_encoder_set_emit_nonblocking\n\n\nvoid\n\n\n\nquiet_encoder_set_emit_nonblocking\n(\nquiet_encoder\n \n*\ne\n);\n\n\n\n\n\n\nquiet_encoder_set_emit_nonblocking changes the behavior of quiet_encoder_emit so that it will not block if it cannot read a frame. This function restores the default behavior after quiet_encoder_set_emit_blocking has been called.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nquiet_encoder_clamp_frame_len\n\n\nsize_t\n\n\n\nquiet_encoder_clamp_frame_len\n(\nquiet_encoder\n \n*\ne\n,\n\n\n                              \nsize_t\n \nsample_len\n);\n\n\n\n\n\n\nquiet_encoder_clamp_frame_len enables a mode in the encoder which prevents data frames from overlapping multiple blocks of samples, e.g. multiple calls to quiet_encoder_emit. This can be very convenient if your environment cannot keep up in realtime due to e.g. GC pauses. The transmission of data will succeed as long as the blocks of samples are played out smoothly (gaps between blocks are ok, gaps within blocks are not ok).\n\n\nCalling this with the size of your sample block will clamp the frame length of this encoder and toggle the \nis_close_frame\n flag which will ensure that sample blocks will always end in silence. This will never result in a frame length longer than the one provided in the creation of the encoder, but it may result in a shorter frame length.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nsample_len\n - size of sample block\n\n\nReturns\n\n\nthe new frame length\n\n\nquiet_encoder_get_frame_len\n\n\nsize_t\n\n\n\nquiet_encoder_get_frame_len\n(\nconst\n \nquiet_encoder\n \n*\ne\n);\n\n\n\n\n\n\nParameters\n\n\ne\n - encoder object\n\n\nReturns\n\n\nencoder's maximum frame length, e.g. the largest length that can be passed to quiet_encoder_send\n\n\nquiet_encoder_emit\n\n\nssize_t\n\n\n\nquiet_encoder_emit\n(\nquiet_encoder\n \n*\ne\n,\n\n\n                   \nquiet_sample_t\n \n*\nsamplebuf\n,\n\n\n                   \nsize_t\n \nsamplebuf_len\n);\n\n\n\n\n\n\nquiet_encoder_emit fills a block of samples pointed to by samplebuf by reading frames from its transmit queue and encoding them into sound by using the configuration specified at creation. These samples can be written out directly to a file or soundcard.\n\n\nIf you are using a soundcard, you will have to carefully choose the sample size block. Typically, the largest size is 16384 samples. Larger block sizes will help hide uneven latencies in the encoding process and ensure smoother transmission at the cost of longer latencies.\n\n\nquiet_encoder_emit may return fewer than the number of samples requested. Unlike quiet_encoder_send, quiet_encoder_emit does not block, even when blocking mode is enabled. This is because soundcard interfaces typically require realtime sample generation.\n\n\nIf quiet_encoder_emit returns 0, then the transmit queue is closed and empty, and no future calls to quiet_encoder_emit will retrieve any more samples.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nsamplebuf\n - user-provided array where samples will be written\n\n\nsamplebuf_len\n - length of user-provided array\n\n\nReturns\n\n\nthe number of samples written to samplebuf, which shall never exceed samplebuf_len. If the returned number of samples written is less than samplebuf_len, then the encoder has finished encoding the payload (its transmit queue is empty and all state has been flushed out). The user should 0-fill any remaining length if the block is to be transmitted.\n\n\nIf quiet_encoder_emit returns a negative length, then it will set the quiet error. Most commonly, this will happen when the transmit queue is empty and there are no frames ready to send, but the queue is still open. If and only if the queue is closed and has been completely read, quiet_encoder_emit will return 0 to signal EOF.\n\n\nErrors\n\n\nfoo\n - bar baz\n\n\nqux\n - quuux\n\n\nquiet_encoder_close\n\n\nvoid\n\n\n\nquiet_encoder_close\n(\nquiet_encoder\n \n*\ne\n);\n\n\n\n\n\n\nquiet_encoder_close closes the encoder object. This has the effect of rejecting any future calls to quiet_encoder_send. Any previously queued frames will be written by quiet_encoder_emit. Once the send queue is empty, quiet_encoder_emit will set last error to quiet_closed.\n\n\nParameters\n\n\ne\n - encoder object\n\n\nquiet_encoder_destroy\n\n\nvoid\n\n\n\nquiet_encoder_destroy\n(\nquiet_encoder\n \n*\ne\n);\n\n\n\n\n\n\nquiet_encoder_destroy releases all resources allocated by the \nquiet_encoder\n. After calling this function, the user should not call any other encoder functions on the \nquiet_encoder\n.\n\n\nParameters\n\n\ne\n - encoder object", 
             "title": "Encoding Raw Samples"
         }, 
         {
             "location": "/encoding/#encoding-raw-samples", 
             "text": "", 
             "title": "Encoding Raw Samples"
+        }, 
+        {
+            "location": "/encoding/#quiet_sample_t", 
+            "text": "typedef   float   quiet_sample_t ;   All modem values generated are floating-point values between -1.0 and 1.0.", 
+            "title": "quiet_sample_t"
         }, 
         {
             "location": "/encoding/#quiet_encoder", 
@@ -1082,7 +1802,7 @@
         }, 
         {
             "location": "/errors/", 
-            "text": "Errors", 
+            "text": "Errors\n\n\nquiet_error\n\n\ntypedef\n \nenum\n \n{\n\n\n    \nquiet_success\n,\n\n\n    \nquiet_mem_fail\n,\n\n\n    \nquiet_encoder_bad_config\n,\n\n\n    \nquiet_profile_malformed_json\n,\n\n\n    \nquiet_profile_missing_key\n,\n\n\n    \nquiet_profile_invalid_profile\n,\n\n\n    \nquiet_msg_size\n,\n\n\n    \nquiet_would_block\n,\n\n\n    \nquiet_timedout\n,\n\n\n    \nquiet_io\n\n\n\n}\n \nquiet_error\n;\n\n\n\n\n\n\nquiet_success\n\n\nquiet_mem_fail\n\n\nquiet_encoder_bad_config\n\n\nquiet_profile_malformed_json\n\n\nquiet_profile_missing_key\n\n\nquiet_profile_invalid_profile\n\n\nquiet_msg_size\n\n\nquiet_would_block\n\n\nquiet_timedout\n\n\nquiet_io\n\n\nquiet_get_last_error\n\n\nquiet_error\n\n\n\nquiet_get_last_error\n();\n\n\n\n\n\n\nquiet_get_last_error retrieves the last error set. If libquiet was compiled with pthread, then this error will be specific to the thread where this is called.", 
             "title": "Errors"
         }, 
         {
@@ -1091,9 +1811,119 @@
             "title": "Errors"
         }, 
         {
+            "location": "/errors/#quiet_error", 
+            "text": "typedef   enum   { \n\n     quiet_success , \n\n     quiet_mem_fail , \n\n     quiet_encoder_bad_config , \n\n     quiet_profile_malformed_json , \n\n     quiet_profile_missing_key , \n\n     quiet_profile_invalid_profile , \n\n     quiet_msg_size , \n\n     quiet_would_block , \n\n     quiet_timedout , \n\n     quiet_io  }   quiet_error ;", 
+            "title": "quiet_error"
+        }, 
+        {
+            "location": "/errors/#quiet_success", 
+            "text": "", 
+            "title": "quiet_success"
+        }, 
+        {
+            "location": "/errors/#quiet_mem_fail", 
+            "text": "", 
+            "title": "quiet_mem_fail"
+        }, 
+        {
+            "location": "/errors/#quiet_encoder_bad_config", 
+            "text": "", 
+            "title": "quiet_encoder_bad_config"
+        }, 
+        {
+            "location": "/errors/#quiet_profile_malformed_json", 
+            "text": "", 
+            "title": "quiet_profile_malformed_json"
+        }, 
+        {
+            "location": "/errors/#quiet_profile_missing_key", 
+            "text": "", 
+            "title": "quiet_profile_missing_key"
+        }, 
+        {
+            "location": "/errors/#quiet_profile_invalid_profile", 
+            "text": "", 
+            "title": "quiet_profile_invalid_profile"
+        }, 
+        {
+            "location": "/errors/#quiet_msg_size", 
+            "text": "", 
+            "title": "quiet_msg_size"
+        }, 
+        {
+            "location": "/errors/#quiet_would_block", 
+            "text": "", 
+            "title": "quiet_would_block"
+        }, 
+        {
+            "location": "/errors/#quiet_timedout", 
+            "text": "", 
+            "title": "quiet_timedout"
+        }, 
+        {
+            "location": "/errors/#quiet_io", 
+            "text": "", 
+            "title": "quiet_io"
+        }, 
+        {
+            "location": "/errors/#quiet_get_last_error", 
+            "text": "quiet_error  quiet_get_last_error ();   quiet_get_last_error retrieves the last error set. If libquiet was compiled with pthread, then this error will be specific to the thread where this is called.", 
+            "title": "quiet_get_last_error"
+        }, 
+        {
             "location": "/frame-stats/", 
+            "text": "Frame Stats\n\n\nquiet_decoder_frame_stats\n\n\ntypedef\n \nstruct\n \n{\n\n\n    \nconst\n \nquiet_complex\n \n*\n \nsymbols\n;\n\n\n    \nsize_t\n \nnum_symbols\n;\n\n\n    \nfloat\n \nerror_vector_magnitude\n;\n\n\n    \nfloat\n \nreceived_signal_strength_indicator\n;\n\n\n    \nbool\n \nchecksum_passed\n;\n\n\n\n}\n \nquiet_decoder_frame_stats\n;\n\n\n\n\n\n\nThis contains information about the decoding process related to a single frame. The frame may have been detected but failed to pass checksum or may have been successfully received.\n\n\nsymbols\n\n\nRaw symbols, in complex plane, as seen after decimation and downmixing.\n\n\nnum_symbols\n\n\nerror_vector_magnitude\n\n\nMagnitude of vector from received symbols to reference symbols, in dB.\n\n\nreceived_signal_strength_indicator\n\n\nPower level of received signal after decimation and downmixing, in dB.\n\n\nchecksum_passed\n\n\nquiet_complex\n\n\ntypedef\n \nstruct\n \n{\n\n\n    \nfloat\n \nreal\n;\n\n\n    \nfloat\n \nimaginary\n;\n\n\n\n}\n \nquiet_complex\n;\n\n\n\n\n\n\nreal\n\n\nimaginary", 
+            "title": "Frame Stats"
+        }, 
+        {
+            "location": "/frame-stats/#frame-stats", 
             "text": "", 
             "title": "Frame Stats"
+        }, 
+        {
+            "location": "/frame-stats/#quiet_decoder_frame_stats", 
+            "text": "typedef   struct   { \n\n     const   quiet_complex   *   symbols ; \n\n     size_t   num_symbols ; \n\n     float   error_vector_magnitude ; \n\n     float   received_signal_strength_indicator ; \n\n     bool   checksum_passed ;  }   quiet_decoder_frame_stats ;   This contains information about the decoding process related to a single frame. The frame may have been detected but failed to pass checksum or may have been successfully received.", 
+            "title": "quiet_decoder_frame_stats"
+        }, 
+        {
+            "location": "/frame-stats/#symbols", 
+            "text": "Raw symbols, in complex plane, as seen after decimation and downmixing.", 
+            "title": "symbols"
+        }, 
+        {
+            "location": "/frame-stats/#num_symbols", 
+            "text": "", 
+            "title": "num_symbols"
+        }, 
+        {
+            "location": "/frame-stats/#error_vector_magnitude", 
+            "text": "Magnitude of vector from received symbols to reference symbols, in dB.", 
+            "title": "error_vector_magnitude"
+        }, 
+        {
+            "location": "/frame-stats/#received_signal_strength_indicator", 
+            "text": "Power level of received signal after decimation and downmixing, in dB.", 
+            "title": "received_signal_strength_indicator"
+        }, 
+        {
+            "location": "/frame-stats/#checksum_passed", 
+            "text": "", 
+            "title": "checksum_passed"
+        }, 
+        {
+            "location": "/frame-stats/#quiet_complex", 
+            "text": "typedef   struct   { \n\n     float   real ; \n\n     float   imaginary ;  }   quiet_complex ;", 
+            "title": "quiet_complex"
+        }, 
+        {
+            "location": "/frame-stats/#real", 
+            "text": "", 
+            "title": "real"
+        }, 
+        {
+            "location": "/frame-stats/#imaginary", 
+            "text": "", 
+            "title": "imaginary"
         }
     ]
 }
