@@ -33,13 +33,17 @@ make install
 To access libquiet's API,
 
 ```
-#include &lt;quiet.h&gt;
+#include <quiet.h>
 ```
 
 If you have installed PortAudio and have installed libquiet's PortAudio wrapper, you can access the PortAudio-backed transmitter and receiver with
 
 ```
-#include &lt;quiet-portaudio.h&gt;
+#include <quiet-portaudio.h>
 ```
 
 ## Linking
+
+Make sure that `libquiet.so` or `libquiet.dylib` is in your `LDPATH`.
+
+For static linking, you'll want to link against `libquiet`, `libjansson`, `libliquid` and `libfec`.

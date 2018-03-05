@@ -1,0 +1,12 @@
+[submodule "quiet"]
+	path = quiet
+	url = https://github.com/quiet/quiet
+[submodule "org.quietmodem.Quiet"]
+	path = org.quietmodem.Quiet
+	url = https://github.com/quiet/org.quietmodem.Quiet
+[submodule "QuietModemKit"]
+	path = QuietModemKit
+	url = https://github.com/quiet/QuietModemKit
+[submodule "quiet-js"]
+	path = quiet-js
+	url = https://github.com/quiet/quiet-js

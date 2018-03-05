@@ -1,4 +1,7 @@
-all : index quiet quiet-js org.quietmodem.Quiet QuietModemKit
+all : gendocs index quiet quiet-js org.quietmodem.Quiet QuietModemKit
+
+gendocs:
+	python doxydown/quiet.py
 
 index:
 	cp index.html site
@@ -15,4 +18,4 @@ org.quietmodem.Quiet:
 QuietModemKit:
 	cd site_configs && mkdocs build -f QuietModemKit.yml
 
-.PHONY : all quiet quiet-js org.quietmodem.Quiet QuietModemKit index
+.PHONY : all gendocs quiet quiet-js org.quietmodem.Quiet QuietModemKit index

@@ -8,9 +8,14 @@ pages:
     - 'Getting Started': setup.md
     - 'Example': example.md
     - 'How It Works': how.md
-    - 'Profiles': profiles.md
     - 'Transmitting Data': transmitting.md
     - 'Receiving Data': receiving.md
+    - 'Modem Configuration': configuration.md
+    - 'Encoding Raw Samples': encoding.md
+    - 'Decoding Raw Samples': decoding.md
+    - 'Profiles': profiles.md
+    - 'Errors': errors.md
+    - 'Frame Stats': frame-stats.md
 repo_url:
     https://github.com/quiet/quiet
 extra:
@@ -25,10 +30,12 @@ extra:
         Javascript:
             project_url: quiet-js/
         Android:
-            project_url: org.QuietModem.Quiet/
+            project_url: org.quietmodem.Quiet/
         iOS:
             project_url: QuietModemKit/
 markdown_extensions:
     - content_embedder:
         docs_dir: ../docs/quiet
     - admonition
+    - codehilite
+    - mkdcomments

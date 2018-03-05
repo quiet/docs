@@ -2,7 +2,7 @@
 
 Quiet Modem encodes your data into sound that can be played by your speakers. These sounds can then be detected through a microphone and converted back into data.
 
-This section of the documentation is optional. It can be skipped if you just wish to begin using the modem. However, if you need to debug your modem, it can be helpful to understand how these libraries work.
+**This section of the documentation is optional**. It can be skipped if you just wish to begin using the modem. However, if you need to debug your modem, it can be helpful to understand how these libraries work.
 
 ## Soundcard
 ---
@@ -76,6 +76,8 @@ The header is a short block of data sent before the payload. The header contains
 
 Just as our message was modulated to floating-point samples, we will apply error correction and modulation to the data in the header. The kinds used here can be different from the one used for the payload. We want the header to be especially reliable since an error in the header can make it impossible to receive the payload correctly.
 
+We do not send the type of modulation or error correction used for the header itself. These values are pre-shared and are part of the modem configuration.
+
 ### Assembling the Frame
 
 We now have all of the samples needed to send our frame. We start by sending the preamble samples, followed by the header samples, and finally the payload samples.
@@ -133,7 +135,15 @@ The resulting stream of samples should now resemble what we transmitted. When we
 
 ### Synchronization and Equalization
 
+The preamble is made up of a few different parts. The first part of the preamble is easily detectable so that we know where the frame begins. The next part of the preamble helps us synchronize our timing to the transmitter's timing in a precise way.
+
+From the section on Payload Modulation, we described how we convert binary data into floating-point amplitudes. One of the challenges we face in decoding is deciding at which point it will be appropriate to read these floating-point samples. The preamble helps us accomplish this by giving us a predictable sequence to look for. Even if noise is present on top of the preamble, we can still achieve a pretty good synchronization by looking for successive samples.
+
+We will also use the preamble to compensate for the uneven frequency response of the transmit and receive channel. It is typical that our transmission channel will emphasize certain frequencies and attenuate others. We use the preamble to invert this bias introduced by the channel so that the signal we receive looks nearly flat again.
+
 ### Demodulate Header
+
+With our clock aligned to the transmitter's, we are ready to begin decoding data. We start by decoding the modulated header samples. This data includes checksums of the payload and the header itself, as well as the type of modulation and error correection used in the payload. If the checksum of the decoded header data matches the checksum sent with the header, then we proceed to decoding the payload.
 
 
 ## Demodulation
@@ -143,17 +153,37 @@ The resulting stream of samples should now resemble what we transmitted. When we
 
 ### Demodulation
 
+Using the demodulation method specified by the header, we now demodulate all of the frame's payload samples. We perform [soft demodulation](https://en.wikipedia.org/wiki/Soft-decision_decoder) so that the samples are demodulated into 8-bit "soft" bits. That is, for each bit of data transmitted, we now have an 8-bit value that reflects our belief about what might have been transmitted. A soft bit of 0 means that we are highly confident that a 0 was transmitted, 255 means that we are highly confident that a 1 was transmitted, and intermediate values mean we have some level of uncertainty. A value of 128 means that we believe either bit was equally likely. Preserving this level of uncertainty will help us during the error correction phase, as bits with lower confidence will accumulate less error.
+
+To use our BPSK example from the modulation section, where we transmitted -1.0 for '0' and 1.0 for '1', imagine that we receive the sequence [0.9, -0.95, 0.1, 0.9]. If we were to decode these back to single bits, then we would decode this sequence as [1, 0, 1, 1]. However, if we use soft bits, we get [242, 6, 140, 242]. This better captures our uncertainty about the '0.1' sample we received, which is nearly as likely to be '0' as it is '1'.
+
 ### Error Correction
 
+Now that we have the soft bits demodulated, our next step will be to apply the error correction techniques for the redundancy we added during modulation. The error correction will need to be good enough to decode the samples in spite of other noise occuring. Even the signal itself becomes noise, as echoes of the signal are picked up by the microphone.
+
 ### Data Integrity
+
+Finally, we take the checksum value stored in the header and compare to a checksum of the data recovered after error correction. If these checksums match, we can be relatively confident that we have received the transmitted message. The bits can now be passed to the user.
+
+The checksum stage is optional. Some applications may be well suited to receive messages with some errors. It is up to the user of Quiet Modem to decide whether to checksums should be used.
 
 ## Thread Safety
 ---
 
+The Quiet Modem library has some features that help it work well in a [multithreaded](https://en.wikipedia.org/wiki/Thread_(computing)) environment. In particular, Quiet assumes that the interface to the soundcard will run on a different thread than the user application. Quiet attempts to decouple its functionality so that it can be used in a threadsafe way.
+
 ### Ring Buffer
+
+One of the key components of Quiet's threadsafety is a [ring buffer](https://en.wikipedia.org/wiki/Circular_buffer) that allows safe communication between threads. Quiet's ring buffer allows any number of readers and any number of writers. If the buffer is empty or full, it has mechanisms to allow readers and writers to block until data or space in the buffer is available.
+
+In general, we try to keep frames of data in buffers, rather than modulated samples. This is because a modulated frame uses much more memory than the demodulated payload data.
 
 ### Send Queue
 
+On the transmit side of Quiet, we use a ringbuffer to build a send queue. This allows senders to queue up packets for transmission as capacity allows. When the soundcard is ready for more samples, Quiet can read from the send queue and modulate one or more frames to fill up the soundcard buffer as necessary.
+
 ### Receive Queue
+
+On the receive side of Quiet, we have a receive queue. Samples are continuously read from the microphone into Quiet's decoder. When it has successfully decoded a packet, the packet's payload is written as a complete frame into the receive queue. Users of Quiet can perform a blocking read of this queue which will wait until a frame is ready.
 
 {{ how/platform.md }}
